@@ -1,6 +1,11 @@
-#include <iostream>
+#include "core/Simplex.h"
 
 int main() {
-  std::cout << "Hello World!" << std::endl;
-  return 0;
+    Simplex simplex;
+    if (!simplex.Init()) {
+        return 0;
+    }
+
+    simplex.Start();
+    return 0;
 }
