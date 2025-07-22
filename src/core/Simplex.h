@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/ResourceManager.h"
 #include "core/View.h"
 #include "core/Input.h"
 #include <cassert>
@@ -16,6 +17,7 @@ class Simplex {
 
     static View &GetView();
     static Input &GetInput();
+    static ResourceManager &GetResources();
 
   private:
     void Tick();
@@ -23,5 +25,6 @@ class Simplex {
   private:
     View m_View;
     Input m_Input;
+    ResourceManager m_ResourceManager;
     inline static Simplex *s_Instance = nullptr;
 };

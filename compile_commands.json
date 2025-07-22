@@ -1,0 +1,56 @@
+[
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/cc  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party  -o CMakeFiles/GameEngine.dir/include/glad.c.o -c /home/ollie/workspace/game-engine/include/glad.c",
+  "file": "/home/ollie/workspace/game-engine/include/glad.c",
+  "output": "CMakeFiles/GameEngine.dir/include/glad.c.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Input.cpp.o -c /home/ollie/workspace/game-engine/src/core/Input.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Input.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/Input.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Renderer.cpp.o -c /home/ollie/workspace/game-engine/src/core/Renderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Renderer.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/Renderer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o -c /home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o -c /home/ollie/workspace/game-engine/src/core/Simplex.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Simplex.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/VertexArray.cpp.o -c /home/ollie/workspace/game-engine/src/core/VertexArray.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/VertexArray.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/VertexArray.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/View.cpp.o -c /home/ollie/workspace/game-engine/src/core/View.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/View.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/core/View.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/Texture.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/Texture.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/Texture.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/graphics/Texture.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine",
+  "command": "/usr/bin/c++  -I/home/ollie/workspace/game-engine/include -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/third-party -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/main.cpp.o -c /home/ollie/workspace/game-engine/src/main.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/main.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/main.cpp.o"
+}
+]
