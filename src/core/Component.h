@@ -2,8 +2,10 @@
 
 #include <cstdint>
 
+using ComponentId = std::uint32_t;
+
 class Component {
 
   private:
-    std::uint32_t m_Id;
+    ComponentId m_Id;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "core/Entity.h"
 #include "core/Scene.h"
 #include <array>
-#include <cstdint>
 #include <unordered_map>
 
 class IComponentList {
@@ -16,19 +16,19 @@ template <typename T> class ComponentList : public IComponentList {
     ComponentList() {}
     ~ComponentList() {}
 
-    void AddData(std::uint32_t entity, T data) {
+    void AddData(EntityId entity, T data) {
         m_ComponentData[index] = data;
         m_EntityToIndexMap[entity] = index;
         m_IndexToEntityMap[index] = entity;
 
         index++;
     }
-    void RemoveData(std::uint32_t entityToRemove) {
+    void RemoveData(EntityId entityToRemove) {
         size_t dataIndex = m_EntityToIndexMap[entityToRemove];
 
         m_ComponentData[dataIndex] = m_ComponentData[index - 1];
 
-        std::uint32_t entityToMove = m_IndexToEntityMap[index - 1];
+        EntityId entityToMove = m_IndexToEntityMap[index - 1];
         m_EntityToIndexMap[entityToMove] = dataIndex;
         m_IndexToEntityMap[dataIndex] = entityToMove;
 
@@ -38,7 +38,7 @@ template <typename T> class ComponentList : public IComponentList {
         index--;
     }
 
-    T &GetData(std::uint32_t entity) {
+    T &GetData(EntityId entity) {
         std::size_t dataIndex = m_EntityToIndexMap[entity];
         return m_ComponentData[dataIndex];
     }
@@ -52,8 +52,8 @@ template <typename T> class ComponentList : public IComponentList {
 
   private:
     std::array<T, MAX_COMPONENTS> m_ComponentData;
-    std::unordered_map<std::uint32_t, std::size_t> m_EntityToIndexMap;
-    std::unordered_map<std::size_t, std::uint32_t> m_IndexToEntityMap;
+    std::unordered_map<EntityId, std::size_t> m_EntityToIndexMap;
+    std::unordered_map<std::size_t, EntityId> m_IndexToEntityMap;
 
     // Current index of last data
     size_t index;

@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+using EntityId = std::uint32_t;
+
 class Entity {
   public:
 
@@ -10,5 +12,5 @@ class Entity {
     }
 
   private:
-    std::uint32_t m_Id;
+    EntityId m_Id;
 };
