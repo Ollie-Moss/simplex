@@ -27,6 +27,7 @@ void Renderer2D::Render() {
         shader.use();
 
         // glm::mat4 projection = Simplex::GetView().CalculateScreenSpaceProjection();
+        
         glm::mat4 projection;
         shader.setMat4("projection", projection);
 
