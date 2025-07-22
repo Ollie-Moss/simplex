@@ -31,11 +31,16 @@ Simplex &Simplex::Get() {
 View &Simplex::GetView() {
     return Get().m_View;
 }
+
 Input &Simplex::GetInput() {
     return Get().m_Input;
 }
+
 ResourceManager &Simplex::GetResources() {
     return Get().m_ResourceManager;
+}
+Renderer2D &Simplex::GetRenderer() {
+    return Get().m_Renderer;
 }
 
 void Simplex::Start() {
