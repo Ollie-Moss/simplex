@@ -1,11 +1,19 @@
 #pragma once
 
 #include "core/Buffer.h"
-#include "core/Sprite.h"
 #include "core/VertexArray.h"
+#include "glm/glm.hpp"
 #include <array>
 #include <map>
 #include <set>
+#include <string>
+
+struct Sprite {
+    std::string texture;
+    glm::vec3 position;
+    glm::vec2 size;
+    glm::vec4 color;
+};
 
 class Renderer2D {
 
@@ -15,7 +23,6 @@ class Renderer2D {
 
     void Queue(Sprite sprite);
     void Render();
-
 
   private:
     std::map<std::string, VertexArray> m_VertexArrays;
