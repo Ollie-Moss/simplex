@@ -6,7 +6,7 @@
 void Renderer2D::Queue(Sprite sprite) {
     m_Textures.insert(sprite.texture);
 
-    m_Positions[sprite.texture].push_back(sprite.postition);
+    m_Positions[sprite.texture].push_back(sprite.position);
     m_Sizes[sprite.texture].push_back(sprite.size);
     m_Colors[sprite.texture].push_back(sprite.color);
 }
