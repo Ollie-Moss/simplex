@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/Types.h"
+#include "iostream"
 #include <unordered_map>
-
 
 class IComponentList {
   public:
@@ -55,5 +55,5 @@ template <typename T> class ComponentList : public IComponentList {
     std::unordered_map<std::size_t, EntityId> m_IndexToEntityMap;
 
     // Current index of last data
-    size_t index;
+    size_t index = 0;
 };

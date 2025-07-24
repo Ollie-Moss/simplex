@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Renderer2D.h"
+#include "graphics/Renderer2D.h"
 #include "Registry.h"
 #include "core/ResourceManager.h"
 #include "core/View.h"

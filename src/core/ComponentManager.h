@@ -32,9 +32,10 @@ class ComponentManager {
     }
 
     template <typename T> ComponentId GetComponentType() {
+        if (!HasComponent<T>()) {
+            Register<T>();
+        }
         const char *typeName = typeid(T).name();
-
-        assert(m_ComponentTypes.find(typeName) != m_ComponentTypes.end() && "Component not registered before use.");
 
         // Return this component's type - used for creating signatures
         return m_ComponentTypes[typeName];
@@ -49,7 +50,7 @@ class ComponentManager {
     }
 
     template <typename T> void Register() {
-        const char *componentName;
+        const char *componentName = typeid(T).name();
         assert(m_ComponentTypes.find(componentName) == m_ComponentTypes.end() && "Registering component type more than once.");
 
         m_Components.insert({m_CurrentComponent, std::make_shared<ComponentList<T>>()});

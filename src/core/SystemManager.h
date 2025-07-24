@@ -26,9 +26,31 @@ class SystemManager {
         }
     }
 
-    void EntityDestroyed(EntityId entity);
+    void EntityDestroyed(EntityId entity) {
+        // Erase a destroyed entity from all system lists
+        // mEntities is a set so no check needed
+        for (auto const &pair : m_Systems) {
+            auto const &system = pair.second;
 
-    void EntitySignatureChanged(EntityId entity, Signature entitySignature);
+            system->m_Entities.erase(entity);
+        }
+    }
+
+    void EntitySignatureChanged(EntityId entity, Signature entitySignature) {
+        // Notify each system that an entity's signature changed
+        for (auto const &[type, system] : m_Systems) {
+            auto const &systemSignature = system->m_Signature;
+
+            // Entity signature matches system signature - insert into set
+            if ((entitySignature & systemSignature) == systemSignature) {
+                system->m_Entities.insert(entity);
+            }
+            // Entity signature does not match system signature - erase from set
+            else {
+                system->m_Entities.erase(entity);
+            }
+        }
+    }
 
   private:
     // Map from system type string pointer to a system pointer

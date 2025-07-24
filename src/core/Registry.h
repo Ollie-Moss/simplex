@@ -5,16 +5,26 @@
 #include "core/SystemManager.h"
 #include <array>
 #include <cstddef>
+#include <memory>
 
 class Registry {
   public:
     Registry() {};
 
-    EntityId Create();
-    void Remove(EntityId entity);
+    EntityId Create() {
+        EntityId entity = m_EntityManager.CreateEntity();
+        m_Entities[entityIndex] = entity;
+        entityIndex++;
+        return entity;
+    }
+    void Remove(EntityId entity) {
+        m_EntityManager.DestroyEntity(entity);
+        m_Entities[entity] = m_Entities[entityIndex];
+        entityIndex--;
+    }
 
     template <typename T> void AddComponent(EntityId entity, T component) {
-        m_ComponentManager.AddComponent(entity, component);
+        m_ComponentManager.AddComponent<T>(entity, component);
         ComponentId componentId = m_ComponentManager.GetComponentType<T>();
 
         Signature signature = m_EntityManager.GetSignature(entity);
@@ -34,12 +44,12 @@ class Registry {
         m_SystemManager.EntitySignatureChanged(entity, signature);
     }
 
-    template <typename T> T GetComponent(EntityId entity) {
+    template <typename T> T& GetComponent(EntityId entity) {
         return m_ComponentManager.GetComponent<T>(entity);
     }
 
-    template <typename T> void RegisterSystem(System system) {
-        m_SystemManager.RegisterSystem<T>();
+    template <typename T> std::shared_ptr<T> RegisterSystem() {
+        return m_SystemManager.RegisterSystem<T>();
     }
 
     void Update() {

@@ -9,15 +9,13 @@ class Entity {
   public:
     Entity();
     Entity(EntityId id) : m_Id(id) {}
-    Entity(const EntityId &&id) : m_Id(id) {}
-    Entity(const EntityId &id) : m_Id(id) {}
 
-    template <typename T> T GetComponent() {
+    template <typename T> T& GetComponent() {
         return Simplex::GetRegistry().GetComponent<T>(m_Id);
     };
-    template <typename T> T RemoveComponent() {
+    template <typename T> void RemoveComponent() {
         // assert(m_Scene != nullptr);
-        return Simplex::GetRegistry().RemoveComponent<T>(m_Id);
+        Simplex::GetRegistry().RemoveComponent<T>(m_Id);
     };
 
     operator std::uint32_t() {
