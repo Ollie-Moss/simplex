@@ -68,9 +68,9 @@ class GravitySystem : public System {
 void Simplex::Tick() {
     m_Registry.RegisterSystem<RenderSystem>();
 
-    Entity e = m_Registry.Create();
     Transform t = {.position = glm::vec3(-1, -1, 0)};
     SpriteRenderer s = {.texture = "GRASS_TILE_1", .size = glm::vec2(.5, .5), .color = glm::vec4(0, 0, 0, 1)};
+    Entity e = m_Registry.Create(t, s);
 
     m_Registry.AddComponent<Transform>(e, t);
     m_Registry.AddComponent<SpriteRenderer>(e, s);

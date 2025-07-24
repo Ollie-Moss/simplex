@@ -17,6 +17,14 @@ class Registry {
         entityIndex++;
         return entity;
     }
+
+    template <typename... T> EntityId Create(T... args) {
+        EntityId entity = Create();
+        ([&] { AddComponent<T>(entity, args); }(), ...);
+
+        return entity;
+    }
+
     void Remove(EntityId entity) {
         m_EntityManager.DestroyEntity(entity);
         m_Entities[entity] = m_Entities[entityIndex];
@@ -44,7 +52,7 @@ class Registry {
         m_SystemManager.EntitySignatureChanged(entity, signature);
     }
 
-    template <typename T> T& GetComponent(EntityId entity) {
+    template <typename T> T &GetComponent(EntityId entity) {
         return m_ComponentManager.GetComponent<T>(entity);
     }
 
