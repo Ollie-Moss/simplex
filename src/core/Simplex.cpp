@@ -1,8 +1,9 @@
 #include "Simplex.h"
+#include "core/Registry.h"
 #include "core/Renderer2D.h"
 #include "core/ResourceManager.h"
-#include "glm/ext/vector_float4.hpp"
 #include "glm/fwd.hpp"
+#include <sys/types.h>
 
 Simplex::Simplex() {
     s_Instance = this;
@@ -42,20 +43,61 @@ ResourceManager &Simplex::GetResources() {
 Renderer2D &Simplex::GetRenderer() {
     return Get().m_Renderer;
 }
+Registry &Simplex::GetRegistry() {
+    return Get().m_Registry;
+}
 
 void Simplex::Start() {
     Tick();
 }
 
+struct Transform {
+    glm::vec3 position;
+};
+
+class GravitySystem : public System {
+  public:
+    GravitySystem() {
+        m_Signature = Simplex::GetRegistry().CreateSignature<Transform>();
+    }
+
+    void Update() override {
+        for (Entity e : m_Entities) {
+            Transform t = e.GetComponent<Transform>();
+            t.position = glm::vec3(t.position.z, t.position.y + 0.001f, t.position.z);
+        }
+    }
+};
+class RenderSystem : public System {
+  public:
+    RenderSystem() {
+        m_Signature = Simplex::GetRegistry().CreateSignature<Sprite, Transform>();
+    }
+
+    void Update() override {
+        for (Entity e : m_Entities) {
+            Sprite s = e.GetComponent<Sprite>();
+            Simplex::GetRenderer().Queue(s);
+        }
+    }
+};
+
 void Simplex::Tick() {
-    Renderer2D renderer;
+
+    Entity e = m_Registry.Create();
+    Transform t = {.position = glm::vec3(1, 1, 1)};
+    Sprite s = {.texture = "GRASS_TILE_1", .postition = glm::vec3(-.5, -.5, 0), .size = glm::vec2(.5, .5), .color = glm::vec4(0, 0, 0, 1)};
+
+    m_Registry.AddComponent<Transform>(e, t);
+    m_Registry.AddComponent<Sprite>(e, s);
+
     while (!m_View.ShouldQuit()) {
         m_Input.PollEvents();
 
         m_View.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
         // Do scene tick here
-        renderer.Queue({.texture = "GRASS_TILE_1", .postition = glm::vec3(-.5, -.5, 0), .size = glm::vec2(.5, .5), .color = glm::vec4(0, 0, 0, 1)});
-        renderer.Render();
+
+        m_Renderer.Render();
 
         m_View.SwapBuffers();
     }

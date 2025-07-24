@@ -20,6 +20,7 @@ class Simplex {
     static Input &GetInput();
     static ResourceManager &GetResources();
     static Renderer2D &GetRenderer();
+    static Registry &GetRegistry();
 
   private:
     void Tick();
@@ -28,6 +29,7 @@ class Simplex {
     View m_View;
     Input m_Input;
     ResourceManager m_ResourceManager;
+    Registry m_Registry;
     Renderer2D m_Renderer;
     inline static Simplex *s_Instance = nullptr;
 };

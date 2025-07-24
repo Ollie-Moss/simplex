@@ -1,20 +1,15 @@
 #pragma once
 
-#include "core/Entity.h"
+#include "core/Types.h"
 #include <array>
-#include <bitset>
 #include <cassert>
 #include <cstdint>
-#include <limits>
 #include <queue>
 
-const std::uint32_t MAX_ENTITIES = std::numeric_limits<uint32_t>::max();
-const std::uint32_t MAX_COMPONENTS = std::numeric_limits<uint32_t>::max();
 
-using Signature = std::bitset<MAX_COMPONENTS>;
-
-class Scene {
-    Scene() {
+class EntityManager {
+  public:
+    EntityManager() {
         // Initialize the queue with all possible entity IDs
         for (EntityId entity = 0; entity < MAX_ENTITIES; ++entity) {
             m_AvailableEntities.push(entity);

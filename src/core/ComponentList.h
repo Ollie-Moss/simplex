@@ -1,20 +1,19 @@
 #pragma once
 
-#include "core/Entity.h"
-#include "core/Scene.h"
-#include <array>
+#include "core/Types.h"
 #include <unordered_map>
+
 
 class IComponentList {
   public:
     virtual ~IComponentList() = default;
-    virtual void EntityDestroyed(Entity entity) = 0;
+    virtual void EntityDestroyed(EntityId entity) = 0;
 };
 
 template <typename T> class ComponentList : public IComponentList {
   public:
     ComponentList() {}
-    ~ComponentList() {}
+    ~ComponentList() override {}
 
     void AddData(EntityId entity, T data) {
         m_ComponentData[index] = data;
@@ -43,7 +42,7 @@ template <typename T> class ComponentList : public IComponentList {
         return m_ComponentData[dataIndex];
     }
 
-    void EntityDestroyed(Entity entity) override {
+    void EntityDestroyed(EntityId entity) override {
         if (m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end()) {
             // Remove the entity's component if it existed
             RemoveData(entity);

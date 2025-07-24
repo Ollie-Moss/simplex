@@ -26,6 +26,6 @@ target_link_libraries(GameEngine
     glfw
     freetype
     GL
-    X11 Xrandr pthread dl Xi Xxf86vm Xinerama Xcursor
+    X11 Xrandr pthread dl Xi Xxf86vm Xinerama Xcursor g -O0
 )
 
