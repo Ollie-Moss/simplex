@@ -9,6 +9,8 @@ class Entity {
   public:
     Entity();
     Entity(EntityId id) : m_Id(id) {}
+    Entity(const EntityId &&id) : m_Id(id) {}
+    Entity(const EntityId &id) : m_Id(id) {}
 
     template <typename T> T GetComponent() {
         return Simplex::GetRegistry().GetComponent<T>(m_Id);

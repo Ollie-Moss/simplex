@@ -1,9 +1,8 @@
-#pragma once
-
-#include "core/ComponentList.h"
+#include "core/Types.h"
 #include <cassert>
 #include <cstdint>
 #include <memory>
+#include "core/ComponentList.h"
 #include <typeinfo>
 #include <unordered_map>
 

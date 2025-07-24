@@ -6,7 +6,6 @@
 #include <typeinfo>
 #include <unordered_map>
 
-
 class SystemManager {
   public:
     SystemManager() {}
@@ -27,31 +26,9 @@ class SystemManager {
         }
     }
 
-    void EntityDestroyed(Entity entity) {
-        // Erase a destroyed entity from all system lists
-        // mEntities is a set so no check needed
-        for (auto const &pair : m_Systems) {
-            auto const &system = pair.second;
+    void EntityDestroyed(EntityId entity);
 
-            system->m_Entities.erase(entity);
-        }
-    }
-
-    void EntitySignatureChanged(Entity entity, Signature entitySignature) {
-        // Notify each system that an entity's signature changed
-        for (auto const &[type, system] : m_Systems) {
-            auto const &systemSignature = system->m_Signature;
-
-            // Entity signature matches system signature - insert into set
-            if ((entitySignature & systemSignature) == systemSignature) {
-                system->m_Entities.insert(entity);
-            }
-            // Entity signature does not match system signature - erase from set
-            else {
-                system->m_Entities.erase(entity);
-            }
-        }
-    }
+    void EntitySignatureChanged(EntityId entity, Signature entitySignature);
 
   private:
     // Map from system type string pointer to a system pointer

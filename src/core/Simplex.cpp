@@ -1,7 +1,5 @@
 #include "Simplex.h"
-#include "core/Registry.h"
-#include "core/Renderer2D.h"
-#include "core/ResourceManager.h"
+#include "core/Entity.h"
 #include "glm/fwd.hpp"
 #include <sys/types.h>
 

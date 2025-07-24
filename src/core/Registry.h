@@ -5,23 +5,13 @@
 #include "core/SystemManager.h"
 #include <array>
 #include <cstddef>
-#include <vector>
 
 class Registry {
   public:
     Registry() {};
 
-    Entity Create() {
-        Entity entity = m_EntityManager.CreateEntity();
-        m_Entities[entityIndex] = entity;
-        entityIndex++;
-        return entity;
-    }
-    void Remove(Entity entity) {
-        m_EntityManager.DestroyEntity(entity);
-        m_Entities[entity] = m_Entities[entityIndex];
-        entityIndex--;
-    }
+    EntityId Create();
+    void Remove(EntityId entity);
 
     template <typename T> void AddComponent(EntityId entity, T component) {
         m_ComponentManager.AddComponent(entity, component);
@@ -61,21 +51,6 @@ class Registry {
         // Create Signature based on Components provided in template
         ([&] { signature.set(m_ComponentManager.GetComponentType<T>(), true); }(), ...);
         return signature;
-    }
-
-    template <typename... T> std::vector<Entity> View() {
-        Signature viewSignature = CreateSignature<T...>();
-
-        std::vector<Entity> entities;
-
-        for (size_t i = 0; i < entityIndex; i++) {
-            Entity entity = m_Entities[i];
-            Signature entitySignature = m_EntityManager.GetSignature(entity);
-            if (entitySignature == viewSignature) {
-                entities.push_back(entity);
-            }
-        }
-        return entities;
     }
 
   private:
