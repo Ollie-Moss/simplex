@@ -4,7 +4,6 @@
 #include <string>
 
 struct SpriteRenderer {
-    std::string texture;
-    glm::vec2 size;
-    glm::vec4 color;
+    std::string texture = "";
+    glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 };

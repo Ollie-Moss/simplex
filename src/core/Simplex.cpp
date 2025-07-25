@@ -1,9 +1,11 @@
 #include "Simplex.h"
-#include "components/SpriteRenderer.h"
-#include "core/Entity.h"
+#include "core/Scene.h"
 #include "glm/fwd.hpp"
-#include "systems/RenderSystem.h"
+#include <initializer_list>
+#include <regex>
+#include <string_view>
 #include <sys/types.h>
+#include <utility>
 
 Simplex::Simplex() {
     s_Instance = this;
@@ -24,6 +26,11 @@ bool Simplex::Init() {
 
 Simplex::~Simplex() {}
 
+void Simplex::SetScene(const Scene &scene) {
+    m_CurrentScene = std::move(scene);
+    m_CurrentScene.m_Setup(m_CurrentScene.m_Registry);
+}
+
 Simplex &Simplex::Get() {
     assert(s_Instance);
     return *s_Instance;
@@ -43,45 +50,23 @@ ResourceManager &Simplex::GetResources() {
 Renderer2D &Simplex::GetRenderer() {
     return Get().m_Renderer;
 }
+Scene &Simplex::GetScene() {
+    return Get().m_CurrentScene;
+}
 Registry &Simplex::GetRegistry() {
-    return Get().m_Registry;
+    return GetScene().m_Registry;
 }
 
 void Simplex::Start() {
     Tick();
 }
 
-class GravitySystem : public System {
-  public:
-    GravitySystem() {
-        m_Signature = Simplex::GetRegistry().CreateSignature<Transform>();
-    }
-
-    void Update() override {
-        for (Entity e : m_Entities) {
-            Transform &t = e.GetComponent<Transform>();
-            t.position = glm::vec3(t.position.z, t.position.y + 0.0001f, t.position.z);
-        }
-    }
-};
-
 void Simplex::Tick() {
-    m_Registry.RegisterSystem<RenderSystem>();
-
-    Transform t = {.position = glm::vec3(-1, -1, 0)};
-    SpriteRenderer s = {.texture = "GRASS_TILE_1", .size = glm::vec2(.5, .5), .color = glm::vec4(0, 0, 0, 1)};
-    Entity e = m_Registry.Create(t, s);
-
-    m_Registry.AddComponent<Transform>(e, t);
-    m_Registry.AddComponent<SpriteRenderer>(e, s);
-
     while (!m_View.ShouldQuit()) {
         m_Input.PollEvents();
-
         m_View.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
-        // Do scene tick here
-        m_Registry.Update();
 
+        GetRegistry().Update();
         m_Renderer.Render();
 
         m_View.SwapBuffers();

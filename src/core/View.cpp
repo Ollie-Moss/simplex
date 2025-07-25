@@ -1,17 +1,26 @@
 #include "View.h"
 #include "Simplex.h"
-#include "core/Input.h"
+#include "components/Camera.h"
+#include "core/Entity.h"
+#include "core/Scene.h"
 #include <glad/glad.h>
+#include <glm/ext/matrix_clip_space.hpp>
+#include "components/Transform.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string_view>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+
 View::View() {}
-View::~View() {
+View::~View()
+{
     glfwTerminate();
 }
 
-bool View::Init(std::string_view title, int width, int height) {
+bool View::Init(std::string_view title, int width, int height)
+{
     m_Width = width;
     m_Height = height;
     m_Title = title;
@@ -46,41 +55,83 @@ bool View::Init(std::string_view title, int width, int height) {
     return true;
 }
 
-GLFWwindow *View::GetWindow() {
+GLFWwindow *View::GetWindow()
+{
     return m_Window;
 }
 
-std::pair<int &, int &> View::GetWindowDimensions() {
+std::pair<int &, int &> View::GetWindowDimensions()
+{
     return {m_Width, m_Height};
 }
 
-void View::SetWindowDimensions(int width, int height) {
+void View::SetWindowDimensions(int width, int height)
+{
     m_Width = width;
     m_Height = height;
 }
 
-int &View::GetWindowWidth() {
+int &View::GetWindowWidth()
+{
     return m_Width;
 }
 
-int &View::GetWindowHeight() {
+int &View::GetWindowHeight()
+{
     return m_Height;
 }
 
-void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight) {
+void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight)
+{
     Simplex::GetView().SetWindowDimensions(newWidth, newHeight);
     auto [width, height] = Simplex::GetView().GetWindowDimensions();
     glViewport(0, 0, width, height);
 }
 
-void View::ClearColor(glm::vec4 color) {
+void View::ClearColor(glm::vec4 color)
+{
     glClearColor(color.r, color.g, color.b, color.a);
     glClear(GL_COLOR_BUFFER_BIT);
 }
-void View::SwapBuffers() {
+void View::SwapBuffers()
+{
     glfwSwapBuffers(m_Window);
 }
 
-bool View::ShouldQuit() {
+bool View::ShouldQuit()
+{
     return glfwWindowShouldClose(m_Window);
+}
+
+RectBounds<float> View::GetCameraBounds()
+{
+    Entity cameraEntity = Simplex::GetScene().GetCamera();
+    Transform cameraTransform = cameraEntity.GetComponent<Transform>();
+    Camera camera = cameraEntity.GetComponent<Camera>();
+
+    float orthoWidth = m_Width / camera.zoom;
+    float orthoHeight = m_Height / camera.zoom;
+
+    float cameraLeft = cameraTransform.position.x - orthoWidth / 2.0f;
+    float cameraRight = cameraTransform.position.x + orthoWidth / 2.0f;
+    float cameraTop = cameraTransform.position.y - orthoHeight / 2.0f;
+    float cameraBottom = cameraTransform.position.y + orthoHeight / 2.0f;
+
+    return {.top = cameraTop, .right = cameraRight, .bottom = cameraBottom, .left = cameraLeft};
+}
+
+glm::mat4 View::CalculateWorldSpaceProjection()
+{
+    auto bounds = GetCameraBounds();
+    float nearZClip = -100.0f;
+    float farZClip = 100.0f;
+
+    glm::mat4 projection = glm::ortho(bounds.left, bounds.right, bounds.bottom, bounds.top, nearZClip, farZClip);
+    return projection;
+}
+
+glm::mat4 View::CalcualteScreenSpaceProjection()
+{
+    glm::mat4 projection = glm::ortho(0.0f, (float)m_Width, 0.0f, (float)m_Height, -100.0f, 100.0f);
+    return projection;
 }

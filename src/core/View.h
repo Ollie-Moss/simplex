@@ -2,7 +2,8 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "glm/ext/vector_float4.hpp"
+#include "core/RectBounds.h"
+#include "glm/glm.hpp"
 #include <string_view>
 #include <string>
 
@@ -18,12 +19,16 @@ class View {
 
     GLFWwindow *GetWindow();
 
-    std::pair<int&, int&> GetWindowDimensions();
+    std::pair<int &, int &> GetWindowDimensions();
     void SetWindowDimensions(int width, int height);
     int &GetWindowHeight();
     int &GetWindowWidth();
 
     static void FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight);
+
+    RectBounds<float> GetCameraBounds();
+    glm::mat4 CalculateWorldSpaceProjection();
+    glm::mat4 CalcualteScreenSpaceProjection();
 
     operator GLFWwindow *() {
         return m_Window;

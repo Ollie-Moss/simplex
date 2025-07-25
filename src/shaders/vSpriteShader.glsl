@@ -33,7 +33,6 @@ void main() {
 
     vec3 position = instancePos + facePositions[indices[currVertexID]] * vec3(instanceSize, 1.0);
 
-    //gl_Position = projection * vec4(position, 1.0);
-    gl_Position = vec4(position, 1.0);
+    gl_Position = projection * vec4(position, 1.0);
     texCoord = vec2(facePositions[indices[currVertexID]].xy);
 }

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "core/Simplex.h"
+#include "core/Types.h"
 #include <cassert>
 #include <cstdint>
-#include "core/Types.h"
 
 class Entity {
   public:

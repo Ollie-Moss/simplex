@@ -13,8 +13,8 @@
 const Shader &ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile, std::string name) {
     Shader shader;
     shader.Compile(vShaderFile, fShaderFile);
-    Shaders[name] = shader;
-    return Shaders[name];
+    m_Shaders[name] = shader;
+    return m_Shaders[name];
 }
 bool ResourceManager::Init() {
     stbi_set_flip_vertically_on_load(true);
@@ -31,7 +31,7 @@ bool ResourceManager::Init() {
 };
 
 const Shader &ResourceManager::GetShader(std::string name) {
-    return Shaders[name];
+    return m_Shaders[name];
 }
 
 const Texture &ResourceManager::LoadTexture(std::string name, bool alpha, const char *file) {
@@ -49,12 +49,12 @@ const Texture &ResourceManager::LoadTexture(std::string name, bool alpha, const 
     texture.Generate(width, height, data);
     // and finally free image data
     stbi_image_free(data);
-    Textures[name] = texture;
-    return Textures[name];
+    m_Textures[name] = texture;
+    return m_Textures[name];
 }
 
 const Texture &ResourceManager::GetTexture(std::string name) {
-    return Textures[name];
+    return m_Textures[name];
 }
 
 const Font &ResourceManager::LoadFont(std::string name, std::string path) {
@@ -93,24 +93,24 @@ const Font &ResourceManager::LoadFont(std::string name, std::string path) {
         // now store character for later use
         Character character = {texture, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows), glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
                                (unsigned int)face->glyph->advance.x};
-        Fonts[name].characters.insert(std::pair<char, Character>(c, character));
+        m_Fonts[name].characters.insert(std::pair<char, Character>(c, character));
     }
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 
-    return Fonts[name];
+    return m_Fonts[name];
 }
 
 const Font &ResourceManager::GetFont(std::string name) {
-    return Fonts[name];
+    return m_Fonts[name];
 };
 
 void ResourceManager::Clear() {
     // (properly) delete all shaders
-    for (auto iter : Shaders)
+    for (auto iter : m_Shaders)
         glDeleteProgram(iter.second.ID);
     // (properly) delete all textures
-    for (auto iter : Textures)
+    for (auto iter : m_Textures)
         glDeleteTextures(1, &iter.second.ID);
 }
