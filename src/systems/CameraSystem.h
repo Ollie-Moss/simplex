@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "components/Transform.h"
@@ -17,9 +16,10 @@ class CameraSystem : public System
     void Update() override
     {
         for (Entity e : m_Entities) {
-            Camera c = e.GetComponent<Camera>();
-            Transform &t = e.GetComponent<Transform>();
-            t.position.y += 0.01;
+            auto [cam, transform] = e.GetComponents<Camera, Transform>();
+            if (cam.isActive) {
+                Simplex::GetView().SetCamera(transform, cam);
+            }
         }
     }
 };
