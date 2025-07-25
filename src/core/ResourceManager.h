@@ -8,11 +8,6 @@
 
 class ResourceManager {
   public:
-    // Instantiate static variables
-    std::map<std::string, Texture> Textures;
-    std::map<std::string, Shader> Shaders;
-    std::map<std::string, Font> Fonts;
-
     bool Init();
 
     const Shader &LoadShader(const char *vShaderFile, const char *fShaderFile, std::string name);
@@ -28,4 +23,9 @@ class ResourceManager {
     const Font &GetFont(std::string name);
 
     void Clear();
+
+  private:
+    std::map<std::string, Texture> m_Textures;
+    std::map<std::string, Shader> m_Shaders;
+    std::map<std::string, Font> m_Fonts;
 };

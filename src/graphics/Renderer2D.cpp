@@ -26,9 +26,7 @@ void Renderer2D::Render() {
         Shader shader = Simplex::GetResources().GetShader("SpriteShader");
         shader.use();
 
-        // glm::mat4 projection = Simplex::GetView().CalculateScreenSpaceProjection();
-        
-        glm::mat4 projection;
+        glm::mat4 projection = Simplex::GetView().CalculateWorldSpaceProjection();
         shader.setMat4("projection", projection);
 
         glActiveTexture(GL_TEXTURE0);

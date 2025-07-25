@@ -1,8 +1,13 @@
-BasedOnStyle: LLVM
+BasedOnStyle: Google 
 IndentWidth: 4
 TabWidth: 4
-AlwaysBreakBeforeMultilineStrings: true
-BinPackParameters: false
 SortIncludes: false
 ColumnLimit: 200
+
+AlwaysBreakTemplateDeclarations: Yes
 AllowShortFunctionsOnASingleLine: Empty
+
+AllowAllParametersOfDeclarationOnNextLine: false
+
+BreakBeforeBraces: Linux
+AllowAllArgumentsOnNextLine: true
