@@ -103,21 +103,22 @@ bool View::ShouldQuit()
     return glfwWindowShouldClose(m_Window);
 }
 
-RectBounds<float> View::GetCameraBounds()
-{
-    Entity cameraEntity = Simplex::GetScene().GetCamera();
-    Transform cameraTransform = cameraEntity.GetComponent<Transform>();
-    Camera camera = cameraEntity.GetComponent<Camera>();
+void View::SetCamera(Transform transform, Camera camera){
 
     float orthoWidth = m_Width / camera.zoom;
     float orthoHeight = m_Height / camera.zoom;
 
-    float cameraLeft = cameraTransform.position.x - orthoWidth / 2.0f;
-    float cameraRight = cameraTransform.position.x + orthoWidth / 2.0f;
-    float cameraTop = cameraTransform.position.y - orthoHeight / 2.0f;
-    float cameraBottom = cameraTransform.position.y + orthoHeight / 2.0f;
+    float cameraLeft = transform.position.x - orthoWidth / 2.0f;
+    float cameraRight = transform.position.x + orthoWidth / 2.0f;
+    float cameraTop = transform.position.y - orthoHeight / 2.0f;
+    float cameraBottom = transform.position.y + orthoHeight / 2.0f;
 
-    return {.top = cameraTop, .right = cameraRight, .bottom = cameraBottom, .left = cameraLeft};
+    m_CameraBounds = {.top = cameraTop, .right = cameraRight, .bottom = cameraBottom, .left = cameraLeft};
+}
+
+RectBounds<float> View::GetCameraBounds()
+{
+    return m_CameraBounds;
 }
 
 glm::mat4 View::CalculateWorldSpaceProjection()
@@ -126,7 +127,7 @@ glm::mat4 View::CalculateWorldSpaceProjection()
     float nearZClip = -100.0f;
     float farZClip = 100.0f;
 
-    glm::mat4 projection = glm::ortho(bounds.left, bounds.right, bounds.bottom, bounds.top, nearZClip, farZClip);
+    glm::mat4 projection = glm::ortho(bounds.left, bounds.right, bounds.top, bounds.bottom, nearZClip, farZClip);
     return projection;
 }
 

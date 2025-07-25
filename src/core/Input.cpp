@@ -6,7 +6,8 @@
 Input::Input() {}
 Input::~Input() {}
 
-bool Input::Init(){
+bool Input::Init()
+{
     glfwSetMouseButtonCallback(Simplex::GetView().GetWindow(), MouseButtonCallback);
     glfwSetKeyCallback(Simplex::GetView().GetWindow(), KeyCallback);
     glfwSetScrollCallback(Simplex::GetView().GetWindow(), ScrollCallback);
@@ -14,36 +15,35 @@ bool Input::Init(){
     return true;
 }
 
-void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+{
     assert(action == 1 || action == 0);
     bool pressed = static_cast<bool>(action);
     Simplex::GetInput().SetMouseButtonState(button, pressed);
 }
-void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
     assert(action == 1 || action == 0);
     bool pressed = static_cast<bool>(action);
     Simplex::GetInput().SetKeyState(key, pressed);
 }
 
 void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    Simplex::GetInput().CallScrollCallbacks(yoffset);
+    Simplex::GetInput().m_Scroll = static_cast<float>(yoffset);
 }
 
-void Input::CallScrollCallbacks(float yOffset) {
-    for (auto &callback : m_ScrollCallbacks) {
-        callback(yOffset);
-    }
-}
-
-void Input::SetMouseButtonState(int button, bool state) {
+void Input::SetMouseButtonState(int button, bool state)
+{
     m_MouseButtonState[button] = state;
 }
 
-void Input::SetKeyState(int button, bool state) {
+void Input::SetKeyState(int button, bool state)
+{
     m_KeyState[button] = state;
 }
 
-bool Input::OnKeyDown(int key) {
+bool Input::OnKeyDown(int key)
+{
     if (Simplex::GetView().GetWindow() == nullptr) {
         return false;
     }
@@ -51,7 +51,8 @@ bool Input::OnKeyDown(int key) {
     return glfwGetKey(Simplex::GetView().GetWindow(), key) == GLFW_PRESS;
 }
 
-bool Input::OnMouseButtonDown(int button) {
+bool Input::OnMouseButtonDown(int button)
+{
     if (Simplex::GetView().GetWindow() == nullptr) {
         return false;
     }
@@ -59,14 +60,16 @@ bool Input::OnMouseButtonDown(int button) {
     return glfwGetMouseButton(Simplex::GetView().GetWindow(), button) == GLFW_PRESS;
 }
 
-bool Input::OnMouseButtonPressed(int button) {
+bool Input::OnMouseButtonPressed(int button)
+{
     if (Simplex::GetView().GetWindow() == nullptr) {
         return false;
     }
 
     return m_MouseButtonState[button];
 }
-bool Input::OnKeyPressed(int button) {
+bool Input::OnKeyPressed(int button)
+{
     if (Simplex::GetView().GetWindow() == nullptr) {
         return false;
     }
@@ -74,25 +77,42 @@ bool Input::OnKeyPressed(int button) {
     return m_KeyState[button];
 }
 
-glm::vec2 Input::GetMousePosition() {
+glm::vec2 Input::GetMouseDelta() {
+    return m_LastMousePosition - m_CurrentMousePosition;
+}
+
+float Input::GetScrollDelta() {
+    return m_Scroll;
+}
+
+glm::vec2 Input::GetMousePosition()
+{
     double mouseX, mouseY;
     glfwGetCursorPos(Simplex::GetView(), &mouseX, &mouseY);
     glm::vec2 mousePos = glm::vec2((float)mouseX, Simplex::GetView().GetWindowHeight() - (float)mouseY);
     return mousePos;
 }
 
-void Input::PollEvents() {
+void Input::PollEvents()
+{
     ResetMouseButtons();
     ResetKeys();
+
+    m_Scroll = 0;
+    m_LastMousePosition = m_CurrentMousePosition;
+    m_CurrentMousePosition = GetMousePosition();
+
     glfwPollEvents();
 }
 
-void Input::ResetMouseButtons() {
+void Input::ResetMouseButtons()
+{
     for (auto &[button, pressed] : m_MouseButtonState) {
         pressed = false;
     }
 }
-void Input::ResetKeys() {
+void Input::ResetKeys()
+{
     for (auto &[key, pressed] : m_KeyState) {
         pressed = false;
     }
