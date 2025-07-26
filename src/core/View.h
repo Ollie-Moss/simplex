@@ -10,6 +10,7 @@
 #include <string_view>
 #include <string>
 
+
 class View
 {
    public:
@@ -28,7 +29,7 @@ class View
     RectBounds<float> GetCameraBounds();
 
     glm::mat4 CalculateWorldSpaceProjection();
-    glm::mat4 CalcualteScreenSpaceProjection();
+    glm::mat4 CalculateScreenSpaceProjection();
 
     // GLFW Wrappers
     bool Init(std::string_view title, int width, int height);

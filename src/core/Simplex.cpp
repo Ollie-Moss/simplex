@@ -1,8 +1,6 @@
 #include "Simplex.h"
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
-#include <initializer_list>
-#include <regex>
 #include <string_view>
 #include <sys/types.h>
 #include <utility>

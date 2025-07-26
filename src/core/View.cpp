@@ -131,8 +131,8 @@ glm::mat4 View::CalculateWorldSpaceProjection()
     return projection;
 }
 
-glm::mat4 View::CalcualteScreenSpaceProjection()
+glm::mat4 View::CalculateScreenSpaceProjection()
 {
-    glm::mat4 projection = glm::ortho(0.0f, (float)m_Width, 0.0f, (float)m_Height, -100.0f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, (float)m_Width, (float)m_Height, 0.0f, -100.0f, 100.0f);
     return projection;
 }

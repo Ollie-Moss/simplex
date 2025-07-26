@@ -4,6 +4,7 @@ project(GameEngine VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
@@ -22,10 +23,16 @@ target_include_directories(GameEngine PUBLIC
     "third-party/"
 )
 
+add_compile_options(
+    Wall
+    Wextra
+    g
+)
+
 target_link_libraries(GameEngine
     glfw
     freetype
     GL
-    X11 Xrandr pthread dl Xi Xxf86vm Xinerama Xcursor g -O0
+    X11 Xrandr pthread dl Xi Xxf86vm Xinerama Xcursor
 )
 

@@ -1,28 +1,25 @@
 #pragma once
 
-#include <ostream>
 #include "components/SpriteRenderer.h"
 #include "components/Transform.h"
 #include "core/Entity.h"
 #include "core/SystemManager.h"
+#include "graphics/Renderer2D.h"
 
 class RenderSystem : public System
 {
    public:
     RenderSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<SpriteRenderer, Transform>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<Sprite, Transform>();
     }
 
     void Update() override
     {
         for (Entity e : m_Entities) {
-            SpriteRenderer s = e.GetComponent<SpriteRenderer>();
-            Transform t = e.GetComponent<Transform>();
+            auto [transform, sprite] = e.GetComponents<Transform, Sprite>();
 
-            Sprite sprite = {.texture = s.texture, .position = t.position, .size = t.size, .color = s.color};
-
-            Simplex::GetRenderer().Queue(sprite);
+            Simplex::GetRenderer().Queue(ProjectionType::WorldSpace, transform, sprite.texture, sprite.color);
         }
     }
 };

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include "core/Types.h"
 #include <string>
 
-struct SpriteRenderer {
+struct Sprite {
     std::string texture = "";
-    glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    Color color = TRANSPARENT;
 };
