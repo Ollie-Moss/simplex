@@ -1,46 +1,73 @@
 #include "Renderer2D.h"
 #include "core/Simplex.h"
-#include "glm/ext/matrix_float4x4.hpp"
-#include <vector>
+#include "core/Types.h"
+#include "glm/fwd.hpp"
+#include "glm/glm.hpp"
 
-void Renderer2D::Queue(Sprite sprite) {
-    m_Textures.insert(sprite.texture);
+void Renderer2D::Queue(ProjectionType projection, Transform transform, std::string texture, Color color)
+{
+    RenderData data = {.position = transform.position, .size = transform.size, .color = color};
+    BufferSeperatedData bufferSeperatedData = {.texture = texture, .projectionType = projection};
 
-    m_Positions[sprite.texture].push_back(sprite.position);
-    m_Sizes[sprite.texture].push_back(sprite.size);
-    m_Colors[sprite.texture].push_back(sprite.color);
+    // Insert into existing buffer
+    if (m_BufferSeperatedDataToIndex.find(bufferSeperatedData) != m_BufferSeperatedDataToIndex.end()) {
+        size_t index = m_BufferSeperatedDataToIndex[bufferSeperatedData];
+        m_RenderBuffers[index].value().Insert(data);
+        return;
+    }
+
+    // Create new buffer
+    if (!m_RenderBuffers[m_BufferIndex].has_value()) {
+        m_RenderBuffers[m_BufferIndex].emplace();
+    }
+    m_RenderBuffers[m_BufferIndex].value().Insert(data);
+
+    m_IndexToBufferSeperatedData.insert({m_BufferIndex, bufferSeperatedData});
+    m_BufferSeperatedDataToIndex.insert({bufferSeperatedData, m_BufferIndex});
+
+    m_BufferIndex++;
 }
 
-void Renderer2D::Render() {
+void Renderer2D::Render()
+{
+    for (size_t i = 0; i < m_BufferIndex; i++) {
+        if (!m_VertexArrays[i].has_value()) {
+            m_VertexArrays[i].emplace();
+        }
 
-    for (auto t : m_Textures) {
-        m_Buffers[t][0].Fill<glm::vec3>(m_Positions[t]);
-        m_Buffers[t][1].Fill<glm::vec2>(m_Sizes[t]);
-        m_Buffers[t][2].Fill<glm::vec4>(m_Colors[t]);
+        auto &bufferSeperatedData = m_IndexToBufferSeperatedData[i];
+        auto &buffer = m_RenderBuffers[i].value();
+        auto &vertexArray = m_VertexArrays[i].value();
 
-        m_VertexArrays[t].Bind<glm::vec3>(0, &m_Buffers[t][0]);
-        m_VertexArrays[t].Bind<glm::vec2>(1, &m_Buffers[t][1]);
-        m_VertexArrays[t].Bind<glm::vec4>(2, &m_Buffers[t][2]);
+        buffer.BindData(&vertexArray);
 
         // set shader and texture
         Shader shader = Simplex::GetResources().GetShader("SpriteShader");
         shader.use();
 
-        glm::mat4 projection = Simplex::GetView().CalculateWorldSpaceProjection();
+        glm::mat4 projection;
+        if (bufferSeperatedData.projectionType == ProjectionType::WorldSpace) {
+            projection = Simplex::GetView().CalculateWorldSpaceProjection();
+        } else if (bufferSeperatedData.projectionType == ProjectionType::ScreenSpace) {
+            projection = Simplex::GetView().CalculateScreenSpaceProjection();
+        }
         shader.setMat4("projection", projection);
 
-        glActiveTexture(GL_TEXTURE0);
-        Simplex::GetResources().GetTexture(t).Bind();
+        bool useTexture = (bufferSeperatedData.texture != "");
+        shader.setBool("useTexture", useTexture);
 
-        m_VertexArrays[t].RenderInstanced(static_cast<int>(m_Positions[t].size()));
+        if (useTexture) {
+            glActiveTexture(GL_TEXTURE0);
+            Simplex::GetResources().GetTexture(bufferSeperatedData.texture).Bind();
+        }
+
+        vertexArray.RenderInstanced(buffer.Size());
         glBindTexture(GL_TEXTURE0, 0);
+
+        buffer.Clear();
+        m_IndexToBufferSeperatedData.erase(i);
+        m_BufferSeperatedDataToIndex.erase(bufferSeperatedData);
     }
 
-    // Clear the buffers
-    for (auto t : m_Textures) {
-        m_Positions[t].clear();
-        m_Sizes[t].clear();
-        m_Colors[t].clear();
-    }
-    m_Textures.clear();
+    m_BufferIndex = 0;
 }

@@ -6,6 +6,7 @@ layout (location = 1) in vec2 instanceSize;    // per-instance
 layout (location = 2) in vec4 instanceColor;   // per-instance
 
 out vec2 texCoord;
+out vec4 color;
 
 uniform mat4 projection;
 
@@ -35,4 +36,5 @@ void main() {
 
     gl_Position = projection * vec4(position, 1.0);
     texCoord = vec2(facePositions[indices[currVertexID]].xy);
+    color = instanceColor;
 }

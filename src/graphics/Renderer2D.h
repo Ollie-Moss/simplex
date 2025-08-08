@@ -1,35 +1,30 @@
 #pragma once
 
-#include "core/Buffer.h"
+#include "core/Types.h"
 #include "core/VertexArray.h"
-#include "glm/glm.hpp"
+#include "graphics/RenderBuffer.h"
 #include <array>
-#include <map>
-#include <set>
+#include <optional>
 #include <string>
+#include <unordered_map>
 
-struct Sprite {
-    std::string texture;
-    glm::vec3 position;
-    glm::vec2 size;
-    glm::vec4 color;
-};
 
-class Renderer2D {
-
-  public:
+class Renderer2D
+{
+   public:
     Renderer2D() = default;
     ~Renderer2D() = default;
 
-    void Queue(Sprite sprite);
+    void Queue(ProjectionType projection, Transform transform, std::string texture = "", Color color = OPAQUE);
     void Render();
 
-  private:
-    std::map<std::string, VertexArray> m_VertexArrays;
-    std::map<std::string, std::array<Buffer, 3>> m_Buffers;
-    std::map<std::string, std::vector<glm::vec3>> m_Positions;
-    std::map<std::string, std::vector<glm::vec2>> m_Sizes;
-    std::map<std::string, std::vector<glm::vec4>> m_Colors;
+   private:
+    std::array<std::optional<RenderBuffer>, MAX_RENDER_BUFFERS> m_RenderBuffers;
+    std::array<std::optional<VertexArray>, MAX_RENDER_BUFFERS> m_VertexArrays;
 
-    std::set<std::string> m_Textures;
+    std::unordered_map<size_t, BufferSeperatedData> m_IndexToBufferSeperatedData;
+
+    std::unordered_map<BufferSeperatedData, size_t> m_BufferSeperatedDataToIndex;
+
+    size_t m_BufferIndex;
 };
