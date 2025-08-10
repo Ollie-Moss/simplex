@@ -16,7 +16,7 @@ class Renderer2D
     void Render();
 
     void RenderImmediate(Transform transform, std::string texture = "", Color color = OPAQUE);
-    void RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, Font font);
+    void RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName);
 
    private:
     std::optional<RenderBuffer> m_WorldRenderBuffer;

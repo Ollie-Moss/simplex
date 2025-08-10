@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Simplex.h"
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"

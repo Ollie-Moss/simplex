@@ -58,10 +58,13 @@ void Renderer2D::RenderImmediate(Transform transform, std::string texture, Color
     glBindTexture(GL_TEXTURE0, 0);
 }
 
-void Renderer2D::RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, Font font)
+void Renderer2D::RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName)
 {
     VertexArray vao;
     Buffer vert;
+    vao.Bind<glm::vec4>(0, &vert);
+
+    Font font = Simplex::GetResources().GetFont(fontName);
     Shader shader = Simplex::GetResources().GetShader("TextShader");
     shader.use();
 

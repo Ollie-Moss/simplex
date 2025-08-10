@@ -20,13 +20,13 @@ bool ResourceManager::Init() {
     stbi_set_flip_vertically_on_load(true);
 
     LoadShader("src/shaders/vSpriteShader.glsl", "src/shaders/fSpriteShader.glsl", "SpriteShader");
-    //LoadShader("src/core/shaders/vTextShader.glsl", "src/core/shaders/fTextShader.glsl", "TextShader");
+    LoadShader("src/shaders/vTextShader.glsl", "src/shaders/fTextShader.glsl", "TextShader");
     
 	LoadTexture("GRASS_TILE_1", 1.0f, "sprites/grass_tile_1.png");
     // Buildings
 
     // Fonts
-    //LoadFont("Arial", "fonts/arial.ttf");
+    LoadFont("Arial", "fonts/arial.ttf");
     return true;
 };
 
@@ -67,7 +67,7 @@ const Font &ResourceManager::LoadFont(std::string name, std::string path) {
     if (FT_New_Face(ft, path.c_str(), 0, &face)) {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
     }
-    FT_Set_Pixel_Sizes(face, 0, 40);
+    FT_Set_Pixel_Sizes(face, 0, 50);
     if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
         std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
     }
