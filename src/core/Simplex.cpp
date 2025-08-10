@@ -18,6 +18,8 @@ bool Simplex::Init()
 
     if (!m_ResourceManager.Init()) return false;
 
+    if (!m_Renderer.Init()) return false;
+
     return true;
 }
 
@@ -75,7 +77,7 @@ void Simplex::Tick()
 
         GetRegistry().Update();
         m_Renderer.Render();
-        Simplex::GetRenderer().RenderText("Hello World", glm::vec2(0, 0), glm::vec2(100, 100), BLACK, "Arial");
+        Simplex::GetRenderer().RenderText("Hello World", glm::vec2(0, 400), glm::vec2(1, 1), BLACK, "Arial");
 
         m_View.SwapBuffers();
     }

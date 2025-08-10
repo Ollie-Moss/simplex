@@ -1,4 +1,6 @@
 #include "Renderer2D.h"
+#include <cstddef>
+#include <memory>
 #include "core/Simplex.h"
 #include "core/Types.h"
 #include "core/VertexArray.h"
@@ -6,19 +8,28 @@
 #include "graphics/QuadBuffer.h"
 #include "graphics/RenderBuffer.h"
 #include "graphics/Shader.h"
+#include "graphics/TextRenderer.h"
 
+bool Renderer2D::Init()
+{
+    m_WorldRenderBuffer = std::make_unique<RenderBuffer>();
+    m_TextRenderer = std::make_unique<TextRenderer>();
+
+    return true;
+}
 void Renderer2D::QueueWorldObject(Transform transform, std::string texture, Color color)
 {
     RenderQueueData data = {.position = transform.position, .size = transform.size, .color = color, .texture = texture};
 
-    if (!m_WorldRenderBuffer.has_value()) {
-        m_WorldRenderBuffer.emplace();
-    }
-    m_WorldRenderBuffer.value().Insert(data);
+    m_WorldRenderBuffer->Insert(data);
 }
 void Renderer2D::Render()
 {
-    m_WorldRenderBuffer.value().Render();
+    m_WorldRenderBuffer->Render();
+}
+void Renderer2D::RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName)
+{
+    m_TextRenderer->RenderText(text, position, size, color, fontName);
 }
 
 void Renderer2D::RenderImmediate(Transform transform, std::string texture, Color color)
@@ -56,49 +67,4 @@ void Renderer2D::RenderImmediate(Transform transform, std::string texture, Color
 
     vao.RenderInstanced(6, 1);
     glBindTexture(GL_TEXTURE0, 0);
-}
-
-void Renderer2D::RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName)
-{
-    VertexArray vao;
-    Buffer vert;
-    vao.Bind<glm::vec4>(0, &vert);
-
-    Font font = Simplex::GetResources().GetFont(fontName);
-    Shader shader = Simplex::GetResources().GetShader("TextShader");
-    shader.use();
-
-    shader.setVec3("textColor", color);
-    glm::mat4 projection = Simplex::GetView().CalculateScreenSpaceProjection();
-    shader.setMat4("projection", projection);
-
-    glActiveTexture(GL_TEXTURE0);
-    vao.Bind();
-
-    // iterate through all characters
-    std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++) {
-        Character ch = font.characters[*c];
-
-        float xpos = position.x + ch.Bearing.x * size.x;
-        float ypos = position.y - (ch.Size.y - ch.Bearing.y) * size.y;
-
-        float w = ch.Size.x * size.x;
-        float h = ch.Size.y * size.y;
-
-        // update VBO for each character
-        float vertices[6][4] = {{xpos, ypos + h, 0.0f, 0.0f}, {xpos, ypos, 0.0f, 1.0f},     {xpos + w, ypos, 1.0f, 1.0f},
-
-                                {xpos, ypos + h, 0.0f, 0.0f}, {xpos + w, ypos, 1.0f, 1.0f}, {xpos + w, ypos + h, 1.0f, 0.0f}};
-
-        // render glyph texture over quad
-        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-        vert.Fill(vertices);
-
-        // render quad
-        vao.Render(6, GL_TRIANGLES);
-
-        position.x += (ch.Advance >> 6) * size.x;  // bitshift by 6 to get value in pixels (2^6 = 64)
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
