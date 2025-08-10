@@ -19,7 +19,7 @@ class RenderSystem : public System
         for (Entity e : m_Entities) {
             auto [transform, sprite] = e.GetComponents<Transform, Sprite>();
 
-            Simplex::GetRenderer().Queue(ProjectionType::WorldSpace, transform, sprite.texture, sprite.color);
+            Simplex::GetRenderer().QueueWorldObject(transform, sprite.texture, sprite.color);
         }
     }
 };
