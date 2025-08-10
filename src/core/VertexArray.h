@@ -8,6 +8,8 @@ class VertexArray
     VertexArray();
     ~VertexArray();
 
+    void Bind();
+
     template <typename T>
     void Bind(int location, Buffer *buffer)
     {
@@ -16,13 +18,13 @@ class VertexArray
         glEnableVertexAttribArray(location);
         glVertexAttribPointer(location, sizeof(T) / sizeof(float), GL_FLOAT, GL_FALSE, 0, (void *)0);
     }
-    template <typename T, typename TStride>
-    void Bind(int location, int offset, Buffer *buffer)
+    template <typename TStruct, typename TProperty>
+    void BindProperty(int location, int offset, Buffer *buffer)
     {
         glBindVertexArray(m_Id);
         glBindBuffer(GL_ARRAY_BUFFER, buffer->ID);
         glEnableVertexAttribArray(location);
-        glVertexAttribPointer(location, sizeof(T) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(TStride), (void *)(offset * sizeof(float)));
+        glVertexAttribPointer(location, sizeof(TProperty) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(TStruct), (void *)(offset * sizeof(float)));
     }
 
     void AttributeDivisor(int location, int divisor)
@@ -30,7 +32,6 @@ class VertexArray
         glVertexAttribDivisor(location, divisor);
     }
 
-    void Render(GLenum mode = GL_TRIANGLE_STRIP);
     void Render(int size, GLenum mode = GL_TRIANGLE_STRIP);
     void RenderInstanced(int size, int count, GLenum mode = GL_TRIANGLES);
 

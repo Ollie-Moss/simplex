@@ -5,43 +5,21 @@
 #include <glm/glm.hpp>
 #include "core/View.h"
 
-const std::uint32_t MAX_BUFFER_SIZE = 1000;
-const std::uint32_t MAX_RENDER_BUFFERS = 100;
+const uint32_t MAX_BUFFER_SIZE = 1000;
+const uint32_t MAX_RENDER_BUFFERS = 100;
 
 enum class ProjectionType { ScreenSpace, WorldSpace };
 
 using TextureName = std::string;
 
-struct BufferSeperatedData {
-    TextureName texture;
-    ProjectionType projectionType;
+const uint32_t MAX_ENTITIES = 100000;  // 100,000
+const uint32_t MAX_COMPONENTS = 100;
 
-    bool operator==(const BufferSeperatedData& other) const
-    {
-        return texture == other.texture && projectionType == other.projectionType;
-    }
-};
-
-namespace std
-{
-template <>
-struct hash<BufferSeperatedData> {
-    std::size_t operator()(const BufferSeperatedData& data) const
-    {
-        std::size_t h1 = std::hash<TextureName>{}(data.texture);
-        std::size_t h2 = std::hash<std::underlying_type_t<ProjectionType>>{}(static_cast<std::underlying_type_t<ProjectionType>>(data.projectionType));
-
-        return h1 ^ (h2 << 1);
-    }
-};
-}  // namespace std
-
-const std::uint32_t MAX_ENTITIES = 100000;  // 100,000
-const std::uint32_t MAX_COMPONENTS = 100;
-
-using ComponentId = std::uint32_t;
-using EntityId = std::uint32_t;
+using ComponentId = uint32_t;
+using EntityId = uint32_t;
 using Signature = std::bitset<MAX_COMPONENTS>;
+
+const EntityId NULL_ENTITY = MAX_ENTITIES + 1;
 
 using Padding = RectBounds<float>;
 using Color = glm::vec4;

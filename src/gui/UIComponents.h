@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ratio>
 #include <vector>
 #include <glm/glm.hpp>
 #include "components/Transform.h"
@@ -11,7 +12,7 @@ enum class JustifyContent { Start, End, Center, SpaceBetween, SpaceAround };
 enum class FlexDirection { Row, Column };
 
 struct UIElement {
-    EntityId parent = -1;
+    EntityId parent = NULL_ENTITY;
     std::vector<EntityId> children;
 };
 

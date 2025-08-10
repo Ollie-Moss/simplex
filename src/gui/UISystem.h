@@ -19,11 +19,10 @@ class UISystem : public System
     {
         for (Entity e : m_Entities) {
             auto [element, properties, transform] = e.GetComponents<UIElement, UIProperties, UITransform>();
+            if (element.parent != NULL_ENTITY) continue;
 
-            // queue children
+            Simplex::GetRenderer().RenderImmediate(transform, NO_TEXTURE, properties.color);
             RenderElementsChildren(e, glm::vec2(0, 0));
-            // queue root
-            Simplex::GetRenderer().Queue(ProjectionType::ScreenSpace, transform, NO_TEXTURE, properties.color);
         }
     }
 
@@ -35,16 +34,15 @@ class UISystem : public System
         if (element.children.empty()) return;
 
         for (Entity child : element.children) {
-            auto [childElement, childProperties, childTransform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+            auto [childElement, childProperties, childTransform] = child.GetComponents<UIElement, UIProperties, UITransform>();
 
             glm::vec2 childPosition = transform.position + childTransform.position + offset;
             childPosition.x += leftOffset;
             childPosition.y += properties.padding.top;
 
+            Simplex::GetRenderer().RenderImmediate({.position = glm::vec3(childPosition, 0), .size = childTransform.size}, NO_TEXTURE, childProperties.color);
             leftOffset += childTransform.size.x + properties.gap;
             RenderElementsChildren(child, childPosition);
-
-            Simplex::GetRenderer().Queue(ProjectionType::ScreenSpace, childTransform, NO_TEXTURE, childProperties.color);
         }
     }
 

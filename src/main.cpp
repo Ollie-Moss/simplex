@@ -32,8 +32,12 @@ int main()
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        Entity child = m_Registry.Create<UITransform, UIElement, UIProperties>({}, {}, {});
-        Entity parent = m_Registry.Create<UITransform, UIElement, UIProperties>({.size = glm::vec2(20, 20)}, {.children = {child}}, {.color = RED});
+        // start element
+        Entity parent = m_Registry.Create<UITransform, UIElement, UIProperties>({.position = glm::vec2(100, 100)}, {}, {.color = RED});
+        Entity child = m_Registry.Create<UITransform, UIElement, UIProperties>({.size = glm::vec2(20, 20)}, {.parent = parent}, {.color = BLUE});
+        Entity child2 = m_Registry.Create<UITransform, UIElement, UIProperties>({.size = glm::vec2(20, 20)}, {.parent = parent}, {.color = BLUE});
+        // close element
+        parent.GetComponent<UIElement>().children = {child, child2};
     });
 
     simplex.SetScene(MainScene);
