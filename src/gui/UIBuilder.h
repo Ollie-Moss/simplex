@@ -2,9 +2,12 @@
 
 #include "core/Entity.h"
 #include "core/Registry.h"
+#include "core/Types.h"
 #include "gui/UIComponents.h"
+#include <vector>
 
-struct UISpec {
+struct UISpec
+{
     UITransform transform;
     UIProperties properties;
     std::vector<UISpec> children;
@@ -12,31 +15,37 @@ struct UISpec {
 
 inline UISpec element(UIProperties properties, std::initializer_list<UISpec> children = {})
 {
-    return {.properties = properties, .children = children};
+    UISpec spec = {.properties = properties, .children = children};
+
+    if(spec.properties.sizing.width.mode == SizingMode::Fixed)
+    {
+        spec.transform.size.x = spec.properties.sizing.width.length;
+    }
+    if(spec.properties.sizing.height.mode == SizingMode::Fixed)
+    {
+        spec.transform.size.y = spec.properties.sizing.height.length;
+    }
+
+    return spec;
 }
 
-inline std::vector<EntityId> CreateChildrenEntities(Registry &registry, UISpec spec, EntityId parent)
+inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
 {
+    // Create new entity
+    Entity entity = registry.Create<UITransform, UIElement, UIProperties>(spec.transform, {.parent = parent}, spec.properties);
     std::vector<EntityId> children;
-    for (auto child : spec.children) {
-        // Create new entity
-        Entity entity = registry.Create<UITransform, UIElement, UIProperties>(child.transform, {.parent = parent}, child.properties);
+    for(auto child : spec.children)
+    {
+        EntityId childEntity = CreateEntities(registry, child, childEntity);
 
-        // Create children entities
-        std::vector<EntityId> newChildren = CreateChildrenEntities(registry, child, entity);
-        entity.GetComponent<UIElement>().children = newChildren;
-
-        // Add finalized child entity to list
-        children.push_back(entity);
+        children.push_back(childEntity);
     }
-    return children;
+    entity.GetComponent<UIElement>().children = children;
+    return entity;
 }
 
 inline Entity CreateEntityFromUISpec(Registry &registry, UISpec spec)
 {
-    Entity root = registry.Create<UITransform, UIElement, UIProperties>(spec.transform, {}, spec.properties);
-    std::vector<EntityId> newChildren = CreateChildrenEntities(registry, spec, root);
-    root.GetComponent<UIElement>().children = newChildren;
-
+    EntityId root = CreateEntities(registry, spec, NULL_ENTITY);
     return root;
 }

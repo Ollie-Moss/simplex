@@ -32,7 +32,8 @@ bool View::Init(std::string_view title, int width, int height)
 
     m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), NULL, NULL);
 
-    if (m_Window == NULL) {
+    if(m_Window == NULL)
+    {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return false;
@@ -41,7 +42,8 @@ bool View::Init(std::string_view title, int width, int height)
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(0);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return false;
     }
@@ -81,11 +83,15 @@ int &View::GetWindowHeight()
     return m_Height;
 }
 
+bool View::HasWindowResized(){
+    return m_HasWindowResized;
+}
 void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight)
 {
     Simplex::GetView().SetWindowDimensions(newWidth, newHeight);
     auto [width, height] = Simplex::GetView().GetWindowDimensions();
     glViewport(0, 0, width, height);
+    Simplex::GetView().m_HasWindowResized = true;
 }
 
 void View::ClearColor(glm::vec4 color)
@@ -96,6 +102,8 @@ void View::ClearColor(glm::vec4 color)
 void View::SwapBuffers()
 {
     glfwSwapBuffers(m_Window);
+
+    m_HasWindowResized = false;
 }
 
 bool View::ShouldQuit()
@@ -103,8 +111,8 @@ bool View::ShouldQuit()
     return glfwWindowShouldClose(m_Window);
 }
 
-void View::SetCamera(Transform transform, Camera camera){
-
+void View::SetCamera(Transform transform, Camera camera)
+{
     float orthoWidth = m_Width / camera.zoom;
     float orthoHeight = m_Height / camera.zoom;
 

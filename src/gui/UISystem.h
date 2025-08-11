@@ -4,14 +4,11 @@
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"
-#include "glm/common.hpp"
-#include "glm/fwd.hpp"
+#include "glm/glm.hpp"
 #include "graphics/Renderer2D.h"
 #include "gui/UIComponents.h"
-#include <algorithm>
 #include <cmath>
-#include <cstddef>
-#include <cstdlib>
+#include <string>
 
 class UISystem : public System
 {
@@ -29,365 +26,295 @@ class UISystem : public System
                 continue;
 
             // this should only happen if the tree changes
-            CalculateLayout(e);
-            Simplex::GetRenderer().RenderImmediate(transform, NO_TEXTURE, properties.color);
-            RenderElementsChildren(e, glm::vec2(0, 0));
+            if(Simplex::GetView().HasWindowResized())
+            {
+                CalculateLayout(e);
+            }
+
+            RenderElements(e);
         }
     }
 
     void CalculateLayout(Entity entity)
     {
+        auto [props, transform] = entity.GetComponents<UIProperties, UITransform>();
+
         // Apply fixed sizes to transform
-        SizeFixedElements(entity);
+        // SizeFixedElements(entity, FlexDirection::Row);
+        // SizeFixedElements(entity, FlexDirection::Column);
 
         // HUG Sizing width
-        SizeHugWidths(entity);
+        HugSize(entity, FlexDirection::Row);
 
         // GROW Sizing width
-        std::vector<EntityId> widthGrowables;
-        for(Entity e : entity.GetComponent<UIElement>().children)
-        {
-            if(e.GetComponent<UIProperties>().sizing.width.mode == SizingMode::Grow)
-            {
-                widthGrowables.push_back(e);
-            }
-        }
-        SizeGrowWidths(entity, widthGrowables);
+        GrowSize(entity, FlexDirection::Row);
 
         // Wrap Text - do later
 
-        // HUG Sizing across flex direction
-        std::vector<EntityId> heightGrowables;
-        for(Entity e : entity.GetComponent<UIElement>().children)
-        {
-            if(e.GetComponent<UIProperties>().sizing.height.mode == SizingMode::Grow)
-            {
-                heightGrowables.push_back(e);
-            }
-        }
-        SizeHugHeights(entity);
+        // HUG Sizing heights
+        HugSize(entity, FlexDirection::Column);
 
-        // GROW Sizing across flex direction
-        SizeGrowHeights(entity, heightGrowables);
+        // GROW Sizing heights
+        GrowSize(entity, FlexDirection::Column);
 
         // Calculate Positions
+        CalculatePositions(entity, glm::vec2(0.0f), props.direction);
     }
 
-    void SizeGrowWidths(Entity parent, std::vector<EntityId> growable)
+    Axis &GetAxis(Sizing &size, FlexDirection direction)
     {
-        auto [element, properties, transform] = parent.GetComponents<UIElement, UIProperties, UITransform>();
-
-        float remainingWidth = transform.size.x;
-        remainingWidth -= properties.padding.left + properties.padding.right;
-
-        if(properties.direction == FlexDirection::Column)
-        {
-            for(Entity child : growable)
-            {
-                auto &childTransform = child.GetComponent<UITransform>();
-                childTransform.size.x = remainingWidth;
-            }
-            for(Entity child : element.children)
-            {
-                std::vector<EntityId> growables;
-                for(Entity e : child.GetComponent<UIElement>().children)
-                {
-                    if(e.GetComponent<UIProperties>().sizing.width.mode == SizingMode::Grow)
-                    {
-                        growables.push_back(e);
-                    }
-                }
-                if(growables.size() <= 0)
-                    return;
-                SizeGrowWidths(child, growables);
-            }
-            return;
-        }
-        remainingWidth -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
-
-        for(Entity child : element.children)
-        {
-            remainingWidth -= child.GetComponent<UITransform>().size.x;
-        }
-        while(remainingWidth > 0)
-        {
-            float smallest = ((Entity)growable[0]).GetComponent<UITransform>().size.x;
-            float secondSmallest = INFINITY;
-            float widthToAdd = remainingWidth;
-
-            for(Entity child : growable)
-            {
-                auto childTransform = child.GetComponent<UITransform>();
-                if(childTransform.size.x < smallest)
-                {
-                    secondSmallest = smallest;
-                    smallest = childTransform.size.x;
-                }
-                if(childTransform.size.x > smallest)
-                {
-                    secondSmallest = glm::min(secondSmallest, childTransform.size.x);
-                    widthToAdd = secondSmallest - smallest;
-                }
-            }
-            widthToAdd = glm::min(widthToAdd, remainingWidth / growable.size());
-            for(Entity child : growable)
-            {
-                auto &childTransform = child.GetComponent<UITransform>();
-                if(childTransform.size.x == smallest)
-                {
-                    childTransform.size.x += widthToAdd;
-                    remainingWidth -= widthToAdd;
-                }
-            }
-        }
-        for(Entity child : element.children)
-        {
-            std::vector<EntityId> growables;
-            for(Entity e : child.GetComponent<UIElement>().children)
-            {
-                if(e.GetComponent<UIProperties>().sizing.width.mode == SizingMode::Grow)
-                {
-                    growables.push_back(e);
-                }
-            }
-            if(growables.size() <= 0)
-                return;
-            SizeGrowWidths(child, growables);
-        }
-    }
-
-    void SizeGrowHeights(Entity parent, std::vector<EntityId> growable)
-    {
-        auto [element, properties, transform] = parent.GetComponents<UIElement, UIProperties, UITransform>();
-
-        float remainingHeight = transform.size.y;
-        remainingHeight -= properties.padding.top + properties.padding.bottom;
-
-        if(properties.direction == FlexDirection::Row)
-        {
-            for(Entity child : growable)
-            {
-                auto &childTransform = child.GetComponent<UITransform>();
-                childTransform.size.y = remainingHeight;
-            }
-            for(Entity child : element.children)
-            {
-                std::vector<EntityId> growables;
-                for(Entity e : child.GetComponent<UIElement>().children)
-                {
-                    if(e.GetComponent<UIProperties>().sizing.height.mode == SizingMode::Grow)
-                    {
-                        growables.push_back(e);
-                    }
-                }
-                if(growables.size() <= 0)
-                    return;
-                SizeGrowHeights(child, growables);
-            }
-            return;
-        }
-        remainingHeight -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
-
-        for(Entity child : element.children)
-        {
-            remainingHeight -= child.GetComponent<UITransform>().size.y;
-        }
-        while(remainingHeight > 0)
-        {
-            float smallest = ((Entity)growable[0]).GetComponent<UITransform>().size.y;
-            float secondSmallest = INFINITY;
-            float heightToAdd = remainingHeight;
-
-            for(Entity child : growable)
-            {
-                auto childTransform = child.GetComponent<UITransform>();
-                if(childTransform.size.y < smallest)
-                {
-                    secondSmallest = smallest;
-                    smallest = childTransform.size.y;
-                }
-                if(childTransform.size.y > smallest)
-                {
-                    secondSmallest = glm::min(secondSmallest, childTransform.size.y);
-                    heightToAdd = secondSmallest - smallest;
-                }
-            }
-            heightToAdd = glm::min(heightToAdd, remainingHeight / growable.size());
-            for(Entity child : growable)
-            {
-                auto &childTransform = child.GetComponent<UITransform>();
-                if(childTransform.size.y == smallest)
-                {
-                    childTransform.size.y += heightToAdd;
-                    remainingHeight -= heightToAdd;
-                }
-            }
-        }
-        for(Entity child : element.children)
-        {
-            std::vector<EntityId> growables;
-            for(Entity e : child.GetComponent<UIElement>().children)
-            {
-                if(e.GetComponent<UIProperties>().sizing.height.mode == SizingMode::Grow)
-                {
-                    growables.push_back(e);
-                }
-            }
-            if(growables.size() <= 0)
-                return;
-            SizeGrowHeights(child, growables);
-        }
-    }
-
-    void SizeHugWidths(Entity entity)
-    {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-
-        for(auto child : element.children)
-        {
-            SizeHugWidths(child);
-        }
-        if(properties.sizing.width.mode != SizingMode::Hug)
-            return;
-
-        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
-        float padding = properties.padding.left + properties.padding.right;
-
-        // ROW direction by default
-        FlexDirection direction = (element.parent == NULL_ENTITY) ? FlexDirection::Row : ((Entity)element.parent).GetComponent<UIProperties>().direction;
-
-        if(direction == FlexDirection::Column)
-        {
-            // set to tallest child
-            float largest = 0.0f;
-            for(Entity child : element.children)
-            {
-                float width = child.GetComponent<UITransform>().size.x;
-                if(width > largest)
-                {
-                    largest = width;
-                }
-            }
-            transform.size.x = largest + gap + padding;
-            return;
-        }
-
-        glm::vec2 summedSize = glm::vec2(0, 0);
-        for(auto child : element.children)
-        {
-            Entity childEntity = child;
-            summedSize += childEntity.GetComponent<UITransform>().size;
-        }
-
-        // Apply children sizes to element
-        transform.size.x = summedSize.x + padding + gap;
-    };
-    void SizeHugHeights(Entity entity)
-    {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-
-        for(auto child : element.children)
-        {
-            SizeHugHeights(child);
-        }
-        if(properties.sizing.height.mode != SizingMode::Hug)
-            return;
-
-        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
-        float padding = properties.padding.top + properties.padding.bottom;
-
-        // ROW direction by default
-        FlexDirection direction = (element.parent == NULL_ENTITY) ? FlexDirection::Row : ((Entity)element.parent).GetComponent<UIProperties>().direction;
-
         if(direction == FlexDirection::Row)
         {
-            // set to tallest child
-            float largest = 0.0f;
-            for(Entity child : element.children)
+            return size.width;
+        }
+        return size.height;
+    }
+    float GetPadding(const Padding &padding, FlexDirection direction)
+    {
+        if(direction == FlexDirection::Row)
+        {
+            return padding.left + padding.right;
+        }
+        return padding.top + padding.bottom;
+    }
+
+    float &GetElementLength(Entity entity, FlexDirection direction)
+    {
+        if(direction == FlexDirection::Row)
+        {
+            return entity.GetComponent<UITransform>().size.x;
+        }
+        return entity.GetComponent<UITransform>().size.y;
+    }
+
+    float GetLargestChildLength(Entity entity, FlexDirection direction)
+    {
+        float largest = 0.0f;
+        for(Entity child : entity.GetComponent<UIElement>().children)
+        {
+            float length = GetElementLength(child, direction);
+            if(length > largest)
             {
-                float height = child.GetComponent<UITransform>().size.y;
-                if(height > largest)
-                {
-                    largest = height;
-                }
+                largest = length;
             }
-            transform.size.y = largest + gap + padding;
-            return;
         }
-
-        glm::vec2 summedSize = glm::vec2(0, 0);
-        for(auto child : element.children)
-        {
-            Entity childEntity = child;
-            summedSize += childEntity.GetComponent<UITransform>().size;
-        }
-
-        transform.size.y = summedSize.y + padding + gap;
+        return largest;
     }
 
-    void SizeFixedElements(Entity entity)
+    float SumChildrenLengths(Entity entity, FlexDirection direction)
     {
-        // Applies the size length on elements with sizing mode fixed
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-        if(properties.sizing.width.mode == SizingMode::Fixed)
+        float total = 0.0f;
+        for(Entity child : entity.GetComponent<UIElement>().children)
         {
-            transform.size.x = properties.sizing.width.length;
-        };
-        if(properties.sizing.height.mode == SizingMode::Fixed)
-        {
-            transform.size.y = properties.sizing.height.length;
-        };
-        for(auto child : element.children)
-        {
-            SizeFixedElements(child);
+            total += GetElementLength(child, direction);
         }
+        return total;
     }
 
-    void RenderElementsChildren(Entity entity, glm::vec2 offset)
+    std::vector<EntityId> GetGrowableChildren(Entity entity, FlexDirection direction)
+    {
+        std::vector<EntityId> growables;
+        for(Entity child : entity.GetComponent<UIElement>().children)
+        {
+            if(GetAxis(child.GetComponent<UIProperties>().sizing, direction).mode == SizingMode::Grow)
+            {
+                growables.push_back(child);
+            }
+        }
+        return growables;
+    }
+
+    // direction - size width or height axis
+    void HugSize(Entity entity, FlexDirection sizingAxis)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-
-        float leftOffset;
-        if(properties.direction == FlexDirection::Row)
-        {
-            leftOffset = properties.padding.left;
-        }
-        else if(properties.direction == FlexDirection::Column)
-        {
-            leftOffset = properties.padding.top;
-        }
-
         if(element.children.empty())
             return;
 
+        for(auto child : element.children)
+        {
+            HugSize(child, sizingAxis);
+        }
+        if(GetAxis(properties.sizing, sizingAxis).mode != SizingMode::Hug)
+            return;
+
+        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        float padding = GetPadding(properties.padding, sizingAxis);
+
+        // Size with layout direction
+        if(sizingAxis == properties.direction)
+        {
+            float &length = GetElementLength(entity, sizingAxis);
+            length = SumChildrenLengths(entity, sizingAxis) + padding + gap;
+        }
+        else
+        {
+            // Size across layout direction
+            float &length = GetElementLength(entity, sizingAxis);
+            length = GetLargestChildLength(entity, sizingAxis) + padding + gap;
+        }
+    }
+
+    void GrowSize(Entity entity, FlexDirection sizingAxis)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+
+        if(element.parent == NULL_ENTITY)
+        {
+            float &length = GetElementLength(entity, sizingAxis);
+            length = (sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth());
+        }
+        std::vector<EntityId> growables = GetGrowableChildren(entity, sizingAxis);
+        if(growables.empty())
+        {
+            for(Entity child : element.children)
+            {
+                GrowSize(child, sizingAxis);
+            }
+            return;
+        }
+
+        float remainingLength = GetElementLength(entity, sizingAxis);
+        remainingLength -= GetPadding(properties.padding, sizingAxis);
+
+        if(sizingAxis != properties.direction)
+        {
+            // Size across layout direction
+            for(Entity child : growables)
+            {
+                float &length = GetElementLength(child, sizingAxis);
+                std::cout << static_cast<int>(GetAxis(child.GetComponent<UIProperties>().sizing, sizingAxis).mode) << std::endl;
+                std::cout << "GROW:" << static_cast<int>(SizingMode::Grow) << std::endl;
+                std::cout << "HUG:" << static_cast<int>(SizingMode::Grow) << std::endl;
+                std::cout << "FIXED:" << static_cast<int>(SizingMode::Grow) << std::endl;
+
+                // std::cout << remainingLength << "\n";
+                length = remainingLength;
+            }
+            for(Entity child : element.children)
+            {
+                GrowSize(child, sizingAxis);
+            }
+            return;
+        }
+
+        // Size with layout direction
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+
         for(Entity child : element.children)
         {
-            auto [childElement, childProperties, childTransform] = child.GetComponents<UIElement, UIProperties, UITransform>();
+            remainingLength -= GetElementLength(child, sizingAxis);
+        }
 
-            glm::vec2 childPosition = transform.position + childTransform.position + offset;
+        float extra = remainingLength / growables.size();
+        for(EntityId childId : growables)
+        {
+            Entity child = childId;
+            float &length = GetElementLength(child, sizingAxis);
+            length += extra;
+        }
+        for(Entity child : element.children)
+        {
+            GrowSize(child, sizingAxis);
+        }
+        return;
+        const float EPSILON = 0.01f;
+        int maxIterations = 100;
+        while(remainingLength > EPSILON && maxIterations-- > 0)
+        {
+            float smallest = GetElementLength(growables[0], sizingAxis);
+            float secondSmallest = INFINITY;
+            float widthToAdd = remainingLength;
 
-            if(properties.direction == FlexDirection::Row)
+            for(Entity child : growables)
             {
-                childPosition.x += leftOffset;
-                childPosition.y += properties.padding.top;
+                float childLength = GetElementLength(child, sizingAxis);
+                if(childLength < smallest)
+                {
+                    secondSmallest = smallest;
+                    smallest = childLength;
+                }
+                if(childLength > smallest)
+                {
+                    secondSmallest = glm::min(secondSmallest, childLength);
+                    widthToAdd = secondSmallest - smallest;
+                }
             }
-            else if(properties.direction == FlexDirection::Column)
+            widthToAdd = glm::min(widthToAdd, remainingLength / growables.size());
+            for(Entity child : growables)
             {
-                childPosition.x += properties.padding.left;
-                childPosition.y += leftOffset;
+                float &length = GetElementLength(child, sizingAxis);
+                if(length == smallest)
+                {
+                    length += widthToAdd;
+                    remainingLength -= widthToAdd;
+                }
+            }
+        }
+        for(Entity child : element.children)
+        {
+            GrowSize(child, sizingAxis);
+        }
+    }
+
+    void SizeFixedElements(Entity entity, FlexDirection sizingAxis)
+    {
+        // Applies the size length on elements with sizing mode fixed
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+
+        float &length = GetElementLength(entity, sizingAxis);
+        if(GetAxis(properties.sizing, sizingAxis).mode == SizingMode::Fixed)
+        {
+            length = GetAxis(properties.sizing, sizingAxis).length;
+        }
+
+        for(auto child : element.children)
+        {
+            SizeFixedElements(child, sizingAxis);
+        }
+    }
+
+    void CalculatePositions(Entity entity, glm::vec2 parentPosition, FlexDirection direction)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+
+        float currentOffset = (direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
+
+        for(Entity child : element.children)
+        {
+            auto &childTransform = child.GetComponent<UITransform>();
+
+            glm::vec2 localPos = {};
+            if(direction == FlexDirection::Row)
+            {
+                localPos = {currentOffset, properties.padding.top};
+                currentOffset += childTransform.size.x + properties.gap;
+            }
+            else
+            {
+                localPos = {properties.padding.left, currentOffset};
+                currentOffset += childTransform.size.y + properties.gap;
             }
 
-            Simplex::GetRenderer().RenderImmediate({.position = glm::vec3(childPosition, 0), .size = childTransform.size}, NO_TEXTURE, childProperties.color);
+            // Assign the child's position relative to parent
+            childTransform.position = localPos;
 
-            if(properties.direction == FlexDirection::Row)
-            {
-                leftOffset += childTransform.size.x + properties.gap;
-            }
-            else if(properties.direction == FlexDirection::Column)
-            {
-                leftOffset += childTransform.size.y + properties.gap;
-            }
-            RenderElementsChildren(child, childPosition);
+            // Recursively calculate children's positions
+            CalculatePositions(child, localPos, properties.direction);
+        }
+    }
+
+    void RenderElements(Entity entity)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        if(element.children.empty())
+        {
+            std::cout << transform.position.y << "\n";
+        }
+        Simplex::GetRenderer().QueueUIObject({.position = glm::vec3(transform.position, 0), .size = transform.size}, NO_TEXTURE, properties.color);
+        for(Entity child : element.children)
+        {
+            RenderElements(child);
         }
     }
 };

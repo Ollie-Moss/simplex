@@ -34,14 +34,16 @@ int main()
         m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
-        auto elem = element(
+
+        auto elemOld = element(
             {
+                .sizing = {.width = GROW, .height = GROW},
                 .padding = 10.0_p,
             },
             {
                 element(
                     {
-                        .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
+                        .sizing = {.width = GROW, .height = 200.0_pixels},
                         .padding = 10.0_p,
                         .color = GREEN,
                         .gap = 10.0f,
@@ -60,7 +62,29 @@ int main()
                     },
                     {
                         element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
                         element({.sizing = {.width = GROW, .height = GROW}, .color = BLUE}),
+                    }),
+            });
+
+        auto elem = element(
+            {
+                .sizing = {.width = GROW, .height = GROW},
+                .padding = 10.0_p,
+                        .gap = 10.0f,
+            },
+            {
+                element(
+                    {
+                        .sizing = {.width = GROW, .height = 200.0_pixels},
+                        .padding = 10.0_p,
+                        .color = GREEN,
+                    }),
+                element(
+                    {
+                        .sizing = {.width = GROW, .height = 200.0_pixels},
+                        .padding = 10.0_p,
+                        .color = RED,
                     }),
             });
 

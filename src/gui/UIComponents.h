@@ -18,6 +18,7 @@ struct UIElement
 {
     EntityId parent = NULL_ENTITY;
     std::vector<EntityId> children;
+    bool dirty = true;
 };
 
 struct Axis
@@ -77,6 +78,7 @@ struct Sizing
     Axis width;
     Axis height;
 };
+
 
 struct UIProperties
 {
