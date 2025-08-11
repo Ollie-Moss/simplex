@@ -37,12 +37,13 @@ int main()
           {
             .padding = 10.0_p,
             .color = GREEN,
+            .gap = 10.0f,
           },
           {
-            element({.sizing = {.width = 100.0_pixels, .height = 500.0_pixels}, .color = RED}),
-            element({.color = BLUE},
+            element({.sizing = {.width = 50.0_pixels, .height = 50.0_pixels}, .color = RED}),
+            element({.sizing = {.height = 50.0_pixels}, .padding = 5.0_p, .color = BLUE},
                     {
-                      element({.color = YELLOW}),
+                      element({.sizing = {.width = 25.0_pixels, .height = 10.0_pixels}, .color = YELLOW}),
                     }),
           });
 

@@ -4,6 +4,7 @@
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"
+#include "glm/common.hpp"
 #include "glm/fwd.hpp"
 #include "graphics/Renderer2D.h"
 #include "gui/UIComponents.h"
@@ -15,7 +16,6 @@ class UISystem : public System
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UIProperties, UITransform>();
     }
-
     void Update() override
     {
         for(Entity e : m_Entities)
@@ -73,27 +73,16 @@ class UISystem : public System
         Entity parent = element.parent;
         auto parentProperties = parent.GetComponent<UIProperties>();
 
-        glm::vec2 summedSize = glm::vec2(0, 0);
-
-        // Only appy
-        switch(parentProperties.direction)
-        {
-        case FlexDirection::Row:
-            if(properties.sizing.width.mode == SizingMode::Fixed)
-            {
-                summedSize += transform.size;
-            }
-            break;
-        case FlexDirection::Column:
-            if(properties.sizing.height.mode == SizingMode::Fixed)
-            {
-                summedSize += transform.size;
-            }
-            break;
-        }
         for(auto child : element.children)
         {
-            summedSize += SizeHugElements(child);
+            SizeHugElements(child);
+        }
+
+        glm::vec2 summedSize = glm::vec2(0, 0);
+        for(auto child : element.children)
+        {
+            Entity childEntity = child;
+            summedSize += childEntity.GetComponent<UITransform>().size;
         }
 
         // Apply children sizes to element
@@ -102,13 +91,17 @@ class UISystem : public System
         case FlexDirection::Row:
             if(properties.sizing.width.mode == SizingMode::Hug)
             {
-                transform.size.x = summedSize.x + properties.padding.left + properties.padding.right;
+                float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
+                float padding = properties.padding.left + properties.padding.right;
+                transform.size.x = summedSize.x + padding + gap;
             }
             break;
         case FlexDirection::Column:
             if(properties.sizing.height.mode == SizingMode::Hug)
             {
-                transform.size.y = summedSize.y + properties.padding.top + properties.padding.bottom;
+                float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
+                float padding = properties.padding.top + properties.padding.bottom;
+                transform.size.y = summedSize.y + padding + gap;
             }
             break;
         }
