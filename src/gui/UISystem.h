@@ -183,10 +183,6 @@ class UISystem : public System
             for(Entity child : growables)
             {
                 float &length = GetElementLength(child, sizingAxis);
-                std::cout << static_cast<int>(GetAxis(child.GetComponent<UIProperties>().sizing, sizingAxis).mode) << std::endl;
-                std::cout << "GROW:" << static_cast<int>(SizingMode::Grow) << std::endl;
-                std::cout << "HUG:" << static_cast<int>(SizingMode::Grow) << std::endl;
-                std::cout << "FIXED:" << static_cast<int>(SizingMode::Grow) << std::endl;
 
                 // std::cout << remainingLength << "\n";
                 length = remainingLength;
@@ -206,18 +202,6 @@ class UISystem : public System
             remainingLength -= GetElementLength(child, sizingAxis);
         }
 
-        float extra = remainingLength / growables.size();
-        for(EntityId childId : growables)
-        {
-            Entity child = childId;
-            float &length = GetElementLength(child, sizingAxis);
-            length += extra;
-        }
-        for(Entity child : element.children)
-        {
-            GrowSize(child, sizingAxis);
-        }
-        return;
         const float EPSILON = 0.01f;
         int maxIterations = 100;
         while(remainingLength > EPSILON && maxIterations-- > 0)
@@ -307,10 +291,6 @@ class UISystem : public System
     void RenderElements(Entity entity)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-        if(element.children.empty())
-        {
-            std::cout << transform.position.y << "\n";
-        }
         Simplex::GetRenderer().QueueUIObject({.position = glm::vec3(transform.position, 0), .size = transform.size}, NO_TEXTURE, properties.color);
         for(Entity child : element.children)
         {
