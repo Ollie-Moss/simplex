@@ -69,7 +69,8 @@ constexpr Axis operator""_pixels(long double val)
     return {.mode = SizingMode::Fixed, .length = static_cast<float>(val)};
 }
 
-const Axis AUTO = {.mode = SizingMode::Grow, .length = 0};
+const Axis GROW = {.mode = SizingMode::Grow, .length = 0};
+const Axis HUG = {.mode = SizingMode::Hug, .length = 0};
 
 struct Sizing
 {

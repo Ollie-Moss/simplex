@@ -4,6 +4,7 @@
 #include "core/Types.h"
 #include "glm/glm.hpp"
 #include "gui/UIBuilder.h"
+#include "gui/UIComponents.h"
 #include "gui/UISystem.h"
 #include "systems/CameraSystem.h"
 #include "systems/MoveableCameraSystem.h"
@@ -34,16 +35,34 @@ int main()
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
         auto elem = element(
-          {
-            .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
-            .padding = 10.0_p,
-            .color = GREEN,
-            .gap = 10.0f,
-          },
-          {
-            element({.sizing = {.width = AUTO, .height = 50.0_pixels}, .color = RED}),
-            element({.sizing = {.width = AUTO, .height = 50.0_pixels}, .color = BLUE}),
-          });
+            {
+                .padding = 10.0_p,
+            },
+            {
+                element(
+                    {
+                        .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
+                        .padding = 10.0_p,
+                        .color = GREEN,
+                        .gap = 10.0f,
+                    },
+                    {
+                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW}, .color = BLUE}),
+                    }),
+                element(
+                    {
+                        .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
+                        .direction = FlexDirection::Column,
+                        .padding = 10.0_p,
+                        .color = YELLOW,
+                        .gap = 10.0f,
+                    },
+                    {
+                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW}, .color = BLUE}),
+                    }),
+            });
 
         Entity root = CreateEntityFromUISpec(m_Registry, elem);
     });
