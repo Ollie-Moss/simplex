@@ -1,47 +1,53 @@
-#include <vector>
+#include "core/Registry.h"
 #include "core/Scene.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
-#include "glm/fwd.hpp"
-#include "gui/UIComponents.h"
+#include "glm/glm.hpp"
+#include "gui/UIBuilder.h"
 #include "gui/UISystem.h"
 #include "systems/CameraSystem.h"
 #include "systems/MoveableCameraSystem.h"
 #include "systems/RenderSystem.h"
+#include <initializer_list>
 
 int main()
 {
-    Simplex simplex;
-    if (!simplex.Init()) {
-        return 0;
+  Simplex simplex;
+  if(!simplex.Init())
+    {
+      return 0;
     }
-    Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
-        // Systems
-        m_Registry.RegisterSystem<CameraSystem>();
-        m_Registry.RegisterSystem<MoveableCameraSystem>();
-        m_Registry.RegisterSystem<RenderSystem>();
-        m_Registry.RegisterSystem<UISystem>();
+  Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
+    // Systems
+    m_Registry.RegisterSystem<CameraSystem>();
+    m_Registry.RegisterSystem<MoveableCameraSystem>();
+    m_Registry.RegisterSystem<RenderSystem>();
+    m_Registry.RegisterSystem<UISystem>();
 
-        // Entities
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)}, {.color = BLUE});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
+    // Entities
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)}, {.texture = "GRASS_TILE_1"});
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)}, {.texture = "GRASS_TILE_1"});
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)}, {.texture = "GRASS_TILE_1"});
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)}, {.texture = "GRASS_TILE_1"});
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)}, {.color = BLUE});
+    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
 
-        m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
+    m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
+    auto elem = element(
+      {.color = GREEN},
+      {
+        element({.color = RED}),
+        element({.color = BLUE},
+                {
+                  element({.color = YELLOW}),
+                }),
+      });
 
-        // start element
-        Entity parent = m_Registry.Create<UITransform, UIElement, UIProperties>({.position = glm::vec2(100, 100)}, {}, {.color = RED});
-        Entity child = m_Registry.Create<UITransform, UIElement, UIProperties>({.size = glm::vec2(20, 20)}, {.parent = parent}, {.color = BLUE});
-        Entity child2 = m_Registry.Create<UITransform, UIElement, UIProperties>({.size = glm::vec2(20, 20)}, {.parent = parent}, {.color = BLUE});
-        // close element
-        parent.GetComponent<UIElement>().children = {child, child2};
-    });
+    Entity root = CreateEntityFromUISpec(m_Registry, elem);
+  });
 
-    simplex.SetScene(MainScene);
+  simplex.SetScene(MainScene);
 
-    simplex.Start();
-    return 0;
+  simplex.Start();
+  return 0;
 }
