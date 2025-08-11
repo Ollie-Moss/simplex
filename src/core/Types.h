@@ -8,11 +8,9 @@
 const uint32_t MAX_BUFFER_SIZE = 1000;
 const uint32_t MAX_RENDER_BUFFERS = 100;
 
-enum class ProjectionType { ScreenSpace, WorldSpace };
-
 using TextureName = std::string;
 
-const uint32_t MAX_ENTITIES = 100000;  // 100,000
+const uint32_t MAX_ENTITIES = 100000; // 100,000
 const uint32_t MAX_COMPONENTS = 100;
 
 using ComponentId = uint32_t;

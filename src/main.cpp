@@ -12,42 +12,45 @@
 
 int main()
 {
-  Simplex simplex;
-  if(!simplex.Init())
+    Simplex simplex;
+    if(!simplex.Init())
     {
-      return 0;
+        return 0;
     }
-  Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
-    // Systems
-    m_Registry.RegisterSystem<CameraSystem>();
-    m_Registry.RegisterSystem<MoveableCameraSystem>();
-    m_Registry.RegisterSystem<RenderSystem>();
-    m_Registry.RegisterSystem<UISystem>();
+    Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
+        // Systems
+        m_Registry.RegisterSystem<CameraSystem>();
+        m_Registry.RegisterSystem<MoveableCameraSystem>();
+        m_Registry.RegisterSystem<RenderSystem>();
+        m_Registry.RegisterSystem<UISystem>();
 
-    // Entities
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)}, {.texture = "GRASS_TILE_1"});
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)}, {.texture = "GRASS_TILE_1"});
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)}, {.color = BLUE});
-    m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
+        // Entities
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)}, {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)}, {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)}, {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)}, {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)}, {.color = BLUE});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
 
-    m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
-    auto elem = element(
-      {.color = GREEN},
-      {
-        element({.color = RED}),
-        element({.color = BLUE},
-                {
-                  element({.color = YELLOW}),
-                }),
-      });
+        m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
+        auto elem = element(
+          {
+            .padding = 10.0_p,
+            .color = GREEN,
+          },
+          {
+            element({.sizing = {.width = 100.0_pixels, .height = 500.0_pixels}, .color = RED}),
+            element({.color = BLUE},
+                    {
+                      element({.color = YELLOW}),
+                    }),
+          });
 
-    Entity root = CreateEntityFromUISpec(m_Registry, elem);
-  });
+        Entity root = CreateEntityFromUISpec(m_Registry, elem);
+    });
 
-  simplex.SetScene(MainScene);
+    simplex.SetScene(MainScene);
 
-  simplex.Start();
-  return 0;
+    simplex.Start();
+    return 0;
 }
