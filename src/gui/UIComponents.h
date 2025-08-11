@@ -11,8 +11,8 @@ enum class AlignItems { Start, End, Center, Stretch };
 enum class JustifyContent { Start, End, Center, SpaceBetween, SpaceAround };
 enum class FlexDirection { Row, Column };
 enum class SizingMode { Fixed, Hug, Grow };
-enum class Unit {Percent, Pixels};
 // clang-format on
+//
 
 struct UIElement
 {
@@ -23,7 +23,6 @@ struct UIElement
 struct Axis
 {
     SizingMode mode = SizingMode::Hug;
-    Unit unit;
     float length = 0;
 };
 
@@ -63,12 +62,14 @@ constexpr Padding operator""_pb(long double val)
 
 constexpr Axis operator""_percent(long double val)
 {
-    return {.mode = SizingMode::Grow, .unit = Unit::Percent, .length = static_cast<float>(val)};
+    return {.mode = SizingMode::Grow, .length = static_cast<float>(val)};
 }
 constexpr Axis operator""_pixels(long double val)
 {
-    return {.mode = SizingMode::Fixed, .unit = Unit::Pixels, .length = static_cast<float>(val)};
+    return {.mode = SizingMode::Fixed, .length = static_cast<float>(val)};
 }
+
+const Axis AUTO = {.mode = SizingMode::Grow, .length = 0};
 
 struct Sizing
 {
@@ -82,7 +83,7 @@ struct UIProperties
     FlexDirection direction = FlexDirection::Row;
     Padding padding;
     Color color = BLUE;
-    float gap = 8.0f;
+    float gap = 0.0f;
     AlignItems alignItems = AlignItems::Start;
     JustifyContent justifyContent = JustifyContent::Start;
 };
@@ -90,7 +91,7 @@ struct UIProperties
 struct UITransform
 {
     glm::vec2 position = glm::vec2(0, 0);
-    glm::vec2 size = glm::vec2(100, 100);
+    glm::vec2 size = glm::vec2(10, 10);
 
     operator Transform()
     {

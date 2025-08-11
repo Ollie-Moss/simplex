@@ -35,17 +35,14 @@ int main()
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
         auto elem = element(
           {
-            .sizing = {.width = 100.0_percent, .height = 100.0_percent},
+            .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
             .padding = 10.0_p,
             .color = GREEN,
             .gap = 10.0f,
           },
           {
-            element({.sizing = {.width = 50.0_pixels, .height = 50.0_pixels}, .color = RED}),
-            element({.sizing = {.height = 50.0_pixels}, .padding = 5.0_p, .color = BLUE},
-                    {
-                      element({.sizing = {.width = 25.0_pixels, .height = 10.0_pixels}, .color = YELLOW}),
-                    }),
+            element({.sizing = {.width = AUTO, .height = 50.0_pixels}, .color = RED}),
+            element({.sizing = {.width = AUTO, .height = 50.0_pixels}, .color = BLUE}),
           });
 
         Entity root = CreateEntityFromUISpec(m_Registry, elem);

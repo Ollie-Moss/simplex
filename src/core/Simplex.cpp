@@ -77,7 +77,6 @@ void Simplex::Tick()
 
         GetRegistry().Update();
         m_Renderer.Render();
-        Simplex::GetRenderer().RenderText("Hello World", glm::vec2(0, 400), glm::vec2(1, 1), BLACK, "Arial");
 
         m_View.SwapBuffers();
     }

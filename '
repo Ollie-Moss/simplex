@@ -8,10 +8,8 @@
 #include "glm/fwd.hpp"
 #include "graphics/Renderer2D.h"
 #include "gui/UIComponents.h"
-#include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <cstdlib>
 
 class UISystem : public System
 {
@@ -44,21 +42,15 @@ class UISystem : public System
         SizeHugElements(entity);
 
         // GROW Sizing width
-        std::vector<EntityId> growables;
-        for(Entity e : entity.GetComponent<UIElement>().children)
-        {
-            if(e.GetComponent<UIProperties>().sizing.width.mode == SizingMode::Grow)
-            {
-                growables.push_back(e);
-            }
-        }
-        SizeGrowWidths(entity, growables);
+        SizeGrowElements(entity, FlexDirection::Row);
 
         // Wrap Text - do later
 
         // HUG Sizing across flex direction
+        SizeHugElements(entity, FlexDirection::Column);
 
         // GROW Sizing across flex direction
+        SizeGrowElements(entity, FlexDirection::Column);
 
         // Calculate Positions
     }
@@ -68,8 +60,8 @@ class UISystem : public System
         auto [element, properties, transform] = parent.GetComponents<UIElement, UIProperties, UITransform>();
 
         float remainingWidth = transform.size.x;
-        remainingWidth -= properties.padding.left + properties.padding.right;
-        remainingWidth -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        remainingWidth -= parentProperties.padding.left + parentProperties.padding.right;
+        remainingWidth -= glm::max(0, (int)parentElement.children.size() - 1) * parentProperties.gap;
 
         for(Entity child : element.children)
         {
@@ -86,39 +78,14 @@ class UISystem : public System
                 auto childTransform = child.GetComponent<UITransform>();
                 if(childTransform.size.x < smallest)
                 {
-                    secondSmallest = smallest;
-                    smallest = childTransform.size.x;
-                }
-                if(childTransform.size.x > smallest)
-                {
-                    secondSmallest = glm::min(secondSmallest, childTransform.size.x);
-                    widthToAdd = secondSmallest - smallest;
-                }
-            }
-            widthToAdd = glm::min(widthToAdd, remainingWidth / growable.size());
-            for(Entity child : growable)
-            {
-                auto &childTransform = child.GetComponent<UITransform>();
-                if(childTransform.size.x == smallest)
-                {
-                    childTransform.size.x += widthToAdd;
-                    remainingWidth -= widthToAdd;
                 }
             }
         }
-        for(Entity child : element.children)
+
+        // Grow elements
+        for(auto child : element.children)
         {
-            std::vector<EntityId> growables;
-            for(Entity e : child.GetComponent<UIElement>().children)
-            {
-                if(e.GetComponent<UIProperties>().sizing.width.mode == SizingMode::Grow)
-                {
-                    growables.push_back(e);
-                }
-            }
-            if(growables.size() <= 0)
-                return;
-            SizeGrowWidths(child, growables);
+            SizeGrowWidths(child);
         }
     }
 
