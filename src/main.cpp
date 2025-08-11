@@ -35,6 +35,7 @@ int main()
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
         auto elem = element(
           {
+            .sizing = {.width = 100.0_percent, .height = 100.0_percent},
             .padding = 10.0_p,
             .color = GREEN,
             .gap = 10.0f,
