@@ -37,7 +37,7 @@ int main()
 
         auto elemOld = element(
             {
-                .sizing = {.width = GROW, .height = GROW},
+                .sizing = {.width = 500.0_pixels, .height = 500.0_pixels},
                 .padding = 10.0_p,
             },
             {
@@ -70,22 +70,42 @@ int main()
         auto elem = element(
             {
                 .sizing = {.width = GROW, .height = GROW},
+                .direction = FlexDirection::Column,
                 .padding = 10.0_p,
-                        .gap = 10.0f,
+                .gap = 10.0f,
+                // .justifyContent = JustifyContent::Center,
+                // .justifySelf = JustifyContent::Center,
+                // .alignSelf = AlignItems::Center,
             },
             {
-                element(
-                    {
-                        .sizing = {.width = GROW, .height = 200.0_pixels},
-                        .padding = 10.0_p,
-                        .color = GREEN,
-                    }),
-                element(
-                    {
-                        .sizing = {.width = GROW, .height = 200.0_pixels},
-                        .padding = 10.0_p,
-                        .color = RED,
-                    }),
+                element({.sizing{.width = GROW, .height = GROW}},
+                        {
+                            element(
+                                {
+                                    .sizing = {.width = 20.0_percent, .height = GROW},
+                                    .padding = 10.0_p,
+                                    .color = GREEN,
+                                }),
+                            element(
+                                {
+                                    .sizing = {.width = GROW, .height = GROW},
+                                    .padding = 10.0_p,
+                                    .color = RED,
+                                }),
+                        }),
+                element({.sizing{.width = GROW, .height = GROW}},
+                        {
+                            element({
+                                .sizing = {.width = 20.0_percent, .height = GROW},
+                                .padding = 10.0_p,
+                                .color = GREEN,
+                            }),
+                            element({
+                                .sizing = {.width = GROW, .height = GROW},
+                                .padding = 10.0_p,
+                                .color = RED,
+                            }),
+                        }),
             });
 
         Entity root = CreateEntityFromUISpec(m_Registry, elem);

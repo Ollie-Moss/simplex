@@ -24,7 +24,7 @@ struct UIElement
 struct Axis
 {
     SizingMode mode = SizingMode::Hug;
-    float length = 0;
+    float length = 100.0f;
 };
 
 constexpr Padding operator""_p(long double val)
@@ -70,7 +70,7 @@ constexpr Axis operator""_pixels(long double val)
     return {.mode = SizingMode::Fixed, .length = static_cast<float>(val)};
 }
 
-const Axis GROW = {.mode = SizingMode::Grow, .length = 0};
+const Axis GROW = {.mode = SizingMode::Grow, .length = 100};
 const Axis HUG = {.mode = SizingMode::Hug, .length = 0};
 
 struct Sizing
@@ -78,7 +78,6 @@ struct Sizing
     Axis width;
     Axis height;
 };
-
 
 struct UIProperties
 {
@@ -89,6 +88,9 @@ struct UIProperties
     float gap = 0.0f;
     AlignItems alignItems = AlignItems::Start;
     JustifyContent justifyContent = JustifyContent::Start;
+
+    JustifyContent justifySelf = JustifyContent::Start;
+    AlignItems alignSelf = AlignItems::Start;
 };
 
 struct UITransform

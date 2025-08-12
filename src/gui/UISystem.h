@@ -9,7 +9,9 @@
 #include "graphics/Renderer2D.h"
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
+#include <algorithm>
 #include <cmath>
+#include <complex>
 #include <string>
 
 class UISystem : public System
@@ -65,13 +67,14 @@ class UISystem : public System
         CalculatePositions(entity, glm::vec2(0.0f), props.direction);
     }
 
-    Axis &GetAxis(Sizing &size, FlexDirection direction)
+    Axis &GetAxis(Entity entity, FlexDirection direction)
     {
+        UIProperties &props = entity.GetComponent<UIProperties>();
         if(direction == FlexDirection::Row)
         {
-            return size.width;
+            return props.sizing.width;
         }
-        return size.height;
+        return props.sizing.height;
     }
     float GetPadding(const Padding &padding, FlexDirection direction)
     {
@@ -120,7 +123,7 @@ class UISystem : public System
         std::vector<EntityId> growables;
         for(Entity child : entity.GetComponent<UIElement>().children)
         {
-            if(GetAxis(child.GetComponent<UIProperties>().sizing, direction).mode == SizingMode::Grow)
+            if(GetAxis(child, direction).mode == SizingMode::Grow)
             {
                 growables.push_back(child);
             }
@@ -139,7 +142,7 @@ class UISystem : public System
         {
             HugSize(child, sizingAxis);
         }
-        if(GetAxis(properties.sizing, sizingAxis).mode != SizingMode::Hug)
+        if(GetAxis(entity, sizingAxis).mode != SizingMode::Hug)
             return;
 
         float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
@@ -163,7 +166,7 @@ class UISystem : public System
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
-        if(element.parent == NULL_ENTITY)
+        if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
             float &length = GetElementLength(entity, sizingAxis);
             length = (sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth());
@@ -205,7 +208,7 @@ class UISystem : public System
         {
             remainingLength -= GetElementLength(child, sizingAxis);
         }
-        ResizeChildren(growables, remainingLength, sizingAxis);
+        ResizeChildren(entity, growables, remainingLength, sizingAxis);
 
         for(Entity child : element.children)
         {
@@ -213,13 +216,14 @@ class UISystem : public System
         }
     }
 
-    void ResizeChildren(std::vector<EntityId> growables, float remainingLength, FlexDirection sizingAxis)
+    void ResizeChildren(Entity parent, std::vector<EntityId> growables, float remainingLength, FlexDirection sizingAxis)
     {
         const float EPSILON = 0.01f;
         int maxIterations = 100;
 
         while(std::abs(remainingLength) > EPSILON && maxIterations-- > 0)
         {
+            std::cout << maxIterations << "\n";
             // Calculate total length of growables
             float totalLength = 0.0f;
             for(Entity child : growables)
@@ -236,8 +240,13 @@ class UISystem : public System
             for(Entity child : growables)
             {
                 float &length = GetElementLength(child, sizingAxis);
+                float maxLength = (GetAxis(child, sizingAxis).length / 100.0f) * GetElementLength(parent, sizingAxis);
+                float maxDelta = maxLength - length;
+
                 float ratio = (totalLength > 0) ? (length / totalLength) : (1.0f / growables.size());
                 float delta = ratio * remainingLength;
+
+                delta = std::min(delta, maxDelta);
 
                 // Apply delta to length
                 length += delta;
@@ -258,9 +267,9 @@ class UISystem : public System
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
         float &length = GetElementLength(entity, sizingAxis);
-        if(GetAxis(properties.sizing, sizingAxis).mode == SizingMode::Fixed)
+        if(GetAxis(entity, sizingAxis).mode == SizingMode::Fixed)
         {
-            length = GetAxis(properties.sizing, sizingAxis).length;
+            length = GetAxis(entity, sizingAxis).length;
         }
 
         for(auto child : element.children)
@@ -274,20 +283,41 @@ class UISystem : public System
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
         float currentOffset = (direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
+        if(direction == properties.direction)
+        {
+            float remainingLength = GetElementLength(entity, direction);
+            remainingLength -= GetPadding(properties.padding, direction);
+            remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+            for(Entity child : element.children)
+            {
+                remainingLength -= GetElementLength(child, direction);
+            }
+            if(properties.justifyContent == JustifyContent::Center)
+            {
+                currentOffset += remainingLength / 2.0f;
+            }
+            if(properties.justifyContent == JustifyContent::End)
+            {
+                currentOffset += remainingLength;
+            }
+        }
+        else
+        {
+        }
 
         for(Entity child : element.children)
         {
             auto &childTransform = child.GetComponent<UITransform>();
 
-            glm::vec2 localPos = {};
-            if(direction == FlexDirection::Row)
+            glm::vec2 localPos = parentPosition;
+            if(properties.direction == FlexDirection::Row)
             {
-                localPos = {currentOffset, properties.padding.top};
+                localPos += glm::vec2(currentOffset, properties.padding.top);
                 currentOffset += childTransform.size.x + properties.gap;
             }
             else
             {
-                localPos = {properties.padding.left, currentOffset};
+                localPos += glm::vec2(properties.padding.left, currentOffset);
                 currentOffset += childTransform.size.y + properties.gap;
             }
 
