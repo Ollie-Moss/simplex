@@ -20,10 +20,20 @@ class SystemManager {
         m_Systems.insert({typeName, system});
         return system;
     }
+    void StartSystems() {
+        for (auto const &[name, system] : m_Systems) {
+            system->Start();
+        }
+    }
 
     void UpdateSystems() {
         for (auto const &[name, system] : m_Systems) {
             system->Update();
+        }
+    }
+    void FixedUpdateSystems() {
+        for (auto const &[name, system] : m_Systems) {
+            system->FixedUpdate();
         }
     }
 

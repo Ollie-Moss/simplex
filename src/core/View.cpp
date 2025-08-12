@@ -83,7 +83,8 @@ int &View::GetWindowHeight()
     return m_Height;
 }
 
-bool View::HasWindowResized(){
+bool View::HasWindowResized()
+{
     return m_HasWindowResized;
 }
 void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight)
@@ -97,7 +98,7 @@ void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeig
 void View::ClearColor(glm::vec4 color)
 {
     glClearColor(color.r, color.g, color.b, color.a);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void View::SwapBuffers()
 {
@@ -141,6 +142,6 @@ glm::mat4 View::CalculateWorldSpaceProjection()
 
 glm::mat4 View::CalculateScreenSpaceProjection()
 {
-    glm::mat4 projection = glm::ortho(0.0f, (float)m_Width, (float)m_Height, 0.0f, -100.0f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -100.0f, 100.0f);
     return projection;
 }

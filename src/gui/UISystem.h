@@ -4,8 +4,10 @@
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"
+#include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 #include "graphics/Renderer2D.h"
+#include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
 #include <cmath>
 #include <string>
@@ -21,16 +23,18 @@ class UISystem : public System
     {
         for(Entity e : m_Entities)
         {
-            auto [element, properties, transform] = e.GetComponents<UIElement, UIProperties, UITransform>();
-            if(element.parent != NULL_ENTITY)
-                continue;
-
-            // this should only happen if the tree changes
-            if(Simplex::GetView().HasWindowResized())
+            for(Entity e : m_Entities)
             {
-                CalculateLayout(e);
-            }
+                auto [element, properties, transform] = e.GetComponents<UIElement, UIProperties, UITransform>();
+                if(element.parent != NULL_ENTITY)
+                    continue;
 
+                // this should only happen if the tree changes
+                if(Simplex::GetView().HasWindowResized())
+                {
+                    CalculateLayout(e);
+                }
+            }
             RenderElements(e);
         }
     }
@@ -201,43 +205,50 @@ class UISystem : public System
         {
             remainingLength -= GetElementLength(child, sizingAxis);
         }
+        ResizeChildren(growables, remainingLength, sizingAxis);
 
-        const float EPSILON = 0.01f;
-        int maxIterations = 100;
-        while(remainingLength > EPSILON && maxIterations-- > 0)
-        {
-            float smallest = GetElementLength(growables[0], sizingAxis);
-            float secondSmallest = INFINITY;
-            float widthToAdd = remainingLength;
-
-            for(Entity child : growables)
-            {
-                float childLength = GetElementLength(child, sizingAxis);
-                if(childLength < smallest)
-                {
-                    secondSmallest = smallest;
-                    smallest = childLength;
-                }
-                if(childLength > smallest)
-                {
-                    secondSmallest = glm::min(secondSmallest, childLength);
-                    widthToAdd = secondSmallest - smallest;
-                }
-            }
-            widthToAdd = glm::min(widthToAdd, remainingLength / growables.size());
-            for(Entity child : growables)
-            {
-                float &length = GetElementLength(child, sizingAxis);
-                if(length == smallest)
-                {
-                    length += widthToAdd;
-                    remainingLength -= widthToAdd;
-                }
-            }
-        }
         for(Entity child : element.children)
         {
             GrowSize(child, sizingAxis);
+        }
+    }
+
+    void ResizeChildren(std::vector<EntityId> growables, float remainingLength, FlexDirection sizingAxis)
+    {
+        const float EPSILON = 0.01f;
+        int maxIterations = 100;
+
+        while(std::abs(remainingLength) > EPSILON && maxIterations-- > 0)
+        {
+            // Calculate total length of growables
+            float totalLength = 0.0f;
+            for(Entity child : growables)
+            {
+                totalLength += GetElementLength(child, sizingAxis);
+            }
+
+            // If totalLength is zero, distribute evenly to avoid division by zero
+            if(totalLength == 0.0f)
+                totalLength = growables.size();
+
+            // Distribute remainingLength proportionally (or evenly if totalLength == 0)
+            float distributed = 0.0f;
+            for(Entity child : growables)
+            {
+                float &length = GetElementLength(child, sizingAxis);
+                float ratio = (totalLength > 0) ? (length / totalLength) : (1.0f / growables.size());
+                float delta = ratio * remainingLength;
+
+                // Apply delta to length
+                length += delta;
+                distributed += delta;
+            }
+
+            remainingLength -= distributed;
+
+            // If no meaningful distribution happened, break early
+            if(std::abs(distributed) < EPSILON)
+                break;
         }
     }
 

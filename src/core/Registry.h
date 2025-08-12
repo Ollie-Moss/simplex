@@ -75,9 +75,17 @@ class Registry
         return m_SystemManager.RegisterSystem<T>();
     }
 
+    void Start()
+    {
+        m_SystemManager.StartSystems();
+    }
     void Update()
     {
         m_SystemManager.UpdateSystems();
+    }
+    void FixedUpdate()
+    {
+        m_SystemManager.FixedUpdateSystems();
     }
 
     template <typename... T>

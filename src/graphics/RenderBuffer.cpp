@@ -11,8 +11,6 @@
 #include "core/Types.h"
 #include "core/VertexArray.h"
 #include "glm/fwd.hpp"
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/string_cast.hpp"
 
 RenderBuffer::RenderBuffer()
 {
@@ -20,22 +18,26 @@ RenderBuffer::RenderBuffer()
 }
 RenderBuffer::~RenderBuffer() {}
 
-void RenderBuffer::Insert(const RenderQueueData& renderData)
+void RenderBuffer::Insert(const RenderQueueData &renderData)
 {
-    if (m_Index >= m_RenderData.size()) throw std::out_of_range("RenderBuffer is full");
+    if(m_Index >= m_RenderData.size())
+        throw std::out_of_range("RenderBuffer is full");
 
     size_t insertIndex = 0;
-    while (insertIndex < m_Index) {
-        const auto& current = m_RenderData[insertIndex];
+    while(insertIndex < m_Index)
+    {
+        const auto &current = m_RenderData[insertIndex];
 
-        if (renderData.position.z > current.position.z || (renderData.position.z == current.position.z && renderData.position.y > current.position.y)) {
+        if(renderData.position.z > current.position.z || (renderData.position.z == current.position.z && renderData.position.y > current.position.y))
+        {
             break;
         }
 
         ++insertIndex;
     }
 
-    for (size_t i = m_Index; i > insertIndex; --i) {
+    for(size_t i = m_Index; i > insertIndex; --i)
+    {
         m_RenderData[i] = m_RenderData[i - 1];
     }
 
@@ -55,11 +57,14 @@ void RenderBuffer::Render()
     size_t rangeIndex = 0;
 
     size_t rangeStart = 0;
-    if (m_Index == 0) return Clear();
+    if(m_Index == 0)
+        return Clear();
 
-    for (size_t i = 0; i < m_Index; i++) {
+    for(size_t i = 0; i < m_Index; i++)
+    {
         size_t nextIndex = i + 1;
-        if (nextIndex >= m_Index || m_RenderData[nextIndex].texture != m_RenderData[i].texture) {
+        if(nextIndex >= m_Index || m_RenderData[nextIndex].texture != m_RenderData[i].texture)
+        {
             // create range
             std::pair<size_t, size_t> range = {rangeStart, i};
             ranges[rangeIndex] = range;
@@ -69,13 +74,15 @@ void RenderBuffer::Render()
         }
     }
     // Render ranges
-    for (size_t i = 0; i < rangeIndex; i++) {
+    for(size_t i = 0; i < rangeIndex; i++)
+    {
         auto [rangeStart, rangeEnd] = ranges[i];
         RenderRange(rangeStart, rangeEnd);
     }
+    Clear();
 }
 
-void RenderBuffer::RenderRange(const size_t& rangeStart, const size_t& rangeEnd)
+void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 {
     std::string texture = m_RenderData[rangeStart].texture;
     std::vector<RenderData> data(m_RenderData.begin() + rangeStart, m_RenderData.begin() + rangeEnd + 1);
@@ -111,7 +118,8 @@ void RenderBuffer::RenderRange(const size_t& rangeStart, const size_t& rangeEnd)
     bool useTexture = (texture != "");
     shader.setBool("useTexture", useTexture);
 
-    if (useTexture) {
+    if(useTexture)
+    {
         glActiveTexture(GL_TEXTURE0);
         Simplex::GetResources().GetTexture(texture).Bind();
     }
@@ -121,8 +129,6 @@ void RenderBuffer::RenderRange(const size_t& rangeStart, const size_t& rangeEnd)
 
     m_VertexArray.RenderInstanced(6, count, GL_TRIANGLES);
     glBindTexture(GL_TEXTURE0, 0);
-
-    Clear();
 }
 
 void RenderBuffer::Clear()

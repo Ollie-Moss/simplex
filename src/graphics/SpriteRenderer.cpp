@@ -8,8 +8,6 @@
 #include "core/Types.h"
 #include "core/VertexArray.h"
 #include "glm/fwd.hpp"
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/string_cast.hpp"
 
 void SpriteRenderer::Queue(Transform transform, std::string texture, Color color)
 {
@@ -80,6 +78,7 @@ void SpriteRenderer::RenderQueue()
         auto [rangeStart, rangeEnd] = ranges[i];
         RenderRange(rangeStart, rangeEnd);
     }
+    Clear();
 }
 void SpriteRenderer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 {
@@ -129,7 +128,6 @@ void SpriteRenderer::RenderRange(const size_t &rangeStart, const size_t &rangeEn
     m_VertexArray.RenderInstanced(6, count, GL_TRIANGLES);
     glBindTexture(GL_TEXTURE0, 0);
 
-    Clear();
 }
 
 void SpriteRenderer::Clear()
