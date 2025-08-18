@@ -85,7 +85,15 @@ class UISystem : public System
         return padding.top + padding.bottom;
     }
 
-    float &GetElementLength(Entity entity, FlexDirection direction)
+    float &GetLengthWithAxis(Entity entity, FlexDirection direction)
+    {
+        if(direction == FlexDirection::Row)
+        {
+            return entity.GetComponent<UITransform>().size.x;
+        }
+        return entity.GetComponent<UITransform>().size.y;
+    }
+    float &GetLengthAgainstAxis(Entity entity, FlexDirection direction)
     {
         if(direction == FlexDirection::Row)
         {
@@ -99,7 +107,7 @@ class UISystem : public System
         float largest = 0.0f;
         for(Entity child : entity.GetComponent<UIElement>().children)
         {
-            float length = GetElementLength(child, direction);
+            float length = GetLengthWithAxis(child, direction);
             if(length > largest)
             {
                 largest = length;
@@ -113,7 +121,7 @@ class UISystem : public System
         float total = 0.0f;
         for(Entity child : entity.GetComponent<UIElement>().children)
         {
-            total += GetElementLength(child, direction);
+            total += GetLengthWithAxis(child, direction);
         }
         return total;
     }
@@ -151,13 +159,13 @@ class UISystem : public System
         // Size with layout direction
         if(sizingAxis == properties.direction)
         {
-            float &length = GetElementLength(entity, sizingAxis);
+            float &length = GetLengthWithAxis(entity, sizingAxis);
             length = SumChildrenLengths(entity, sizingAxis) + padding + gap;
         }
         else
         {
             // Size across layout direction
-            float &length = GetElementLength(entity, sizingAxis);
+            float &length = GetLengthWithAxis(entity, sizingAxis);
             length = GetLargestChildLength(entity, sizingAxis) + padding + gap;
         }
     }
@@ -168,7 +176,7 @@ class UISystem : public System
 
         if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
-            float &length = GetElementLength(entity, sizingAxis);
+            float &length = GetLengthWithAxis(entity, sizingAxis);
             length = (sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth());
         }
         std::vector<EntityId> growables = GetGrowableChildren(entity, sizingAxis);
@@ -181,7 +189,7 @@ class UISystem : public System
             return;
         }
 
-        float remainingLength = GetElementLength(entity, sizingAxis);
+        float remainingLength = GetLengthWithAxis(entity, sizingAxis);
         remainingLength -= GetPadding(properties.padding, sizingAxis);
 
         if(sizingAxis != properties.direction)
@@ -189,7 +197,7 @@ class UISystem : public System
             // Size across layout direction
             for(Entity child : growables)
             {
-                float &length = GetElementLength(child, sizingAxis);
+                float &length = GetLengthWithAxis(child, sizingAxis);
 
                 // std::cout << remainingLength << "\n";
                 length = remainingLength;
@@ -206,7 +214,7 @@ class UISystem : public System
 
         for(Entity child : element.children)
         {
-            remainingLength -= GetElementLength(child, sizingAxis);
+            remainingLength -= GetLengthWithAxis(child, sizingAxis);
         }
         ResizeChildren(entity, growables, remainingLength, sizingAxis);
 
@@ -223,27 +231,29 @@ class UISystem : public System
 
         while(std::abs(remainingLength) > EPSILON && maxIterations-- > 0)
         {
-            std::cout << maxIterations << "\n";
-            // Calculate total length of growables
+            // std::cout << maxIterations << "\n";
+            //  Calculate total length of growables
             float totalLength = 0.0f;
             for(Entity child : growables)
             {
-                totalLength += GetElementLength(child, sizingAxis);
+                totalLength += GetLengthWithAxis(child, sizingAxis);
             }
 
             // If totalLength is zero, distribute evenly to avoid division by zero
             if(totalLength == 0.0f)
+            {
                 totalLength = growables.size();
+            }
 
             // Distribute remainingLength proportionally (or evenly if totalLength == 0)
             float distributed = 0.0f;
             for(Entity child : growables)
             {
-                float &length = GetElementLength(child, sizingAxis);
-                float maxLength = (GetAxis(child, sizingAxis).length / 100.0f) * GetElementLength(parent, sizingAxis);
+                float &length = GetLengthWithAxis(child, sizingAxis);
+                float maxLength = (GetAxis(child, sizingAxis).length / 100.0f) * GetLengthWithAxis(parent, sizingAxis);
                 float maxDelta = maxLength - length;
 
-                float ratio = (totalLength > 0) ? (length / totalLength) : (1.0f / growables.size());
+                float ratio = (length > 0) ? (std::abs(length) / totalLength) : (1.0f / growables.size());
                 float delta = ratio * remainingLength;
 
                 delta = std::min(delta, maxDelta);
@@ -266,7 +276,7 @@ class UISystem : public System
         // Applies the size length on elements with sizing mode fixed
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
-        float &length = GetElementLength(entity, sizingAxis);
+        float &length = GetLengthWithAxis(entity, sizingAxis);
         if(GetAxis(entity, sizingAxis).mode == SizingMode::Fixed)
         {
             length = GetAxis(entity, sizingAxis).length;
@@ -282,29 +292,49 @@ class UISystem : public System
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
-        float currentOffset = (direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
+        float justifyContentOffset = (direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
+        float alignItemsOffset = (direction == FlexDirection::Column) ? properties.padding.left : properties.padding.top;
+
+        // Apply justify content positions
         if(direction == properties.direction)
         {
-            float remainingLength = GetElementLength(entity, direction);
+            float remainingLength = GetLengthWithAxis(entity, direction);
             remainingLength -= GetPadding(properties.padding, direction);
             remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
             for(Entity child : element.children)
             {
-                remainingLength -= GetElementLength(child, direction);
+                remainingLength -= GetLengthWithAxis(child, direction);
             }
             if(properties.justifyContent == JustifyContent::Center)
             {
-                currentOffset += remainingLength / 2.0f;
+                justifyContentOffset += remainingLength / 2.0f;
             }
             if(properties.justifyContent == JustifyContent::End)
             {
-                currentOffset += remainingLength;
+                justifyContentOffset += remainingLength;
             }
         }
         else
         {
+            // Apply align items positions
+            float length = GetLengthAgainstAxis(entity, direction);
+
+            for(Entity child : element.children)
+            {
+                length -= GetLengthWithAxis(child, direction);
+            }
+
+            if(properties.alignItems == AlignItems::Center)
+            {
+                justifyContentOffset += length / 2.0f;
+            }
+            if(properties.alignItems == AlignItems::End)
+            {
+                justifyContentOffset += length;
+            }
         }
 
+        // Calculate offset based on children
         for(Entity child : element.children)
         {
             auto &childTransform = child.GetComponent<UITransform>();
@@ -312,13 +342,13 @@ class UISystem : public System
             glm::vec2 localPos = parentPosition;
             if(properties.direction == FlexDirection::Row)
             {
-                localPos += glm::vec2(currentOffset, properties.padding.top);
-                currentOffset += childTransform.size.x + properties.gap;
+                localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
+                justifyContentOffset += childTransform.size.x + properties.gap;
             }
             else
             {
-                localPos += glm::vec2(properties.padding.left, currentOffset);
-                currentOffset += childTransform.size.y + properties.gap;
+                localPos += glm::vec2(alignItemsOffset, justifyContentOffset);
+                justifyContentOffset += childTransform.size.y + properties.gap;
             }
 
             // Assign the child's position relative to parent
