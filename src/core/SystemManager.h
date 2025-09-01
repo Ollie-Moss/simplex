@@ -3,6 +3,7 @@
 #include "systems/System.h"
 #include <cassert>
 #include <memory>
+#include <ostream>
 #include <typeinfo>
 #include <unordered_map>
 
@@ -19,10 +20,20 @@ class SystemManager {
         m_Systems.insert({typeName, system});
         return system;
     }
+    void StartSystems() {
+        for (auto const &[name, system] : m_Systems) {
+            system->Start();
+        }
+    }
 
     void UpdateSystems() {
         for (auto const &[name, system] : m_Systems) {
             system->Update();
+        }
+    }
+    void FixedUpdateSystems() {
+        for (auto const &[name, system] : m_Systems) {
+            system->FixedUpdate();
         }
     }
 
@@ -38,11 +49,15 @@ class SystemManager {
 
     void EntitySignatureChanged(EntityId entity, Signature entitySignature) {
         // Notify each system that an entity's signature changed
+        //std::cout << "Entity: " << entity << " Signature Changed" << std::endl;
         for (auto const &[type, system] : m_Systems) {
             auto const &systemSignature = system->m_Signature;
 
             // Entity signature matches system signature - insert into set
             if ((entitySignature & systemSignature) == systemSignature) {
+                // std::cout << "Adding Enttiy to" << type << std::endl;
+                // std::cout << "System: " << systemSignature << std::endl;
+                // std::cout << "Entity: " << entitySignature << std::endl;
                 system->m_Entities.insert(entity);
             }
             // Entity signature does not match system signature - erase from set

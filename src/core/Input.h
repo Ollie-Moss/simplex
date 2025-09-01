@@ -7,8 +7,9 @@
 #include <map>
 #include <vector>
 
-class Input {
-  public:
+class Input
+{
+   public:
     Input();
     ~Input();
 
@@ -21,18 +22,16 @@ class Input {
     bool OnMouseButtonDown(int button);
 
     glm::vec2 GetMousePosition();
+    glm::vec2 GetMouseDelta();
+
+    float GetScrollDelta();
 
     void PollEvents();
 
-    void AddScrollCallback(std::function<void(float)> callback) {
-        m_ScrollCallbacks.push_back(callback);
-    };
-
-    void CallScrollCallbacks(float yOffset);
     void SetMouseButtonState(int button, bool state);
     void SetKeyState(int button, bool state);
 
-  private:
+   private:
     void ResetMouseButtons();
     void ResetKeys();
 
@@ -40,9 +39,13 @@ class Input {
     static void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-  private:
+   private:
     std::map<int, bool> m_MouseButtonState;
     std::map<int, bool> m_KeyState;
+
+    glm::vec2 m_CurrentMousePosition;
+    glm::vec2 m_LastMousePosition;
+    float m_Scroll;
 
     std::vector<std::function<void(float)>> m_ScrollCallbacks;
 };

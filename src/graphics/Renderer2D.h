@@ -1,35 +1,29 @@
 #pragma once
 
-#include "core/Buffer.h"
-#include "core/VertexArray.h"
-#include "glm/glm.hpp"
-#include <array>
-#include <map>
-#include <set>
+#include "core/Types.h"
+#include "graphics/RenderBuffer.h"
+#include "graphics/SpriteRenderer.h"
+#include "graphics/TextRenderer.h"
+#include <memory>
 #include <string>
 
-struct Sprite {
-    std::string texture;
-    glm::vec3 position;
-    glm::vec2 size;
-    glm::vec4 color;
-};
-
-class Renderer2D {
-
+class Renderer2D
+{
   public:
     Renderer2D() = default;
     ~Renderer2D() = default;
 
-    void Queue(Sprite sprite);
+    bool Init();
+
+    void QueueWorldObject(Transform transform, std::string texture = "", Color color = OPAQUE);
+    void QueueUIObject(Transform transform, std::string texture = "", Color color = OPAQUE);
     void Render();
 
-  private:
-    std::map<std::string, VertexArray> m_VertexArrays;
-    std::map<std::string, std::array<Buffer, 3>> m_Buffers;
-    std::map<std::string, std::vector<glm::vec3>> m_Positions;
-    std::map<std::string, std::vector<glm::vec2>> m_Sizes;
-    std::map<std::string, std::vector<glm::vec4>> m_Colors;
+    void RenderImmediate(Transform transform, std::string texture = "", Color color = OPAQUE);
+    void RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName);
 
-    std::set<std::string> m_Textures;
+  private:
+    std::unique_ptr<RenderBuffer> m_WorldRenderBuffer;
+    std::unique_ptr<SpriteRenderer> m_SpriteRenderer;
+    std::unique_ptr<TextRenderer> m_TextRenderer;
 };

@@ -1,16 +1,14 @@
 #!/bin/bash
 
-set -e  # Exit on any error
+# Exit on any error
+set -e  
 
-# Step into build directory
 cd build
 
-# Run CMake and build
-cmake ..
+# Allow cmake v3.5 for freetype build
+cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..  
 make
 
-# Step back to project root
+# Run game from project root
 cd ..
-
-# Run the game
 ./build/GameEngine
