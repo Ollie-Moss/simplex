@@ -1,13 +1,49 @@
-BasedOnStyle: Google 
 IndentWidth: 4
+ContinuationIndentWidth: 4
 TabWidth: 4
-SortIncludes: false
-ColumnLimit: 200
 
-AlwaysBreakTemplateDeclarations: Yes
-AllowShortFunctionsOnASingleLine: Empty
-
+AlignAfterOpenBracket: Align
 AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
 
-BreakBeforeBraces: Linux
-AllowAllArgumentsOnNextLine: true
+# Uncommenting these lines will sometimes result in lines following an
+# if(){} or for(){} block being attached to the end of the block.
+# AllowShortIfStatementsOnASingleLine: true
+# AllowShortLoopsOnASingleLine: true
+
+# AlwaysBreakAfterDefinitionReturnType: None
+# AlwaysBreakAfterReturnType: None
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+Cpp11BracedListStyle: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+Language: Cpp
+ColumnLimit: 0
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: None
+PenaltyExcessCharacter: 100
+PenaltyReturnTypeOnItsOwnLine: 1
+PointerAlignment: Right
+SortIncludes: false
+SpaceBeforeParens: Never
+SpacesInContainerLiterals: false
+Standard: Cpp11
+

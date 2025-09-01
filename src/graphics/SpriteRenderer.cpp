@@ -1,56 +1,55 @@
-#include "RenderBuffer.h"
+#include "SpriteRenderer.h"
+#include "graphics/Shader.h"
 #include <array>
 #include <cstddef>
-#include <cstdint>
 #include <cstdio>
-#include <ranges>
-#include <stdexcept>
-#include <utility>
 #include "core/Buffer.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
 #include "core/VertexArray.h"
 #include "glm/fwd.hpp"
 
-RenderBuffer::RenderBuffer()
+void SpriteRenderer::Queue(Transform transform, std::string texture, Color color)
 {
-    m_QuadBuffer.Fill<glm::vec3>(m_QuadData);
+    RenderQueueData data = {.position = transform.position, .size = transform.size, .color = color, .texture = texture};
+    m_RenderData[m_Index] = data;
+    m_Index++;
 }
-RenderBuffer::~RenderBuffer() {}
-
-void RenderBuffer::Insert(const RenderQueueData &renderData)
+void SpriteRenderer::RenderImmediate(Transform transform, std::string texture, Color color)
 {
-    if(m_Index >= m_RenderData.size())
-        throw std::out_of_range("RenderBuffer is full");
+    RenderData data = {.position = transform.position, .size = transform.size, .color = color};
+    m_InstanceBuffer.Fill<RenderData>(data);
 
-    size_t insertIndex = 0;
-    while(insertIndex < m_Index)
+    m_VertexArray.BindProperty<RenderData, glm::vec3>(0, offsetof(RenderData, position) / sizeof(float), &m_InstanceBuffer);
+    m_VertexArray.BindProperty<RenderData, glm::vec2>(1, offsetof(RenderData, size) / sizeof(float), &m_InstanceBuffer);
+    m_VertexArray.BindProperty<RenderData, glm::vec4>(2, offsetof(RenderData, color) / sizeof(float), &m_InstanceBuffer);
+    m_VertexArray.AttributeDivisor(0, 1);
+    m_VertexArray.AttributeDivisor(1, 1);
+    m_VertexArray.AttributeDivisor(2, 1);
+    m_VertexArray.Bind<glm::vec3>(3, &m_QuadBuffer);
+
+    Shader shader = Simplex::GetResources().GetShader("SpriteShader");
+    shader.use();
+
+    // set projection
+    glm::mat4 projection = Simplex::GetView().CalculateScreenSpaceProjection();
+    shader.setMat4("projection", projection);
+
+    // set texture
+    bool useTexture = (texture != "");
+    shader.setBool("useTexture", useTexture);
+
+    if(useTexture)
     {
-        const auto &current = m_RenderData[insertIndex];
-
-        if(renderData.position.z > current.position.z || (renderData.position.z == current.position.z && renderData.position.y > current.position.y))
-        {
-            break;
-        }
-
-        ++insertIndex;
+        glActiveTexture(GL_TEXTURE0);
+        Simplex::GetResources().GetTexture(texture).Bind();
     }
 
-    for(size_t i = m_Index; i > insertIndex; --i)
-    {
-        m_RenderData[i] = m_RenderData[i - 1];
-    }
-
-    m_RenderData[insertIndex] = renderData;
-    ++m_Index;
+    m_VertexArray.RenderInstanced(6, 1);
+    glBindTexture(GL_TEXTURE0, 0);
 }
 
-int RenderBuffer::Size()
-{
-    return static_cast<int>(m_Index);
-}
-
-void RenderBuffer::Render()
+void SpriteRenderer::RenderQueue()
 {
     // Create Ranges
     std::array<std::pair<size_t, size_t>, MAX_BUFFER_SIZE> ranges;
@@ -81,8 +80,7 @@ void RenderBuffer::Render()
     }
     Clear();
 }
-
-void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
+void SpriteRenderer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 {
     std::string texture = m_RenderData[rangeStart].texture;
     std::vector<RenderData> data(m_RenderData.begin() + rangeStart, m_RenderData.begin() + rangeEnd + 1);
@@ -111,7 +109,7 @@ void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 
     // set projection
     glm::mat4 projection;
-    projection = Simplex::GetView().CalculateWorldSpaceProjection();
+    projection = Simplex::GetView().CalculateScreenSpaceProjection();
     shader.setMat4("projection", projection);
 
     // set texture
@@ -129,9 +127,10 @@ void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 
     m_VertexArray.RenderInstanced(6, count, GL_TRIANGLES);
     glBindTexture(GL_TEXTURE0, 0);
+
 }
 
-void RenderBuffer::Clear()
+void SpriteRenderer::Clear()
 {
     m_Index = 0;
 }

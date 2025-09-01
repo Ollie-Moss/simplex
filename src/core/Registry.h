@@ -3,13 +3,14 @@
 #include "core/ComponentManager.h"
 #include "core/EntityManager.h"
 #include "core/SystemManager.h"
+#include "core/Types.h"
 #include <array>
 #include <cstddef>
 #include <memory>
 
 class Registry
 {
-   public:
+  public:
     Registry() {};
     ~Registry() = default;
 
@@ -46,7 +47,6 @@ class Registry
         signature.set(componentId, true);
         m_EntityManager.SetSignature(entity, signature);
         m_SystemManager.EntitySignatureChanged(entity, signature);
-
     }
 
     template <typename T>
@@ -65,6 +65,7 @@ class Registry
     template <typename T>
     T &GetComponent(EntityId entity)
     {
+        assert(entity <= MAX_ENTITIES && "CANNOT ACCESS NULL ENTITY COMPONENTS");
         return m_ComponentManager.GetComponent<T>(entity);
     }
 
@@ -74,9 +75,17 @@ class Registry
         return m_SystemManager.RegisterSystem<T>();
     }
 
+    void Start()
+    {
+        m_SystemManager.StartSystems();
+    }
     void Update()
     {
         m_SystemManager.UpdateSystems();
+    }
+    void FixedUpdate()
+    {
+        m_SystemManager.FixedUpdateSystems();
     }
 
     template <typename... T>
@@ -94,10 +103,12 @@ class Registry
         Signature viewSignature = CreateSignature<T...>();
         std::vector<EntityId> entities;
 
-        for (size_t i = 0; i < entityIndex; i++) {
+        for(size_t i = 0; i < entityIndex; i++)
+        {
             EntityId entity = m_Entities[i];
             Signature entitySignature = m_EntityManager.GetSignature(entity);
-            if (entitySignature == viewSignature) {
+            if(entitySignature == viewSignature)
+            {
                 entities.push_back(entity);
             }
         }
@@ -105,7 +116,7 @@ class Registry
         return entities;
     }
 
-   private:
+  private:
     std::array<EntityId, MAX_ENTITIES> m_Entities;
 
     EntityManager m_EntityManager;

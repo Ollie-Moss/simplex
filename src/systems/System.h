@@ -11,5 +11,6 @@ class System {
     Signature m_Signature;
 
     virtual void Start() {}
+    virtual void FixedUpdate() {}
     virtual void Update() {}
 };

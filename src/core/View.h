@@ -10,10 +10,9 @@
 #include <string_view>
 #include <string>
 
-
 class View
 {
-   public:
+  public:
     View();
     ~View();
 
@@ -23,6 +22,8 @@ class View
     void SetWindowDimensions(int width, int height);
     int &GetWindowHeight();
     int &GetWindowWidth();
+
+    bool HasWindowResized();
 
     // Camera
     void SetCamera(Transform transform, Camera camera);
@@ -44,11 +45,13 @@ class View
         return m_Window;
     }
 
-   private:
+  private:
     GLFWwindow *m_Window;
     int m_Width;
     int m_Height;
     std::string m_Title;
+
+    bool m_HasWindowResized = true;
 
     RectBounds<float> m_CameraBounds;
 };

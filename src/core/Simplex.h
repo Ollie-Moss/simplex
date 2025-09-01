@@ -1,12 +1,14 @@
 #pragma once
 
 #include "core/Scene.h"
-#include "graphics/Renderer2D.h"
 #include "Registry.h"
 #include "core/ResourceManager.h"
 #include "core/View.h"
 #include "core/Input.h"
+#include "graphics/Renderer2D.h"
 #include <cassert>
+
+class Renderer2D;
 
 class Simplex {
   public:
