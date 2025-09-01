@@ -69,7 +69,7 @@ int main()
 
         auto elem = element(
             {
-                .sizing = {.width = GROW, .height = GROW},
+                .sizing = {.width = GROW, .height = GROW },
                 .direction = FlexDirection::Column,
                 .padding = 10.0_p,
                 .gap = 10.0f,
@@ -78,21 +78,29 @@ int main()
                 // .alignSelf = AlignItems::Center,
             },
             {
-                element({.sizing{.width = GROW, .height = GROW}},
-                        {
-                            element(
-                                {
-                                    .sizing = {.width = 20.0_percent, .height = GROW},
-                                    .padding = 10.0_p,
-                                    .color = GREEN,
-                                }),
-                            element(
-                                {
-                                    .sizing = {.width = GROW, .height = GROW},
-                                    .padding = 10.0_p,
-                                    .color = RED,
-                                }),
-                        }),
+                element(
+                    {
+                        .sizing = {.width = GROW, .height = GROW},
+                        .direction = FlexDirection::Row,
+                        .padding = 10.0_p,
+                        .color = YELLOW,
+                        .alignItems = AlignItems::Start,
+                        .justifyContent = JustifyContent::Start,
+                    },
+                    {
+                        element(
+                            {
+                                .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                                .padding = 10.0_p,
+                                .color = GREEN,
+                            }),
+                        element(
+                            {
+                                .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                                .padding = 10.0_p,
+                                .color = RED,
+                            }),
+                    }),
                 element({.sizing{.width = GROW, .height = GROW}},
                         {
                             element({

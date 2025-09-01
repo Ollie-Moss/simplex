@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <cstddef>
 #include <string>
 
 class UISystem : public System
@@ -64,7 +65,7 @@ class UISystem : public System
         GrowSize(entity, FlexDirection::Column);
 
         // Calculate Positions
-        CalculatePositions(entity, glm::vec2(0.0f), props.direction);
+        CalculatePositions(entity, glm::vec2(0.0f));
     }
 
     Axis &GetAxis(Entity entity, FlexDirection direction)
@@ -84,6 +85,17 @@ class UISystem : public System
         }
         return padding.top + padding.bottom;
     }
+    float GetParentPadding(Entity entity, FlexDirection direction)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        Entity parent = element.parent;
+        if(parent == NULL_ENTITY)
+        {
+            return 0.0f;
+        }
+        auto [parentElement, parentProperties] = parent.GetComponents<UIElement, UIProperties>();
+        return GetPadding(parentProperties.padding, direction);
+    }
 
     float &GetLengthWithAxis(Entity entity, FlexDirection direction)
     {
@@ -95,7 +107,7 @@ class UISystem : public System
     }
     float &GetLengthAgainstAxis(Entity entity, FlexDirection direction)
     {
-        if(direction == FlexDirection::Row)
+        if(direction != FlexDirection::Row)
         {
             return entity.GetComponent<UITransform>().size.x;
         }
@@ -265,9 +277,9 @@ class UISystem : public System
 
             remainingLength -= distributed;
 
-            // If no meaningful distribution happened, break early
-            if(std::abs(distributed) < EPSILON)
-                break;
+            // // If no meaningful distribution happened, break early
+            // if(std::abs(distributed) < EPSILON)
+            //     break;
         }
     }
 
@@ -288,50 +300,58 @@ class UISystem : public System
         }
     }
 
-    void CalculatePositions(Entity entity, glm::vec2 parentPosition, FlexDirection direction)
+    void CalculatePositions(Entity entity, glm::vec2 parentPosition)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
-        float justifyContentOffset = (direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
-        float alignItemsOffset = (direction == FlexDirection::Column) ? properties.padding.left : properties.padding.top;
+        Entity parent = element.parent;
+
+        float justifyContentOffset = (properties.direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
+        float alignItemsOffset = (properties.direction == FlexDirection::Column) ? properties.padding.left : properties.padding.top;
 
         // Apply justify content positions
-        if(direction == properties.direction)
+        float remainingLength = GetLengthWithAxis(entity, properties.direction);
+
+        // remainingLength -= GetParentPadding(properties.padding, direction);
+        remainingLength -= GetPadding(properties.padding, properties.direction);
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        for(Entity child : element.children)
         {
-            float remainingLength = GetLengthWithAxis(entity, direction);
-            remainingLength -= GetPadding(properties.padding, direction);
-            remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
-            for(Entity child : element.children)
+            remainingLength -= GetLengthWithAxis(child, properties.direction);
+        }
+        if(properties.justifyContent == JustifyContent::Center)
+        {
+            justifyContentOffset += remainingLength / 2.0f;
+        }
+        if(properties.justifyContent == JustifyContent::End)
+        {
+            justifyContentOffset += remainingLength;
+        }
+
+        // Apply align items positions
+        float length = GetLengthAgainstAxis(entity, properties.direction);
+
+        // Against axis padding (invert the direction to get the correct padding)
+        length -= GetPadding(properties.padding, (properties.direction == FlexDirection::Row ? FlexDirection::Column : FlexDirection::Row));
+
+        float largestLength = 0;
+        for(Entity child : element.children)
+        {
+            float length = GetLengthAgainstAxis(child, properties.direction);
+            if(length > largestLength)
             {
-                remainingLength -= GetLengthWithAxis(child, direction);
-            }
-            if(properties.justifyContent == JustifyContent::Center)
-            {
-                justifyContentOffset += remainingLength / 2.0f;
-            }
-            if(properties.justifyContent == JustifyContent::End)
-            {
-                justifyContentOffset += remainingLength;
+                largestLength = length;
             }
         }
-        else
+        length -= largestLength;
+
+        if(properties.alignItems == AlignItems::Center)
         {
-            // Apply align items positions
-            float length = GetLengthAgainstAxis(entity, direction);
-
-            for(Entity child : element.children)
-            {
-                length -= GetLengthWithAxis(child, direction);
-            }
-
-            if(properties.alignItems == AlignItems::Center)
-            {
-                justifyContentOffset += length / 2.0f;
-            }
-            if(properties.alignItems == AlignItems::End)
-            {
-                justifyContentOffset += length;
-            }
+            alignItemsOffset += length / 2.0f;
+        }
+        if(properties.alignItems == AlignItems::End)
+        {
+            alignItemsOffset += length;
         }
 
         // Calculate offset based on children
@@ -355,7 +375,7 @@ class UISystem : public System
             childTransform.position = localPos;
 
             // Recursively calculate children's positions
-            CalculatePositions(child, localPos, properties.direction);
+            CalculatePositions(child, localPos);
         }
     }
 
