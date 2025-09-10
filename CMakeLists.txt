@@ -20,17 +20,11 @@ file(GLOB_RECURSE SOURCE_FILES
     "src/*.c" 
 )
 
-set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
-
-file(GLOB SHADERS ${SHADER_DIR}/*)
 
 add_library(GameEngine ${SOURCE_FILES})
 target_include_directories(GameEngine PUBLIC 
     "src/"
     "vendor/stb_image"
-)
-target_compile_definitions(GameEngine
-    PUBLIC SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/"
 )
 
 target_link_libraries(GameEngine
@@ -51,6 +45,14 @@ target_link_libraries(GameEngine
     -O0
 )
 
+set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders)
+set(SPRITES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/sprites)
+set(FONTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/fonts)
+
+file(GLOB SHADERS ${SHADER_DIR}/*)
+file(GLOB SPRITES ${SPRITES_DIR}/*)
+file(GLOB FONTS ${FONTS_DIR}/*)
+
 # Copy shaders to the binary dir (so relative paths work)
 foreach(shader ${SHADERS})
     add_custom_command(
@@ -60,3 +62,24 @@ foreach(shader ${SHADERS})
             $<TARGET_FILE_DIR:GameEngine>
     )
 endforeach()
+
+foreach(sprite ${SPRITES})
+    add_custom_command(
+        TARGET GameEngine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${sprite}
+            $<TARGET_FILE_DIR:GameEngine>
+    )
+endforeach()
+
+foreach(font ${FONTS})
+    add_custom_command(
+        TARGET GameEngine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${font}
+            $<TARGET_FILE_DIR:GameEngine>
+    )
+endforeach()
+
+add_executable(build "examples/main.cpp")
+target_link_libraries(build GameEngine)

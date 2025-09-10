@@ -10,5 +10,5 @@ cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
 make
 
 # Run game from project root
+./build
 cd ..
-./build/GameEngine

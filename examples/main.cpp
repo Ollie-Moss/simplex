@@ -26,12 +26,18 @@ int main()
         m_Registry.RegisterSystem<UISystem>();
 
         // Entities
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)}, {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)}, {.color = BLUE});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)}, {.color = BLUE});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)},
+                                             {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)},
+                                             {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)},
+                                             {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)},
+                                             {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)},
+                                             {.color = BLUE});
+        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)},
+                                             {.color = BLUE});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
@@ -49,8 +55,10 @@ int main()
                         .gap = 10.0f,
                     },
                     {
-                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW}, .color = BLUE}),
+                        element({.sizing = {.width = GROW, .height = GROW},
+                                 .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW},
+                                 .color = BLUE}),
                     }),
                 element(
                     {
@@ -61,15 +69,18 @@ int main()
                         .gap = 10.0f,
                     },
                     {
-                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW}, .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW}, .color = BLUE}),
+                        element({.sizing = {.width = GROW, .height = GROW},
+                                 .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW},
+                                 .color = RED}),
+                        element({.sizing = {.width = GROW, .height = GROW},
+                                 .color = BLUE}),
                     }),
             });
 
         auto elem = element(
             {
-                .sizing = {.width = GROW, .height = GROW },
+                .sizing = {.width = GROW, .height = GROW},
                 .direction = FlexDirection::Column,
                 .padding = 10.0_p,
                 .gap = 10.0f,
@@ -88,18 +99,16 @@ int main()
                         .justifyContent = JustifyContent::Start,
                     },
                     {
-                        element(
-                            {
-                                .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
-                                .padding = 10.0_p,
-                                .color = GREEN,
-                            }),
-                        element(
-                            {
-                                .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
-                                .padding = 10.0_p,
-                                .color = RED,
-                            }),
+                        element({
+                            .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                            .padding = 10.0_p,
+                            .color = GREEN,
+                        }),
+                        element({
+                            .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                            .padding = 10.0_p,
+                            .color = RED,
+                        }),
                     }),
                 element({.sizing{.width = GROW, .height = GROW}},
                         {

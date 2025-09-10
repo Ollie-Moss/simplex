@@ -20,15 +20,15 @@ const Shader &ResourceManager::LoadShader(const char *vShaderFile, const char *f
 bool ResourceManager::Init()
 {
     stbi_set_flip_vertically_on_load(true);
+    
+    LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
+    LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
 
-    LoadShader(std::string(std::string(SHADER_PATH) + "vSpriteShader.glsl").c_str(), std::string(std::string(SHADER_PATH) + "fSpriteShader.glsl").c_str(), "SpriteShader");
-    LoadShader(std::string(std::string(SHADER_PATH) + "vTextShader.glsl").c_str(), std::string(std::string(SHADER_PATH) + "fTextShader.glsl").c_str(), "TextShader");
-
-    //LoadTexture("GRASS_TILE_1", 1.0f, "sprites/grass_tile_1.png");
+    LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
     // Buildings
 
     // Fonts
-    //LoadFont("Arial", "fonts/arial.ttf");
+    LoadFont("Arial", "arial.ttf");
     return true;
 };
 
