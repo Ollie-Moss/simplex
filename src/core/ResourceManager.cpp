@@ -10,8 +10,6 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
-#define SHADER_PATH
-
 const Shader &ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile, std::string name)
 {
     Shader shader;
