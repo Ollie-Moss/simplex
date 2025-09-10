@@ -24,26 +24,14 @@ set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
 
 file(GLOB SHADERS ${SHADER_DIR}/*)
 
-# Copy shaders to the binary dir (so relative paths work)
-foreach(shader ${SHADERS})
-    add_custom_command(
-        TARGET GameEngine POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${shader}
-            $<TARGET_FILE_DIR:GameEngine>
-    )
-endforeach()
-
-target_compile_definitions(GameEngine
-    PUBLIC SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/"
-)
-
 add_library(GameEngine ${SOURCE_FILES})
 target_include_directories(GameEngine PUBLIC 
     "src/"
     "vendor/stb_image"
 )
-
+target_compile_definitions(GameEngine
+    PUBLIC SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/"
+)
 
 target_link_libraries(GameEngine
     glad
@@ -63,3 +51,12 @@ target_link_libraries(GameEngine
     -O0
 )
 
+# Copy shaders to the binary dir (so relative paths work)
+foreach(shader ${SHADERS})
+    add_custom_command(
+        TARGET GameEngine POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${shader}
+            $<TARGET_FILE_DIR:GameEngine>
+    )
+endforeach()
