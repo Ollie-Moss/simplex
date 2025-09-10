@@ -19,7 +19,8 @@ file(GLOB_RECURSE SOURCE_FILES
     "src/*.cpp" 
     "src/*.c" 
 )
-add_executable(GameEngine ${SOURCE_FILES})
+
+add_library(GameEngine ${SOURCE_FILES})
 target_include_directories(GameEngine PUBLIC 
     "src/"
     "vendor/stb_image"

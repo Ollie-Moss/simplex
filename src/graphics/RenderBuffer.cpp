@@ -1,9 +1,7 @@
 #include "RenderBuffer.h"
 #include <array>
 #include <cstddef>
-#include <cstdint>
 #include <cstdio>
-#include <ranges>
 #include <stdexcept>
 #include <utility>
 #include "core/Buffer.h"
