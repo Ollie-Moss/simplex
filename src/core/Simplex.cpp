@@ -1,6 +1,7 @@
 #include "Simplex.h"
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
+#include "graphics/QuadRenderer.h"
 #include <chrono>
 #include <string_view>
 #include <sys/types.h>
@@ -9,6 +10,7 @@
 Simplex::Simplex()
 {
     s_Instance = this;
+    m_RendererManager.Register<Quad, QuadRenderer>();
 }
 
 bool Simplex::Init()
@@ -103,8 +105,12 @@ void Simplex::Tick()
             GetRegistry().FixedUpdate();
             accumulator = 0.0;
         }
+
         GetRegistry().Update();
         m_Renderer.Render();
+
+        Quad quad = {};
+        m_RendererManager.Submit(&quad);
 
         m_View.SwapBuffers();
     }

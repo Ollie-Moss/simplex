@@ -7,7 +7,7 @@ Simplex is a c++ library for creating high performant 2D games.
 - [x] Input handling and window management using `glfw`
 - [x] 2D Rendering with `OpenGL` *requires cleaning up*
 - [ ] UI - *In progress*
-- [ ] Audio via `FMOD`
+- [ ] Audio via `OpenAL`
 - [ ] Refactor asset management
 - [ ] Scene management
 - [ ] Support 'modules' for different aspects of rendering, e.g. sprite renderer, line renderer, etc

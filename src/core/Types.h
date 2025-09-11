@@ -7,6 +7,7 @@
 
 const uint32_t MAX_BUFFER_SIZE = 1000;
 const uint32_t MAX_RENDER_BUFFERS = 100;
+const uint32_t MAX_RENDERERS = 20;
 
 using TextureName = std::string;
 

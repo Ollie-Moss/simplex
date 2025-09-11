@@ -6,6 +6,7 @@
 #include "core/View.h"
 #include "core/Input.h"
 #include "graphics/Renderer2D.h"
+#include "graphics/RendererManager.h"
 #include <cassert>
 
 class Renderer2D;
@@ -36,6 +37,7 @@ class Simplex {
     Input m_Input;
     ResourceManager m_ResourceManager;
     Renderer2D m_Renderer;
+    RendererManager m_RendererManager;
 
     Scene m_CurrentScene;
 
