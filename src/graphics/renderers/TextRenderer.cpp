@@ -1,8 +1,9 @@
-#include "graphics/TextRenderer.h"
+#include "graphics/renderers/TextRenderer.h"
 #include "glm/fwd.hpp"
-#include "graphics/Font.h"
+#include "graphics/text/Font.h"
 #include "core/Simplex.h"
-#include "graphics/Shader.h"
+#include "graphics/util/Shader.h"
+#include "graphics/util/RenderSpace.h"
 
 TextRenderer::TextRenderer()
 {
@@ -16,7 +17,7 @@ void TextRenderer::RenderText(std::string text, glm::vec2 position, glm::vec2 si
     shader.use();
 
     shader.setVec3("textColor", color);
-    glm::mat4 projection = Simplex::GetView().CalculateScreenSpaceProjection();
+    glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
     shader.setMat4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);

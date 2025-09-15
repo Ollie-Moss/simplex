@@ -5,15 +5,11 @@
 #include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
-#include "glm/glm.hpp"
-#include "graphics/Renderer2D.h"
-#include "gui/UIBuilder.h"
+#include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/util/RenderSpace.h"
 #include "gui/UIComponents.h"
 #include <algorithm>
 #include <cmath>
-#include <complex>
-#include <cstddef>
-#include <string>
 
 class UISystem : public System
 {
@@ -382,7 +378,9 @@ class UISystem : public System
     void RenderElements(Entity entity)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-        Simplex::GetRenderer().QueueUIObject({.position = glm::vec3(transform.position, 0), .size = transform.size}, NO_TEXTURE, properties.color);
+
+        SpriteCommand cmd = {.sprite = {NO_TEXTURE, properties.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        Simplex::GetRendererManager().Submit<SpriteCommand>(&cmd);
         for(Entity child : element.children)
         {
             RenderElements(child);

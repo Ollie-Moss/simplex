@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
-#include "graphics/IRenderer.h"
+#include "graphics/renderers/IRenderer.h"
 
 class RendererManager
 {
@@ -30,6 +30,15 @@ class RendererManager
 
         std::shared_ptr<IRendererBase> renderer = GetRenderer<TData>();
         renderer->SubmitVoid(data);
+    }
+
+    void Render()
+    {
+        for(size_t i = 0; i < m_Index; ++i)
+        {
+            std::shared_ptr<IRendererBase> renderer = m_Renderers[i];
+            renderer->Render();
+        }
     }
 
   public:

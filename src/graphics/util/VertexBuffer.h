@@ -6,21 +6,21 @@
 #include <span>
 #include <vector>
 
-struct Buffer {
+struct VertexBuffer {
     unsigned int ID;
 
-    Buffer()
+    VertexBuffer()
     {
         glGenBuffers(1, &ID);
     }
 
     template <typename T>
-    Buffer(std::initializer_list<T> buf) : Buffer()
+    VertexBuffer(std::initializer_list<T> buf) : VertexBuffer()
     {
         Fill<T>(buf);
     }
 
-    ~Buffer()
+    ~VertexBuffer()
     {
         glDeleteBuffers(1, &ID);
     }

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core/Buffer.h"
+#include "VertexBuffer.h"
 #include "glad/glad.h"
 #include "glm/fwd.hpp"
 #include <glm/glm.hpp>
 
-struct QuadBuffer : public Buffer {
-    QuadBuffer() : Buffer()
+struct QuadVertexBuffer : public VertexBuffer {
+    QuadVertexBuffer() : VertexBuffer()
     {
         Fill<glm::vec3>(m_QuadData);
     }

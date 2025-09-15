@@ -1,7 +1,7 @@
 #include "ResourceManager.h"
-#include "graphics/Font.h"
-#include "graphics/Shader.h"
-#include "graphics/Texture.h"
+#include "graphics/text/Font.h"
+#include "graphics/util/Shader.h"
+#include "graphics/util/Texture.h"
 #include <map>
 
 #define STB_IMAGE_IMPLEMENTATION

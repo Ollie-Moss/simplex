@@ -1,7 +1,9 @@
 #include "Simplex.h"
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
-#include "graphics/QuadRenderer.h"
+#include "graphics/RendererManager.h"
+#include "graphics/renderers/SpriteRenderer.h"
+#include "graphics/render-commands/SpriteCommand.h"
 #include <chrono>
 #include <string_view>
 #include <sys/types.h>
@@ -10,7 +12,6 @@
 Simplex::Simplex()
 {
     s_Instance = this;
-    m_RendererManager.Register<Quad, QuadRenderer>();
 }
 
 bool Simplex::Init()
@@ -24,9 +25,7 @@ bool Simplex::Init()
     if(!m_ResourceManager.Init())
         return false;
 
-    if(!m_Renderer.Init())
-        return false;
-
+    m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
     return true;
 }
 
@@ -58,14 +57,17 @@ ResourceManager &Simplex::GetResources()
 {
     return Get().m_ResourceManager;
 }
-Renderer2D &Simplex::GetRenderer()
+
+RendererManager &Simplex::GetRendererManager()
 {
-    return Get().m_Renderer;
+    return Get().m_RendererManager;
 }
+
 Scene &Simplex::GetScene()
 {
     return Get().m_CurrentScene;
 }
+
 Registry &Simplex::GetRegistry()
 {
     return GetScene().m_Registry;
@@ -107,10 +109,7 @@ void Simplex::Tick()
         }
 
         GetRegistry().Update();
-        m_Renderer.Render();
-
-        Quad quad = {};
-        m_RendererManager.Submit(&quad);
+        m_RendererManager.Render();
 
         m_View.SwapBuffers();
     }

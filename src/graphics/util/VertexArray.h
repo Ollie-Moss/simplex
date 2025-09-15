@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Buffer.h"
+#include "VertexBuffer.h"
 
 class VertexArray
 {
@@ -11,7 +11,7 @@ class VertexArray
     void Bind();
 
     template <typename T>
-    void Bind(int location, Buffer *buffer)
+    void Bind(int location, VertexBuffer *buffer)
     {
         glBindVertexArray(m_Id);
         glBindBuffer(GL_ARRAY_BUFFER, buffer->ID);
@@ -19,7 +19,7 @@ class VertexArray
         glVertexAttribPointer(location, sizeof(T) / sizeof(float), GL_FLOAT, GL_FALSE, 0, (void *)0);
     }
     template <typename TStruct, typename TProperty>
-    void BindProperty(int location, int offset, Buffer *buffer)
+    void BindProperty(int location, int offset, VertexBuffer *buffer)
     {
         glBindVertexArray(m_Id);
         glBindBuffer(GL_ARRAY_BUFFER, buffer->ID);

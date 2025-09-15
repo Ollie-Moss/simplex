@@ -1,67 +1,49 @@
-#include "RenderBuffer.h"
+#include "SpriteRenderer.h"
+#include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/util/RenderSpace.h"
+#include "graphics/util/Shader.h"
 #include <array>
 #include <cstddef>
 #include <cstdio>
-#include <stdexcept>
-#include <utility>
-#include "core/Buffer.h"
+#include "graphics/util/VertexBuffer.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
-#include "core/VertexArray.h"
+#include "graphics/util/VertexArray.h"
 #include "glm/fwd.hpp"
 
-RenderBuffer::RenderBuffer()
+void SpriteRenderer::Submit(const SpriteCommand &data)
 {
-    m_QuadBuffer.Fill<glm::vec3>(m_QuadData);
-}
-RenderBuffer::~RenderBuffer() {}
-
-void RenderBuffer::Insert(const RenderQueueData &renderData)
-{
-    if(m_Index >= m_RenderData.size())
-        throw std::out_of_range("RenderBuffer is full");
-
-    size_t insertIndex = 0;
-    while(insertIndex < m_Index)
+    if(data.renderSpace == RenderSpace::Screen)
     {
-        const auto &current = m_RenderData[insertIndex];
-
-        if(renderData.position.z > current.position.z || (renderData.position.z == current.position.z && renderData.position.y > current.position.y))
-        {
-            break;
-        }
-
-        ++insertIndex;
+        m_ScreenBuffer.Insert(data);
     }
-
-    for(size_t i = m_Index; i > insertIndex; --i)
+    else
     {
-        m_RenderData[i] = m_RenderData[i - 1];
+        m_WorldBuffer.Insert(data);
     }
-
-    m_RenderData[insertIndex] = renderData;
-    ++m_Index;
 }
 
-int RenderBuffer::Size()
+void SpriteRenderer::Render()
 {
-    return static_cast<int>(m_Index);
+    RenderBuffer(&m_WorldBuffer);
+    RenderBuffer(&m_ScreenBuffer);
+    m_WorldBuffer.Clear();
+    m_ScreenBuffer.Clear();
 }
 
-void RenderBuffer::Render()
+void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> *buffer)
 {
-    // Create Ranges
     std::array<std::pair<size_t, size_t>, MAX_BUFFER_SIZE> ranges;
     size_t rangeIndex = 0;
 
     size_t rangeStart = 0;
-    if(m_Index == 0)
-        return Clear();
+    if(buffer->Size() == 0)
+        return buffer->Clear();
 
-    for(size_t i = 0; i < m_Index; i++)
+    for(size_t i = 0; i < buffer->Size(); i++)
     {
         size_t nextIndex = i + 1;
-        if(nextIndex >= m_Index || m_RenderData[nextIndex].texture != m_RenderData[i].texture)
+        if(nextIndex >= buffer->Size() || (*buffer)[nextIndex].sprite.texture != (*buffer)[i].sprite.texture)
         {
             // create range
             std::pair<size_t, size_t> range = {rangeStart, i};
@@ -75,15 +57,14 @@ void RenderBuffer::Render()
     for(size_t i = 0; i < rangeIndex; i++)
     {
         auto [rangeStart, rangeEnd] = ranges[i];
-        RenderRange(rangeStart, rangeEnd);
+        RenderRange(buffer, rangeStart, rangeEnd);
     }
-    Clear();
 }
 
-void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
+void SpriteRenderer::RenderRange(Buffer<SpriteCommand> *buffer, const size_t &rangeStart, const size_t &rangeEnd)
 {
-    std::string texture = m_RenderData[rangeStart].texture;
-    std::vector<RenderData> data(m_RenderData.begin() + rangeStart, m_RenderData.begin() + rangeEnd + 1);
+    std::string texture = (*buffer)[rangeStart].sprite.texture;
+    std::vector<RenderData> data(buffer->GetRawData().begin() + rangeStart, buffer->GetRawData().begin() + rangeEnd + 1);
 
     // Move to vbo
     m_InstanceBuffer.Fill<RenderData>(data);
@@ -109,7 +90,7 @@ void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 
     // set projection
     glm::mat4 projection;
-    projection = Simplex::GetView().CalculateWorldSpaceProjection();
+    projection = Simplex::GetView().CalculateProjection((*buffer)[0].renderSpace);
     shader.setMat4("projection", projection);
 
     // set texture
@@ -127,9 +108,4 @@ void RenderBuffer::RenderRange(const size_t &rangeStart, const size_t &rangeEnd)
 
     m_VertexArray.RenderInstanced(6, count, GL_TRIANGLES);
     glBindTexture(GL_TEXTURE0, 0);
-}
-
-void RenderBuffer::Clear()
-{
-    m_Index = 0;
 }

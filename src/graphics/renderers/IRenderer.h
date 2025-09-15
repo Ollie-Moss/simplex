@@ -4,9 +4,8 @@ class IRendererBase
 {
   public:
     virtual ~IRendererBase() = default;
-    virtual void SubmitVoid(const void *data) {
-
-    };
+    virtual void SubmitVoid(const void *data) {}
+    virtual void Render() = 0;
 };
 
 template <typename T>

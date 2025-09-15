@@ -6,8 +6,10 @@
 #include <glad/glad.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include "components/Transform.h"
+#include "graphics/util/RenderSpace.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <iterator>
 #include <string_view>
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -128,6 +130,14 @@ void View::SetCamera(Transform transform, Camera camera)
 RectBounds<float> View::GetCameraBounds()
 {
     return m_CameraBounds;
+}
+
+glm::mat4 View::CalculateProjection(RenderSpace renderSpace)
+{
+    if(renderSpace == RenderSpace::Screen)
+        return CalculateScreenSpaceProjection();
+
+    return CalculateWorldSpaceProjection();
 }
 
 glm::mat4 View::CalculateWorldSpaceProjection()

@@ -5,13 +5,11 @@
 #include "core/ResourceManager.h"
 #include "core/View.h"
 #include "core/Input.h"
-#include "graphics/Renderer2D.h"
 #include "graphics/RendererManager.h"
 #include <cassert>
 
-class Renderer2D;
-
-class Simplex {
+class Simplex
+{
   public:
     Simplex();
     ~Simplex();
@@ -25,9 +23,9 @@ class Simplex {
     static View &GetView();
     static Input &GetInput();
     static ResourceManager &GetResources();
-    static Renderer2D &GetRenderer();
     static Scene &GetScene();
     static Registry &GetRegistry();
+    static RendererManager &GetRendererManager();
 
   private:
     void Tick();
@@ -36,7 +34,6 @@ class Simplex {
     View m_View;
     Input m_Input;
     ResourceManager m_ResourceManager;
-    Renderer2D m_Renderer;
     RendererManager m_RendererManager;
 
     Scene m_CurrentScene;

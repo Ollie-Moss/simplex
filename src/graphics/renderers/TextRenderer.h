@@ -2,7 +2,7 @@
 
 #include <string>
 #include <glm/glm.hpp>
-#include "core/VertexArray.h"
+#include "graphics/util/VertexArray.h"
 
 class TextRenderer
 {
@@ -11,6 +11,6 @@ class TextRenderer
     void RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName);
 
    private:
-    Buffer m_Buffer;
+    VertexBuffer m_Buffer;
     VertexArray m_VertexArray;
 };

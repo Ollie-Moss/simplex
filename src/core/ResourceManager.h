@@ -1,9 +1,9 @@
 #pragma once
 
 #include <map>
-#include "graphics/Shader.h"
-#include "graphics/Font.h"
-#include "graphics/Texture.h"
+#include "graphics/util/Shader.h"
+#include "graphics/text/Font.h"
+#include "graphics/util/Texture.h"
 #include <string>
 
 class ResourceManager {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/Character.h"
+#include "Character.h"
 #include <map>
 
 struct Font {
