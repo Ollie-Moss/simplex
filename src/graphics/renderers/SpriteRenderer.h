@@ -14,8 +14,8 @@ class SpriteRenderer : public IRenderer<SpriteCommand>
     void Render() override;
 
   private:
-    void RenderRange(Buffer<SpriteCommand> *buffer, const size_t &rangeStart, const size_t &rangeEnd);
-    void RenderBuffer(Buffer<SpriteCommand> *buffer);
+    void RenderRange(const Buffer<SpriteCommand> &buffer, const size_t &rangeStart, const size_t &rangeEnd);
+    void RenderBuffer(Buffer<SpriteCommand> &buffer);
 
   private:
     VertexArray m_VertexArray;

@@ -25,25 +25,25 @@ void SpriteRenderer::Submit(const SpriteCommand &data)
 
 void SpriteRenderer::Render()
 {
-    RenderBuffer(&m_WorldBuffer);
-    RenderBuffer(&m_ScreenBuffer);
+    RenderBuffer(m_WorldBuffer);
+    RenderBuffer(m_ScreenBuffer);
     m_WorldBuffer.Clear();
     m_ScreenBuffer.Clear();
 }
 
-void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> *buffer)
+void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> &buffer)
 {
     std::array<std::pair<size_t, size_t>, MAX_BUFFER_SIZE> ranges;
     size_t rangeIndex = 0;
 
     size_t rangeStart = 0;
-    if(buffer->Size() == 0)
-        return buffer->Clear();
+    if(buffer.Size() == 0)
+        return buffer.Clear();
 
-    for(size_t i = 0; i < buffer->Size(); i++)
+    for(size_t i = 0; i < buffer.Size(); i++)
     {
         size_t nextIndex = i + 1;
-        if(nextIndex >= buffer->Size() || (*buffer)[nextIndex].sprite.texture != (*buffer)[i].sprite.texture)
+        if(nextIndex >= buffer.Size() || buffer[nextIndex].sprite.texture != buffer[i].sprite.texture)
         {
             // create range
             std::pair<size_t, size_t> range = {rangeStart, i};
@@ -61,10 +61,10 @@ void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> *buffer)
     }
 }
 
-void SpriteRenderer::RenderRange(Buffer<SpriteCommand> *buffer, const size_t &rangeStart, const size_t &rangeEnd)
+void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size_t &rangeStart, const size_t &rangeEnd)
 {
-    std::string texture = (*buffer)[rangeStart].sprite.texture;
-    std::vector<RenderData> data(buffer->GetRawData().begin() + rangeStart, buffer->GetRawData().begin() + rangeEnd + 1);
+    std::string texture = buffer[rangeStart].sprite.texture;
+    std::vector<RenderData> data(buffer.GetRawData().begin() + rangeStart, buffer.GetRawData().begin() + rangeEnd + 1);
 
     // Move to vbo
     m_InstanceBuffer.Fill<RenderData>(data);
@@ -90,7 +90,7 @@ void SpriteRenderer::RenderRange(Buffer<SpriteCommand> *buffer, const size_t &ra
 
     // set projection
     glm::mat4 projection;
-    projection = Simplex::GetView().CalculateProjection((*buffer)[0].renderSpace);
+    projection = Simplex::GetView().CalculateProjection(buffer[0].renderSpace);
     shader.setMat4("projection", projection);
 
     // set texture

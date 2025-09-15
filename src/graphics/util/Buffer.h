@@ -2,6 +2,7 @@
 
 #include "core/Types.h"
 #include <array>
+#include <iterator>
 
 template <typename T>
 class Buffer
@@ -17,7 +18,7 @@ class Buffer
     size_t Size() const { return m_Index; }
     void Clear() { m_Index = 0; }
 
-    const std::array<T, MAX_BUFFER_SIZE> &GetRawData()
+    const std::array<T, MAX_BUFFER_SIZE> &GetRawData() const
     {
         return m_BufferData;
     }

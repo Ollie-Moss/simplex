@@ -32,12 +32,6 @@ int main()
                                              {.texture = "GRASS_TILE_1"});
         m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)},
                                              {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 100, 0)},
-                                             {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(100, 110, 0)},
-                                             {.color = BLUE});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 110, 0)},
-                                             {.color = BLUE});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
@@ -125,7 +119,7 @@ int main()
                         }),
             });
 
-        Entity root = CreateEntityFromUISpec(m_Registry, elem);
+        //Entity root = CreateEntityFromUISpec(m_Registry, elem);
     });
 
     simplex.SetScene(MainScene);
