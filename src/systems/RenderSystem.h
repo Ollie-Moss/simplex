@@ -4,7 +4,8 @@
 #include "components/Transform.h"
 #include "core/Entity.h"
 #include "core/SystemManager.h"
-#include "graphics/Renderer2D.h"
+#include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/util/RenderSpace.h"
 
 class RenderSystem : public System
 {
@@ -20,7 +21,8 @@ class RenderSystem : public System
         {
             auto [transform, sprite] = e.GetComponents<Transform, Sprite>();
 
-            Simplex::GetRenderer().QueueWorldObject(transform, sprite.texture, sprite.color);
+            SpriteCommand cmd = {sprite, transform, RenderSpace::World};
+            Simplex::GetRendererManager().Submit<SpriteCommand>(&cmd);
         }
     }
 };

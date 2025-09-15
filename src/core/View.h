@@ -7,6 +7,7 @@
 #include "core/RectBounds.h"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
+#include "graphics/util/RenderSpace.h"
 #include <string_view>
 #include <string>
 
@@ -29,8 +30,7 @@ class View
     void SetCamera(Transform transform, Camera camera);
     RectBounds<float> GetCameraBounds();
 
-    glm::mat4 CalculateWorldSpaceProjection();
-    glm::mat4 CalculateScreenSpaceProjection();
+    glm::mat4 CalculateProjection(RenderSpace renderSpace);
 
     // GLFW Wrappers
     bool Init(std::string_view title, int width, int height);
@@ -44,6 +44,10 @@ class View
     {
         return m_Window;
     }
+
+  private:
+    glm::mat4 CalculateWorldSpaceProjection();
+    glm::mat4 CalculateScreenSpaceProjection();
 
   private:
     GLFWwindow *m_Window;
