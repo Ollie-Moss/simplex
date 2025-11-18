@@ -89,6 +89,7 @@ int main()
                         .direction = FlexDirection::Row,
                         .padding = 10.0_p,
                         .color = YELLOW,
+                        .gap = 20.0f,
                         .alignItems = AlignItems::Start,
                         .justifyContent = JustifyContent::Start,
                     },
@@ -99,9 +100,10 @@ int main()
                             .color = GREEN,
                         }),
                         element({
-                            .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                            .sizing = {.width = HUG, .height = HUG},
                             .padding = 10.0_p,
                             .color = RED,
+                            .text = {.content = "Hello World!", .fontSize = 10},
                         }),
                     }),
                 element({.sizing{.width = GROW, .height = GROW}},
@@ -119,7 +121,7 @@ int main()
                         }),
             });
 
-        //Entity root = CreateEntityFromUISpec(m_Registry, elem);
+        Entity root = CreateEntityFromUISpec(m_Registry, elem);
     });
 
     simplex.SetScene(MainScene);

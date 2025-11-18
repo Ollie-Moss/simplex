@@ -2,7 +2,6 @@
 
 #include "core/Types.h"
 #include <array>
-#include <iterator>
 
 template <typename T>
 class Buffer
@@ -12,6 +11,7 @@ class Buffer
 
     virtual void Insert(const T &data)
     {
+        assert(m_Index < MAX_BUFFER_SIZE && "Buffer is full");
         m_BufferData[m_Index++] = data;
     };
 

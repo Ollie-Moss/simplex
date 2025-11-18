@@ -1,5 +1,6 @@
 #include "SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/util/RenderMode.h"
 #include "graphics/util/RenderSpace.h"
 #include "graphics/util/Shader.h"
 #include <array>
@@ -13,6 +14,13 @@
 
 void SpriteRenderer::Submit(const SpriteCommand &data)
 {
+    if(data.renderMode == RenderMode::Immediate)
+    {
+        Buffer<SpriteCommand> buffer;
+        buffer.Insert(data);
+        RenderRange(buffer, 0, 1);
+        return;
+    }
     if(data.renderSpace == RenderSpace::Screen)
     {
         m_ScreenBuffer.Insert(data);

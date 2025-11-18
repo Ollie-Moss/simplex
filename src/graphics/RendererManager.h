@@ -24,12 +24,12 @@ class RendererManager
     }
 
     template <typename TData>
-    void Submit(TData *data)
+    void Submit(const TData &data)
     {
         assert(HasRenderer<TData>() && "No renderer found for this data type!");
 
         std::shared_ptr<IRendererBase> renderer = GetRenderer<TData>();
-        renderer->SubmitVoid(data);
+        renderer->SubmitVoid((void *)&data);
     }
 
     void Render()

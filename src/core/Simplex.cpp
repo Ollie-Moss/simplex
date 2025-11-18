@@ -2,8 +2,10 @@
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
+#include "graphics/render-commands/TextCommand.h"
 #include "graphics/renderers/SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/renderers/TextRenderer.h"
 #include <chrono>
 #include <string_view>
 #include <sys/types.h>
@@ -26,6 +28,7 @@ bool Simplex::Init()
         return false;
 
     m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
+    m_RendererManager.Register<TextCommand, TextRenderer>();
     return true;
 }
 

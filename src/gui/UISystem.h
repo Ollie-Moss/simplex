@@ -6,10 +6,13 @@
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/render-commands/TextCommand.h"
 #include "graphics/util/RenderSpace.h"
 #include "gui/UIComponents.h"
 #include <algorithm>
 #include <cmath>
+#include <iostream>
+#include <string>
 
 class UISystem : public System
 {
@@ -41,6 +44,11 @@ class UISystem : public System
     void CalculateLayout(Entity entity)
     {
         auto [props, transform] = entity.GetComponents<UIProperties, UITransform>();
+
+        InitialSizing(entity, FlexDirection::Row);
+        InitialSizing(entity, FlexDirection::Column);
+        // HUG Sizing for text content
+        // HugInitialSize(entity);
 
         // Apply fixed sizes to transform
         // SizeFixedElements(entity, FlexDirection::Row);
@@ -145,6 +153,72 @@ class UISystem : public System
             }
         }
         return growables;
+    }
+
+    float MeasureText(Text text, FlexDirection direction)
+    {
+        Font font = Simplex::GetResources().GetFont(text.fontName);
+
+        std::string::const_iterator c;
+
+        float width = 0.0f;
+        float height = 0.0f;
+
+        for(c = text.content.begin(); c != text.content.end(); c++)
+        {
+            Character ch = font.characters[*c];
+
+            width += (ch.Advance >> 6);
+
+            if(ch.Size.y > height)
+            {
+                height = ch.Size.y;
+            }
+        }
+
+        return (direction == FlexDirection::Row) ? width : height;
+    }
+
+    void InitialSizing(Entity entity, FlexDirection sizingAxis)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        float &length = GetLengthWithAxis(entity, sizingAxis);
+        Axis axis = GetAxis(entity, sizingAxis);
+
+        float finalLength = 0.0f;
+
+        if(!properties.text.content.empty())
+        {
+            float textLength = MeasureText(properties.text, sizingAxis);
+            finalLength = std::max(textLength, finalLength);
+        }
+
+        if(axis.length.unit == Unit::Percent)
+        {
+            float parentLength = sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth();
+
+            if(element.parent != NULL_ENTITY)
+            {
+                parentLength = GetLengthWithAxis(element.parent, sizingAxis);
+            }
+
+            float newLength = parentLength * axis.length.GetValue();
+
+            finalLength = std::max(newLength, finalLength);
+        }
+
+        if(axis.length.unit == Unit::Pixels)
+        {
+            float newLength = GetAxis(entity, sizingAxis).length.GetValue();
+            finalLength = std::max(newLength, finalLength);
+        }
+
+        length = finalLength + GetPadding(properties.padding, sizingAxis);
+
+        for(auto child : element.children)
+        {
+            InitialSizing(child, sizingAxis);
+        }
     }
 
     // direction - size width or height axis
@@ -258,7 +332,7 @@ class UISystem : public System
             for(Entity child : growables)
             {
                 float &length = GetLengthWithAxis(child, sizingAxis);
-                float maxLength = (GetAxis(child, sizingAxis).length / 100.0f) * GetLengthWithAxis(parent, sizingAxis);
+                float maxLength = GetAxis(child, sizingAxis).length.GetValue() * GetLengthWithAxis(parent, sizingAxis);
                 float maxDelta = maxLength - length;
 
                 float ratio = (length > 0) ? (std::abs(length) / totalLength) : (1.0f / growables.size());
@@ -276,23 +350,6 @@ class UISystem : public System
             // // If no meaningful distribution happened, break early
             // if(std::abs(distributed) < EPSILON)
             //     break;
-        }
-    }
-
-    void SizeFixedElements(Entity entity, FlexDirection sizingAxis)
-    {
-        // Applies the size length on elements with sizing mode fixed
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-
-        float &length = GetLengthWithAxis(entity, sizingAxis);
-        if(GetAxis(entity, sizingAxis).mode == SizingMode::Fixed)
-        {
-            length = GetAxis(entity, sizingAxis).length;
-        }
-
-        for(auto child : element.children)
-        {
-            SizeFixedElements(child, sizingAxis);
         }
     }
 
@@ -380,7 +437,18 @@ class UISystem : public System
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
         SpriteCommand cmd = {.sprite = {NO_TEXTURE, properties.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
-        Simplex::GetRendererManager().Submit<SpriteCommand>(&cmd);
+        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
+
+        if(!properties.text.content.empty())
+        {
+            glm::vec2 pos = transform.position;
+            pos.x += properties.padding.left;
+            pos.y += properties.padding.top;
+
+            TextCommand cmd = {.text = properties.text, .position = pos};
+            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
+        }
+
         for(Entity child : element.children)
         {
             RenderElements(child);

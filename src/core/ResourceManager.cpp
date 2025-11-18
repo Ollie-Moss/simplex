@@ -25,7 +25,6 @@ bool ResourceManager::Init()
     LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
 
     LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
-    // Buildings
 
     // Fonts
     LoadFont("Arial", "arial.ttf");

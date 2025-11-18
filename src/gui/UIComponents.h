@@ -4,6 +4,7 @@
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include <glm/glm.hpp>
+#include <string>
 #include <vector>
 
 // clang-format off
@@ -11,6 +12,7 @@ enum class AlignItems { Start, End, Center, Stretch };
 enum class JustifyContent { Start, End, Center, SpaceBetween, SpaceAround };
 enum class FlexDirection { Row, Column };
 enum class SizingMode { Fixed, Hug, Grow };
+enum class Unit { Pixels, Percent };
 // clang-format on
 //
 
@@ -21,10 +23,22 @@ struct UIElement
     bool dirty = true;
 };
 
+struct Length
+{
+    float value = 100.0f;
+    Unit unit = Unit::Pixels;
+
+  public:
+    float GetValue()
+    {
+        return (unit == Unit::Pixels) ? value : value / 100.0f;
+    }
+};
+
 struct Axis
 {
     SizingMode mode = SizingMode::Hug;
-    float length = 100.0f;
+    Length length;
 };
 
 constexpr Padding operator""_p(long double val)
@@ -63,20 +77,28 @@ constexpr Padding operator""_pb(long double val)
 
 constexpr Axis operator""_percent(long double val)
 {
-    return {.mode = SizingMode::Grow, .length = static_cast<float>(val)};
+    return {.mode = SizingMode::Fixed, .length = {.value = static_cast<float>(val), .unit = Unit::Percent}};
 }
 constexpr Axis operator""_pixels(long double val)
 {
-    return {.mode = SizingMode::Fixed, .length = static_cast<float>(val)};
+    return {.mode = SizingMode::Fixed, .length = {.value = static_cast<float>(val)}};
 }
 
-const Axis GROW = {.mode = SizingMode::Grow, .length = 100};
-const Axis HUG = {.mode = SizingMode::Hug, .length = 0};
+const Axis GROW = {.mode = SizingMode::Grow, .length = {.value = 100, .unit = Unit::Percent}};
+const Axis HUG = {.mode = SizingMode::Hug, .length = {.value = 0}};
 
 struct Sizing
 {
     Axis width;
     Axis height;
+};
+
+struct Text
+{
+    std::string fontName = "Arial";
+    std::string content = "";
+    float fontSize = 12;
+    glm::vec4 color = BLACK;
 };
 
 struct UIProperties
@@ -91,6 +113,7 @@ struct UIProperties
 
     JustifyContent justifySelf = JustifyContent::Start;
     AlignItems alignSelf = AlignItems::Start;
+    Text text;
 };
 
 struct UITransform

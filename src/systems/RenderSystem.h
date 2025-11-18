@@ -22,7 +22,7 @@ class RenderSystem : public System
             auto [transform, sprite] = e.GetComponents<Transform, Sprite>();
 
             SpriteCommand cmd = {sprite, transform, RenderSpace::World};
-            Simplex::GetRendererManager().Submit<SpriteCommand>(&cmd);
+            Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
         }
     }
 };

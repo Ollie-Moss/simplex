@@ -1,22 +1,39 @@
 #include "graphics/renderers/TextRenderer.h"
 #include "glm/fwd.hpp"
+#include "graphics/render-commands/TextCommand.h"
 #include "graphics/text/Font.h"
 #include "core/Simplex.h"
+#include "graphics/util/Buffer.h"
 #include "graphics/util/Shader.h"
 #include "graphics/util/RenderSpace.h"
 
 TextRenderer::TextRenderer()
 {
-    m_Buffer.Fill<float>(static_cast<size_t>(6 * 4), nullptr);
-    m_VertexArray.BindProperty<glm::vec4, glm::vec4>(0, 0, &m_Buffer);
+    m_VertexBuffer.Fill<float>(static_cast<size_t>(6 * 4), nullptr);
+    m_VertexArray.BindProperty<glm::vec4, glm::vec4>(0, 0, &m_VertexBuffer);
 }
-void TextRenderer::RenderText(std::string text, glm::vec2 position, glm::vec2 size, glm::vec4 color, std::string fontName)
+
+void TextRenderer::Submit(const TextCommand &data)
 {
-    Font font = Simplex::GetResources().GetFont(fontName);
+    m_Buffer.Insert(data);
+}
+
+void TextRenderer::Render()
+{
+    for(size_t i = 0; i < m_Buffer.Size(); ++i)
+    {
+        RenderText(m_Buffer[i]);
+    }
+    m_Buffer.Clear();
+}
+
+void TextRenderer::RenderText(const TextCommand &data)
+{
+    Font font = Simplex::GetResources().GetFont(data.text.fontName);
     Shader shader = Simplex::GetResources().GetShader("TextShader");
     shader.use();
 
-    shader.setVec3("textColor", color);
+    shader.setVec3("textColor", data.text.color);
     glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
     shader.setMat4("projection", projection);
 
@@ -25,34 +42,49 @@ void TextRenderer::RenderText(std::string text, glm::vec2 position, glm::vec2 si
 
     // iterate through all characters
     std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++) {
+    glm::vec2 position = data.position;
+
+    float tallestChar = 0.0f;
+    for(c = data.text.content.begin(); c != data.text.content.end(); c++)
+    {
+        Character ch = font.characters[*c];
+        float height = ch.Size.y;
+        if(height > tallestChar)
+        {
+            tallestChar = height;
+        }
+    }
+
+    for(c = data.text.content.begin(); c != data.text.content.end(); c++)
+    {
         Character ch = font.characters[*c];
 
-        float xpos = position.x + ch.Bearing.x * size.x;
+        float xpos = position.x + ch.Bearing.x;
         float ypos = position.y - ch.Bearing.y;
+        ypos += tallestChar;
 
-        float w = ch.Size.x * size.x;
-        float h = ch.Size.y * size.y;
+        float w = ch.Size.x;
+        float h = ch.Size.y;
 
         // update VBO for each character
-        glm::vec4 vertices[6] =  //
+        glm::vec4 vertices[6] = //
             {
-                glm::vec4(xpos, ypos, 0.0f, 0.0f),          //
-                glm::vec4(xpos, ypos + h, 0.0f, 1.0f),      //
-                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f),  //
-                glm::vec4(xpos, ypos, 0.0f, 0.0f),          //
-                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f),  //
-                glm::vec4(xpos + w, ypos, 1.0f, 0.0f)       //
-            };  //
+                glm::vec4(xpos, ypos, 0.0f, 0.0f),         //
+                glm::vec4(xpos, ypos + h, 0.0f, 1.0f),     //
+                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f), //
+                glm::vec4(xpos, ypos, 0.0f, 0.0f),         //
+                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f), //
+                glm::vec4(xpos + w, ypos, 1.0f, 0.0f)      //
+            }; //
 
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-        m_Buffer.Fill<glm::vec4>(6, &vertices[0]);
+        m_VertexBuffer.Fill<glm::vec4>(6, &vertices[0]);
 
         // render quad
         m_VertexArray.Render(6, GL_TRIANGLES);
 
-        position.x += (ch.Advance >> 6) * size.x;  // bitshift by 6 to get value in pixels (2^6 = 64)
+        position.x += (ch.Advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 }

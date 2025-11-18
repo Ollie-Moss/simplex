@@ -17,15 +17,6 @@ inline UISpec element(UIProperties properties, std::initializer_list<UISpec> chi
 {
     UISpec spec = {.properties = properties, .children = children};
 
-    if(spec.properties.sizing.width.mode == SizingMode::Fixed)
-    {
-        spec.transform.size.x = spec.properties.sizing.width.length;
-    }
-    if(spec.properties.sizing.height.mode == SizingMode::Fixed)
-    {
-        spec.transform.size.y = spec.properties.sizing.height.length;
-    }
-
     return spec;
 }
 
@@ -36,7 +27,7 @@ inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
     std::vector<EntityId> children;
     for(auto child : spec.children)
     {
-        EntityId childEntity = CreateEntities(registry, child, childEntity);
+        EntityId childEntity = CreateEntities(registry, child, entity);
 
         children.push_back(childEntity);
     }
