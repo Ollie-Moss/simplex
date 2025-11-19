@@ -45,8 +45,8 @@ class UISystem : public System
     {
         auto [props, transform] = entity.GetComponents<UIProperties, UITransform>();
 
-        InitialSizing(entity, FlexDirection::Row);
-        InitialSizing(entity, FlexDirection::Column);
+        InitialSizing(entity, Direction::Horizontal);
+        InitialSizing(entity, Direction::Vertical);
         // HUG Sizing for text content
         // HugInitialSize(entity);
 
@@ -55,41 +55,42 @@ class UISystem : public System
         // SizeFixedElements(entity, FlexDirection::Column);
 
         // HUG Sizing width
-        HugSize(entity, FlexDirection::Row);
+        HugSize(entity, Direction::Horizontal);
 
         // GROW Sizing width
-        GrowSize(entity, FlexDirection::Row);
+        GrowSize(entity, Direction::Horizontal);
 
         // Wrap Text - do later
+        WrapText(entity);
 
         // HUG Sizing heights
-        HugSize(entity, FlexDirection::Column);
+        HugSize(entity, Direction::Vertical);
 
         // GROW Sizing heights
-        GrowSize(entity, FlexDirection::Column);
+        GrowSize(entity, Direction::Vertical);
 
         // Calculate Positions
         CalculatePositions(entity, glm::vec2(0.0f));
     }
 
-    Axis &GetAxis(Entity entity, FlexDirection direction)
+    Axis &GetAxis(Entity entity, Direction direction)
     {
         UIProperties &props = entity.GetComponent<UIProperties>();
-        if(direction == FlexDirection::Row)
+        if(direction == Direction::Horizontal)
         {
             return props.sizing.width;
         }
         return props.sizing.height;
     }
-    float GetPadding(const Padding &padding, FlexDirection direction)
+    float GetPadding(const Padding &padding, Direction direction)
     {
-        if(direction == FlexDirection::Row)
+        if(direction == Direction::Horizontal)
         {
             return padding.left + padding.right;
         }
         return padding.top + padding.bottom;
     }
-    float GetParentPadding(Entity entity, FlexDirection direction)
+    float GetParentPadding(Entity entity, Direction direction)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
         Entity parent = element.parent;
@@ -101,24 +102,24 @@ class UISystem : public System
         return GetPadding(parentProperties.padding, direction);
     }
 
-    float &GetLengthWithAxis(Entity entity, FlexDirection direction)
+    float &GetLengthWithAxis(Entity entity, Direction direction)
     {
-        if(direction == FlexDirection::Row)
+        if(direction == Direction::Horizontal)
         {
             return entity.GetComponent<UITransform>().size.x;
         }
         return entity.GetComponent<UITransform>().size.y;
     }
-    float &GetLengthAgainstAxis(Entity entity, FlexDirection direction)
+    float &GetLengthAgainstAxis(Entity entity, Direction direction)
     {
-        if(direction != FlexDirection::Row)
+        if(direction != Direction::Horizontal)
         {
             return entity.GetComponent<UITransform>().size.x;
         }
         return entity.GetComponent<UITransform>().size.y;
     }
 
-    float GetLargestChildLength(Entity entity, FlexDirection direction)
+    float GetLargestChildLength(Entity entity, Direction direction)
     {
         float largest = 0.0f;
         for(Entity child : entity.GetComponent<UIElement>().children)
@@ -132,7 +133,7 @@ class UISystem : public System
         return largest;
     }
 
-    float SumChildrenLengths(Entity entity, FlexDirection direction)
+    float SumChildrenLengths(Entity entity, Direction direction)
     {
         float total = 0.0f;
         for(Entity child : entity.GetComponent<UIElement>().children)
@@ -142,7 +143,7 @@ class UISystem : public System
         return total;
     }
 
-    std::vector<EntityId> GetGrowableChildren(Entity entity, FlexDirection direction)
+    std::vector<EntityId> GetGrowableChildren(Entity entity, Direction direction)
     {
         std::vector<EntityId> growables;
         for(Entity child : entity.GetComponent<UIElement>().children)
@@ -155,7 +156,7 @@ class UISystem : public System
         return growables;
     }
 
-    float MeasureText(Text text, FlexDirection direction)
+    float MeasureText(Text text, Direction direction)
     {
         Font font = Simplex::GetResources().GetFont(text.fontName);
 
@@ -163,23 +164,105 @@ class UISystem : public System
 
         float width = 0.0f;
         float height = 0.0f;
+        float currentWidth = 0.0f;
+        float largestWidth = 0.0f;
+        float largestHeight = 0.0f;
+
+        uint32_t lineCounter = 1;
 
         for(c = text.content.begin(); c != text.content.end(); c++)
         {
             Character ch = font.characters[*c];
 
-            width += (ch.Advance >> 6);
-
-            if(ch.Size.y > height)
+            if(*c == '\n')
             {
-                height = ch.Size.y;
+                lineCounter += 1;
+                largestWidth = std::max(currentWidth, largestWidth);
+                currentWidth = 0;
+            }
+            else
+            {
+                currentWidth += (ch.Advance >> 6);
+            }
+
+            if(ch.Size.y > largestHeight)
+            {
+                largestHeight = ch.Size.y;
             }
         }
 
-        return (direction == FlexDirection::Row) ? width : height;
+        width = std::max(currentWidth, largestWidth);
+
+        float lineGaps = std::max<int>(0, lineCounter - 1) * text.lineHeight;
+        float lineHeights = (lineCounter * largestHeight);
+        height = lineHeights + lineGaps;
+
+        return (direction == Direction::Horizontal) ? width : height;
     }
 
-    void InitialSizing(Entity entity, FlexDirection sizingAxis)
+    void WrapText(Entity entity)
+    {
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        for(auto child : element.children)
+        {
+            WrapText(child);
+        }
+
+        if(properties.text.content.empty())
+            return;
+
+        float width = GetLengthWithAxis(entity, Direction::Horizontal);
+        float &height = GetLengthWithAxis(entity, Direction::Vertical);
+        Text &text = properties.text;
+        Font font = Simplex::GetResources().GetFont(text.fontName);
+
+        float currentWidth = 0.0f;
+        int widthCount = 0;
+        float textWidth = 0.0f;
+        float largestHeight = 0.0f;
+        int lineCounter = 1;
+        std::vector<int> breaks;
+
+        for(int i = 0; i < text.content.length(); i++)
+        {
+            char c = text.content[i];
+
+            Character ch = font.characters[c];
+
+            if(c == '\n')
+            {
+                currentWidth = 0;
+                widthCount = 0;
+                lineCounter++;
+                continue;
+            }
+            else
+            {
+                currentWidth += (ch.Advance >> 6);
+                widthCount++;
+            }
+
+            if(currentWidth + GetPadding(properties.padding, Direction::Horizontal) > width && widthCount > 2)
+            {
+                breaks.push_back(i);
+                currentWidth = (ch.Advance >> 6);
+                widthCount = 0;
+            }
+            if(ch.Size.y > largestHeight)
+            {
+                largestHeight = ch.Size.y;
+            }
+        }
+        text.breaks = breaks;
+
+        int totalLines = breaks.size() + lineCounter;
+
+        float lineGaps = std::max<int>(0, totalLines - 1) * text.lineHeight;
+        float lineHeights = totalLines * largestHeight;
+        height = lineHeights + lineGaps + GetPadding(properties.padding, Direction::Horizontal);
+    }
+
+    void InitialSizing(Entity entity, Direction sizingAxis)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
         float &length = GetLengthWithAxis(entity, sizingAxis);
@@ -187,7 +270,7 @@ class UISystem : public System
 
         float finalLength = 0.0f;
 
-        if(!properties.text.content.empty())
+        if(!properties.text.content.empty() && axis.mode != SizingMode::Fixed)
         {
             float textLength = MeasureText(properties.text, sizingAxis);
             finalLength = std::max(textLength, finalLength);
@@ -195,7 +278,7 @@ class UISystem : public System
 
         if(axis.length.unit == Unit::Percent)
         {
-            float parentLength = sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth();
+            float parentLength = sizingAxis == Direction::Vertical ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth();
 
             if(element.parent != NULL_ENTITY)
             {
@@ -222,7 +305,7 @@ class UISystem : public System
     }
 
     // direction - size width or height axis
-    void HugSize(Entity entity, FlexDirection sizingAxis)
+    void HugSize(Entity entity, Direction sizingAxis)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
         if(element.children.empty())
@@ -252,14 +335,14 @@ class UISystem : public System
         }
     }
 
-    void GrowSize(Entity entity, FlexDirection sizingAxis)
+    void GrowSize(Entity entity, Direction sizingAxis)
     {
         auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
 
         if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
             float &length = GetLengthWithAxis(entity, sizingAxis);
-            length = (sizingAxis == FlexDirection::Column ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth());
+            length = (sizingAxis == Direction::Vertical ? Simplex::GetView().GetWindowHeight() : Simplex::GetView().GetWindowWidth());
         }
         std::vector<EntityId> growables = GetGrowableChildren(entity, sizingAxis);
         if(growables.empty())
@@ -306,7 +389,7 @@ class UISystem : public System
         }
     }
 
-    void ResizeChildren(Entity parent, std::vector<EntityId> growables, float remainingLength, FlexDirection sizingAxis)
+    void ResizeChildren(Entity parent, std::vector<EntityId> growables, float remainingLength, Direction sizingAxis)
     {
         const float EPSILON = 0.01f;
         int maxIterations = 100;
@@ -359,8 +442,8 @@ class UISystem : public System
 
         Entity parent = element.parent;
 
-        float justifyContentOffset = (properties.direction == FlexDirection::Row) ? properties.padding.left : properties.padding.top;
-        float alignItemsOffset = (properties.direction == FlexDirection::Column) ? properties.padding.left : properties.padding.top;
+        float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.left : properties.padding.top;
+        float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.left : properties.padding.top;
 
         // Apply justify content positions
         float remainingLength = GetLengthWithAxis(entity, properties.direction);
@@ -385,7 +468,7 @@ class UISystem : public System
         float length = GetLengthAgainstAxis(entity, properties.direction);
 
         // Against axis padding (invert the direction to get the correct padding)
-        length -= GetPadding(properties.padding, (properties.direction == FlexDirection::Row ? FlexDirection::Column : FlexDirection::Row));
+        length -= GetPadding(properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
 
         float largestLength = 0;
         for(Entity child : element.children)
@@ -413,7 +496,7 @@ class UISystem : public System
             auto &childTransform = child.GetComponent<UITransform>();
 
             glm::vec2 localPos = parentPosition;
-            if(properties.direction == FlexDirection::Row)
+            if(properties.direction == Direction::Horizontal)
             {
                 localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
                 justifyContentOffset += childTransform.size.x + properties.gap;

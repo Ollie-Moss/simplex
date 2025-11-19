@@ -10,7 +10,7 @@
 // clang-format off
 enum class AlignItems { Start, End, Center, Stretch };
 enum class JustifyContent { Start, End, Center, SpaceBetween, SpaceAround };
-enum class FlexDirection { Row, Column };
+enum class Direction { Horizontal, Vertical };
 enum class SizingMode { Fixed, Hug, Grow };
 enum class Unit { Pixels, Percent };
 // clang-format on
@@ -99,12 +99,15 @@ struct Text
     std::string content = "";
     float fontSize = 12;
     glm::vec4 color = BLACK;
+    float lineHeight = 20.0f;
+
+    std::vector<int> breaks;
 };
 
 struct UIProperties
 {
     Sizing sizing;
-    FlexDirection direction = FlexDirection::Row;
+    Direction direction = Direction::Horizontal;
     Padding padding;
     Color color = BLUE;
     float gap = 0.0f;

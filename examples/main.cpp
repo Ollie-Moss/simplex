@@ -57,7 +57,7 @@ int main()
                 element(
                     {
                         .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
-                        .direction = FlexDirection::Column,
+                        .direction = Direction::Vertical,
                         .padding = 10.0_p,
                         .color = YELLOW,
                         .gap = 10.0f,
@@ -75,7 +75,7 @@ int main()
         auto elem = element(
             {
                 .sizing = {.width = GROW, .height = GROW},
-                .direction = FlexDirection::Column,
+                .direction = Direction::Vertical,
                 .padding = 10.0_p,
                 .gap = 10.0f,
                 // .justifyContent = JustifyContent::Center,
@@ -86,7 +86,7 @@ int main()
                 element(
                     {
                         .sizing = {.width = GROW, .height = GROW},
-                        .direction = FlexDirection::Row,
+                        .direction = Direction::Horizontal,
                         .padding = 10.0_p,
                         .color = YELLOW,
                         .gap = 20.0f,
@@ -100,10 +100,10 @@ int main()
                             .color = GREEN,
                         }),
                         element({
-                            .sizing = {.width = HUG, .height = HUG},
+                            .sizing = {.width = 20.0_percent, .height = HUG},
                             .padding = 10.0_p,
                             .color = RED,
-                            .text = {.content = "Hello World!", .fontSize = 10},
+                            .text = {.content = "Hello World! abc", .fontSize = 10},
                         }),
                     }),
                 element({.sizing{.width = GROW, .height = GROW}},

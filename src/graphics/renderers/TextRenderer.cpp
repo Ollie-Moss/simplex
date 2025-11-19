@@ -43,9 +43,20 @@ void TextRenderer::RenderText(const TextCommand &data)
     // iterate through all characters
     std::string::const_iterator c;
     glm::vec2 position = data.position;
+    float lineHeightPadding = 20.0f;
 
     float tallestChar = 0.0f;
-    for(c = data.text.content.begin(); c != data.text.content.end(); c++)
+
+    std::string text = data.text.content;
+    int inserted = 0;
+
+    for(auto breakIndex : data.text.breaks)
+    {
+        text.insert(breakIndex + inserted, 1, '\n');
+        inserted++;
+    }
+
+    for(c = text.begin(); c != text.end(); c++)
     {
         Character ch = font.characters[*c];
         float height = ch.Size.y;
@@ -55,8 +66,14 @@ void TextRenderer::RenderText(const TextCommand &data)
         }
     }
 
-    for(c = data.text.content.begin(); c != data.text.content.end(); c++)
+    for(c = text.begin(); c != text.end(); c++)
     {
+        if(*c == '\n')
+        {
+            position.y += tallestChar + lineHeightPadding;
+            position.x = data.position.x;
+            continue;
+        }
         Character ch = font.characters[*c];
 
         float xpos = position.x + ch.Bearing.x;
