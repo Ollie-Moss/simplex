@@ -3,19 +3,19 @@
 #include <cstdint>
 #include <memory>
 #include "core/ComponentList.h"
-#include <string>
 #include <typeinfo>
 #include <unordered_map>
 
 class ComponentManager
 {
-   public:
+  public:
     ComponentManager() {}
 
     template <typename T>
     void AddComponent(EntityId entity, T component)
     {
-        if (!HasComponent<T>()) {
+        if(!HasComponent<T>())
+        {
             Register<T>();
         }
         GetComponentList<T>()->AddData(entity, component);
@@ -33,6 +33,12 @@ class ComponentManager
         // Get a reference to a component from the array for an entity
         return GetComponentList<T>()->GetData(entity);
     }
+    template <typename T>
+    T *TryGetComponent(EntityId entity)
+    {
+        // Get a ptr to a component from the array for an entity if it exists
+        return GetComponentList<T>()->TryGetData(entity);
+    }
 
     template <typename T>
     bool HasComponent()
@@ -44,7 +50,8 @@ class ComponentManager
     template <typename T>
     ComponentId GetComponentType()
     {
-        if (!HasComponent<T>()) {
+        if(!HasComponent<T>())
+        {
             Register<T>();
         }
         const char *typeName = typeid(T).name();
@@ -57,7 +64,8 @@ class ComponentManager
     {
         // Notify each component array that an entity has been destroyed
         // If it has a component for that entity, it will remove it
-        for (auto const &[id, component] : m_Components) {
+        for(auto const &[id, component] : m_Components)
+        {
             component->EntityDestroyed(entity);
         }
     }
@@ -74,7 +82,7 @@ class ComponentManager
         m_CurrentComponent++;
     }
 
-   private:
+  private:
     template <typename T>
     std::shared_ptr<ComponentList<T>> GetComponentList()
     {
@@ -83,7 +91,7 @@ class ComponentManager
         return std::static_pointer_cast<ComponentList<T>>(m_Components[component]);
     }
 
-   private:
+  private:
     std::unordered_map<ComponentId, std::shared_ptr<IComponentList>> m_Components;
 
     std::unordered_map<const char *, ComponentId> m_ComponentTypes{};

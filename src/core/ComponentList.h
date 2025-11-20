@@ -4,25 +4,30 @@
 #include "iostream"
 #include <unordered_map>
 
-class IComponentList {
+class IComponentList
+{
   public:
     virtual ~IComponentList() = default;
     virtual void EntityDestroyed(EntityId entity) = 0;
 };
 
-template <typename T> class ComponentList : public IComponentList {
+template <typename T>
+class ComponentList : public IComponentList
+{
   public:
     ComponentList() {}
     ~ComponentList() override {}
 
-    void AddData(EntityId entity, T data) {
+    void AddData(EntityId entity, T data)
+    {
         m_ComponentData[index] = data;
         m_EntityToIndexMap[entity] = index;
         m_IndexToEntityMap[index] = entity;
 
         index++;
     }
-    void RemoveData(EntityId entityToRemove) {
+    void RemoveData(EntityId entityToRemove)
+    {
         size_t dataIndex = m_EntityToIndexMap[entityToRemove];
 
         m_ComponentData[dataIndex] = m_ComponentData[index - 1];
@@ -37,13 +42,26 @@ template <typename T> class ComponentList : public IComponentList {
         index--;
     }
 
-    T &GetData(EntityId entity) {
+    T &GetData(EntityId entity)
+    {
         std::size_t dataIndex = m_EntityToIndexMap[entity];
         return m_ComponentData[dataIndex];
     }
 
-    void EntityDestroyed(EntityId entity) override {
-        if (m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end()) {
+    T *TryGetData(EntityId entity)
+    {
+        bool hasComponent = m_EntityToIndexMap.contains(entity);
+        if(hasComponent)
+        {
+            return &GetData(entity);
+        }
+        return nullptr;
+    }
+
+    void EntityDestroyed(EntityId entity) override
+    {
+        if(m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end())
+        {
             // Remove the entity's component if it existed
             RemoveData(entity);
         }

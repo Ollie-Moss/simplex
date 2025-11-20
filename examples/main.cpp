@@ -23,7 +23,9 @@ int main()
         m_Registry.RegisterSystem<CameraSystem>();
         m_Registry.RegisterSystem<MoveableCameraSystem>();
         m_Registry.RegisterSystem<RenderSystem>();
-        m_Registry.RegisterSystem<UISystem>();
+
+        m_Registry.RegisterSystem<UILayoutSystem>();
+        m_Registry.RegisterSystem<UIRenderSystem>();
 
         // Entities
         m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)},
@@ -35,88 +37,78 @@ int main()
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        auto elemOld = element(
-            {
-                .sizing = {.width = 500.0_pixels, .height = 500.0_pixels},
-                .padding = 10.0_p,
-            },
-            {
-                element(
-                    {
-                        .sizing = {.width = GROW, .height = 200.0_pixels},
-                        .padding = 10.0_p,
-                        .color = GREEN,
-                        .gap = 10.0f,
-                    },
-                    {
-                        element({.sizing = {.width = GROW, .height = GROW},
-                                 .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW},
-                                 .color = BLUE}),
-                    }),
-                element(
-                    {
-                        .sizing = {.width = 200.0_pixels, .height = 200.0_pixels},
-                        .direction = Direction::Vertical,
-                        .padding = 10.0_p,
-                        .color = YELLOW,
-                        .gap = 10.0f,
-                    },
-                    {
-                        element({.sizing = {.width = GROW, .height = GROW},
-                                 .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW},
-                                 .color = RED}),
-                        element({.sizing = {.width = GROW, .height = GROW},
-                                 .color = BLUE}),
-                    }),
-            });
-
         auto elem = element(
             {
-                .sizing = {.width = GROW, .height = GROW},
-                .direction = Direction::Vertical,
-                .padding = 10.0_p,
-                .gap = 10.0f,
-                // .justifyContent = JustifyContent::Center,
-                // .justifySelf = JustifyContent::Center,
-                // .alignSelf = AlignItems::Center,
+                .layout = UILayout{
+                    .sizing = {.width = GROW, .height = GROW},
+                    .direction = Direction::Vertical,
+                    .padding = 10.0_p,
+                    .gap = 10.0f,
+                },
             },
             {
-                element(
-                    {
-                        .sizing = {.width = GROW, .height = GROW},
-                        .direction = Direction::Horizontal,
-                        .padding = 10.0_p,
-                        .color = YELLOW,
-                        .gap = 20.0f,
-                        .alignItems = AlignItems::Start,
-                        .justifyContent = JustifyContent::Start,
-                    },
-                    {
-                        element({
-                            .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
-                            .padding = 10.0_p,
-                            .color = GREEN,
-                        }),
-                        element({
-                            .sizing = {.width = 20.0_percent, .height = HUG},
-                            .padding = 10.0_p,
-                            .color = RED,
-                            .text = {.content = "Hello World! abc", .fontSize = 10},
-                        }),
-                    }),
-                element({.sizing{.width = GROW, .height = GROW}},
+                element({
+                            .layout = UILayout{
+                                .sizing = {.width = GROW, .height = GROW},
+                                .direction = Direction::Horizontal,
+                                .padding = 10.0_p,
+                                .gap = 20.0f,
+                                .alignItems = AlignItems::Start,
+                                .justifyContent = JustifyContent::Start,
+                            },
+                            .style = UIStyle{
+
+                                .color = YELLOW,
+                            },
+                        },
                         {
                             element({
-                                .sizing = {.width = 20.0_percent, .height = GROW},
-                                .padding = 10.0_p,
-                                .color = GREEN,
+                                .layout = UILayout{
+                                    .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
+                                    .padding = 10.0_p,
+                                },
+                                .style = UIStyle{
+
+                                    .color = GREEN,
+                                },
                             }),
                             element({
-                                .sizing = {.width = GROW, .height = GROW},
-                                .padding = 10.0_p,
-                                .color = RED,
+                                .layout = UILayout{
+                                    .sizing = {.width = 20.0_percent, .height = HUG},
+                                    .padding = 10.0_p,
+                                },
+                                .style = UIStyle{
+
+                                    .color = RED,
+                                },
+                                .text = UIText{
+                                    .text = {.content = "Hello World! abc", .fontSize = 10},
+                                },
+                            }),
+                        }),
+                element({
+                            .layout = UILayout{
+                                .sizing{.width = GROW, .height = GROW},
+                            },
+                        },
+                        {
+                            element({
+                                .layout = UILayout{
+                                    .sizing = {.width = 20.0_percent, .height = GROW},
+                                    .padding = 10.0_p,
+                                },
+                                .style = UIStyle{
+                                    .color = GREEN,
+                                },
+                            }),
+                            element({
+                                .layout = UILayout{
+                                    .sizing = {.width = GROW, .height = GROW},
+                                    .padding = 10.0_p,
+                                },
+                                .style = UIStyle{
+                                    .color = RED,
+                                },
                             }),
                         }),
             });

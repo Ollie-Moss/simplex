@@ -7,19 +7,26 @@
 
 class Entity
 {
-   public:
+  public:
     Entity();
     Entity(EntityId id) : m_Id(id) {}
 
     template <typename T>
-    T& GetComponent()
+    T &GetComponent()
     {
         return Simplex::GetRegistry().GetComponent<T>(m_Id);
     };
-    template <typename... T>
-    std::tuple<T&...> GetComponents()
+
+    template <typename T>
+    T *TryGetComponent()
     {
-        return std::tuple<T&...>{ GetComponent<T>()... };
+        return Simplex::GetRegistry().TryGetComponent<T>(m_Id);
+    };
+
+    template <typename... T>
+    std::tuple<T &...> GetComponents()
+    {
+        return std::tuple<T &...>{GetComponent<T>()...};
     };
     template <typename T>
     void RemoveComponent()
@@ -33,11 +40,11 @@ class Entity
         return m_Id;
     }
 
-    bool operator<(const Entity& other) const
+    bool operator<(const Entity &other) const
     {
         return m_Id < other.m_Id;
     }
 
-   private:
+  private:
     EntityId m_Id;
 };

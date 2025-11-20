@@ -1,10 +1,13 @@
 #pragma once
 
 #include "components/Transform.h"
+#include "core/Entity.h"
+#include "core/Registry.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include <glm/glm.hpp>
 #include <string>
+#include <variant>
 #include <vector>
 
 // clang-format off
@@ -15,6 +18,19 @@ enum class SizingMode { Fixed, Hug, Grow };
 enum class Unit { Pixels, Percent };
 // clang-format on
 //
+
+template <typename T>
+struct UIBinding
+{
+    Entity target;
+    std::function<T(Registry &)> pull;
+};
+
+template <typename T>
+UIBinding<T> Bind(Entity entity, std::function<T(Registry &)> pull)
+{
+    return {.target = entity, .pull = pull};
+};
 
 struct UIElement
 {
@@ -104,19 +120,34 @@ struct Text
     std::vector<int> breaks;
 };
 
-struct UIProperties
+struct UILayout
 {
     Sizing sizing;
     Direction direction = Direction::Horizontal;
     Padding padding;
-    Color color = BLUE;
     float gap = 0.0f;
+
     AlignItems alignItems = AlignItems::Start;
     JustifyContent justifyContent = JustifyContent::Start;
 
     JustifyContent justifySelf = JustifyContent::Start;
     AlignItems alignSelf = AlignItems::Start;
+};
+
+struct UIStyle
+{
+    Color color = BLUE;
+};
+
+struct UIText
+{
     Text text;
+};
+
+struct UIBoundText
+{
+    Text text;
+    UIBinding<std::string> contentBinding;
 };
 
 struct UITransform

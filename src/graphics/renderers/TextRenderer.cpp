@@ -66,14 +66,25 @@ void TextRenderer::RenderText(const TextCommand &data)
         }
     }
 
+    char lastChar;
     for(c = text.begin(); c != text.end(); c++)
     {
+        // Skip spaces that start on new lines (this should potentially only be breaks defined in text.breaks)
+        if(lastChar == '\n' && *c == ' ')
+        {
+            continue;
+        }
+        lastChar = *c;
+
+        // Reset position for newlines
         if(*c == '\n')
         {
             position.y += tallestChar + lineHeightPadding;
             position.x = data.position.x;
             continue;
         }
+
+        // Setup character position and bounds
         Character ch = font.characters[*c];
 
         float xpos = position.x + ch.Bearing.x;

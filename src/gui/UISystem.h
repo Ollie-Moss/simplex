@@ -11,39 +11,85 @@
 #include "gui/UIComponents.h"
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <string>
+#include <sys/types.h>
 
-class UISystem : public System
+class UIStateSystem : public System
+{
+};
+
+class UIRenderSystem : public System
 {
   public:
-    UISystem()
+    UIRenderSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UIProperties, UITransform>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform>();
     }
     void Update() override
     {
         for(Entity e : m_Entities)
         {
-            for(Entity e : m_Entities)
-            {
-                auto [element, properties, transform] = e.GetComponents<UIElement, UIProperties, UITransform>();
-                if(element.parent != NULL_ENTITY)
-                    continue;
-
-                // this should only happen if the tree changes
-                if(Simplex::GetView().HasWindowResized())
-                {
-                    CalculateLayout(e);
-                }
-            }
             RenderElements(e);
+        }
+    }
+    void RenderElements(Entity entity)
+    {
+        auto [element, transform] = entity.GetComponents<UIElement, UITransform>();
+
+        auto layoutPtr = entity.TryGetComponent<UILayout>();
+        auto stylePtr = entity.TryGetComponent<UIStyle>();
+        auto uiTextPtr = entity.TryGetComponent<UIText>();
+
+        UILayout layout = layoutPtr == nullptr ? UILayout{} : *layoutPtr;
+        UIStyle style = stylePtr == nullptr ? UIStyle{} : *stylePtr;
+        UIText uiText = uiTextPtr == nullptr ? UIText{} : *uiTextPtr;
+
+        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
+
+        if(!uiText.text.content.empty())
+        {
+            glm::vec2 pos = transform.position;
+            pos.x += layout.padding.left;
+            pos.y += layout.padding.top;
+
+            TextCommand cmd = {.text = uiText.text, .position = pos};
+            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
+        }
+
+        for(Entity child : element.children)
+        {
+            RenderElements(child);
+        }
+    }
+};
+
+class UILayoutSystem : public System
+{
+  public:
+    UILayoutSystem()
+    {
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout>();
+    }
+    void Update() override
+    {
+        for(Entity e : m_Entities)
+        {
+            UIElement element = e.GetComponent<UIElement>();
+            if(element.parent != NULL_ENTITY)
+                continue;
+
+            // this should only happen if the tree changes
+            if(Simplex::GetView().HasWindowResized())
+            {
+                CalculateLayout(e);
+            }
         }
     }
 
     void CalculateLayout(Entity entity)
     {
-        auto [props, transform] = entity.GetComponents<UIProperties, UITransform>();
+        auto [props, transform] = entity.GetComponents<UILayout, UITransform>();
 
         InitialSizing(entity, Direction::Horizontal);
         InitialSizing(entity, Direction::Vertical);
@@ -75,7 +121,7 @@ class UISystem : public System
 
     Axis &GetAxis(Entity entity, Direction direction)
     {
-        UIProperties &props = entity.GetComponent<UIProperties>();
+        UILayout &props = entity.GetComponent<UILayout>();
         if(direction == Direction::Horizontal)
         {
             return props.sizing.width;
@@ -92,13 +138,13 @@ class UISystem : public System
     }
     float GetParentPadding(Entity entity, Direction direction)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
         Entity parent = element.parent;
         if(parent == NULL_ENTITY)
         {
             return 0.0f;
         }
-        auto [parentElement, parentProperties] = parent.GetComponents<UIElement, UIProperties>();
+        auto [parentElement, parentProperties] = parent.GetComponents<UIElement, UILayout>();
         return GetPadding(parentProperties.padding, direction);
     }
 
@@ -202,18 +248,25 @@ class UISystem : public System
 
     void WrapText(Entity entity)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+
         for(auto child : element.children)
         {
             WrapText(child);
         }
 
-        if(properties.text.content.empty())
+        auto ptr = entity.TryGetComponent<UIText>();
+        if(ptr == nullptr)
+            return;
+
+        auto &uiText = *ptr;
+
+        if(uiText.text.content.empty())
             return;
 
         float width = GetLengthWithAxis(entity, Direction::Horizontal);
         float &height = GetLengthWithAxis(entity, Direction::Vertical);
-        Text &text = properties.text;
+        Text &text = uiText.text;
         Font font = Simplex::GetResources().GetFont(text.fontName);
 
         float currentWidth = 0.0f;
@@ -264,15 +317,20 @@ class UISystem : public System
 
     void InitialSizing(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
 
         float finalLength = 0.0f;
 
-        if(!properties.text.content.empty() && axis.mode != SizingMode::Fixed)
+        auto ptr = entity.TryGetComponent<UIText>();
+
+        auto uiText = ptr ? *ptr : UIText{};
+
+        if(!uiText.text.content.empty() && axis.mode != SizingMode::Fixed)
         {
-            float textLength = MeasureText(properties.text, sizingAxis);
+            float textLength = MeasureText(uiText.text, sizingAxis);
             finalLength = std::max(textLength, finalLength);
         }
 
@@ -307,7 +365,7 @@ class UISystem : public System
     // direction - size width or height axis
     void HugSize(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
         if(element.children.empty())
             return;
 
@@ -337,7 +395,7 @@ class UISystem : public System
 
     void GrowSize(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
 
         if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
@@ -438,7 +496,7 @@ class UISystem : public System
 
     void CalculatePositions(Entity entity, glm::vec2 parentPosition)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
+        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
 
         Entity parent = element.parent;
 
@@ -512,29 +570,6 @@ class UISystem : public System
 
             // Recursively calculate children's positions
             CalculatePositions(child, localPos);
-        }
-    }
-
-    void RenderElements(Entity entity)
-    {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UIProperties, UITransform>();
-
-        SpriteCommand cmd = {.sprite = {NO_TEXTURE, properties.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
-        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
-
-        if(!properties.text.content.empty())
-        {
-            glm::vec2 pos = transform.position;
-            pos.x += properties.padding.left;
-            pos.y += properties.padding.top;
-
-            TextCommand cmd = {.text = properties.text, .position = pos};
-            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
-        }
-
-        for(Entity child : element.children)
-        {
-            RenderElements(child);
         }
     }
 };
