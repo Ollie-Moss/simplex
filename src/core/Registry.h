@@ -85,9 +85,9 @@ class Registry
     {
         m_SystemManager.StartSystems();
     }
-    void Update()
+    void Update(float timeStep)
     {
-        m_SystemManager.UpdateSystems();
+        m_SystemManager.UpdateSystems(timeStep);
     }
     void FixedUpdate()
     {

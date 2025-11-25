@@ -76,6 +76,16 @@ Registry &Simplex::GetRegistry()
     return GetScene().m_Registry;
 }
 
+float Simplex::GetFPS()
+{
+    return m_Fps;
+}
+
+float Simplex::GetDeltaTime()
+{
+    return m_DeltaTime;
+}
+
 void Simplex::Start()
 {
     GetRegistry().Start();
@@ -96,10 +106,11 @@ void Simplex::Tick()
         std::chrono::duration<double> frameTime = now - lastTime;
         lastTime = now;
 
-        double dt = frameTime.count();
-        if(dt > 0.25)
-            dt = 0.25; // clamp to avoid spiral of death
-        accumulator += dt;
+        m_DeltaTime = frameTime.count();
+        if(m_DeltaTime > 0.25)
+            m_DeltaTime = 0.25; // clamp to avoid spiral of death
+        accumulator += m_DeltaTime;
+        m_Fps = 1.0f / m_DeltaTime;
 
         m_Input.PollEvents();
         m_View.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
@@ -111,7 +122,7 @@ void Simplex::Tick()
             accumulator = 0.0;
         }
 
-        GetRegistry().Update();
+        GetRegistry().Update(m_DeltaTime);
         m_RendererManager.Render();
 
         m_View.SwapBuffers();

@@ -3,6 +3,7 @@
 # Exit on any error
 set -e  
 
+mkdir -p build
 cd build
 
 # Allow cmake v3.5 for freetype build

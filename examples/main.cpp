@@ -1,7 +1,9 @@
-#include "core/Registry.h"
+#include "components/Transform.h"
+#include "core/Entity.h"
 #include "core/Scene.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
+#include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
@@ -9,7 +11,80 @@
 #include "systems/CameraSystem.h"
 #include "systems/MoveableCameraSystem.h"
 #include "systems/RenderSystem.h"
-#include <initializer_list>
+#include <cstddef>
+#include <format>
+#include <string>
+
+struct Movement
+{
+    float moveSpeed = 500.0f;
+};
+
+class MovementSystem : public System
+{
+  public:
+    MovementSystem()
+    {
+        m_Signature = Simplex::GetRegistry().CreateSignature<Transform, Movement>();
+    }
+    void Update(float timeStep) override
+    {
+        for(Entity e : m_Entities)
+        {
+            auto [transform, movement] = e.GetComponents<Transform, Movement>();
+            int horizontalAxis = Simplex::GetInput().OnKeyDown(GLFW_KEY_A) * -1 + Simplex::GetInput().OnKeyDown(GLFW_KEY_D);
+            int verticalAxis = Simplex::GetInput().OnKeyDown(GLFW_KEY_S) * -1 + Simplex::GetInput().OnKeyDown(GLFW_KEY_W);
+
+            transform.position.x += horizontalAxis * movement.moveSpeed * timeStep;
+            transform.position.y += verticalAxis * movement.moveSpeed * timeStep;
+        }
+    }
+};
+
+UISpec SideBar(Entity player)
+{
+    return element(
+        {
+            .layout = UILayout{
+                .sizing = {.width = 20.0_percent, .height = 100.0_percent},
+                .direction = Direction::Vertical,
+                .padding = 10.0_p,
+                .gap = 10.0f,
+            },
+        },
+        {
+
+            element({
+                        .layout = UILayout{
+                            .sizing = {.width = GROW, .height = 50.0_percent},
+                            .direction = Direction::Vertical,
+                        },
+                        .style = UIStyle{.color = GREEN},
+                    },
+                    {
+                        element({
+                            .layout = UILayout{
+                                .sizing = {.width = GROW, .height = HUG},
+                            },
+                            .style = UIStyle{.color = TRANSPARENT},
+                            .bindText = Bind<std::string>(NULL_ENTITY, [](Entity target) {
+                                auto fps = Simplex::Get().GetFPS();
+                                return std::format("fps: {:.0f}", fps);
+                            }),
+                        }),
+                        element({
+                            .layout = UILayout{
+                                .sizing = {.width = GROW, .height = HUG},
+                            },
+                            .style = UIStyle{.color = TRANSPARENT},
+                            .bindText = Bind<std::string>(player, [](Entity target) {
+                                auto pos = target.GetComponent<Transform>().position;
+                                return std::format("x: {:.0f} \ny: {:.0f} ", pos.x, pos.y);
+                            }),
+                        }),
+                    }),
+        });
+}
 
 int main()
 {
@@ -24,96 +99,33 @@ int main()
         m_Registry.RegisterSystem<MoveableCameraSystem>();
         m_Registry.RegisterSystem<RenderSystem>();
 
+        m_Registry.RegisterSystem<UIStateSystem>();
         m_Registry.RegisterSystem<UILayoutSystem>();
         m_Registry.RegisterSystem<UIRenderSystem>();
 
+        m_Registry.RegisterSystem<MovementSystem>();
+
         // Entities
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(-50, 100, 0)},
-                                             {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(0, 100, 0)},
-                                             {.texture = "GRASS_TILE_1"});
-        m_Registry.Create<Transform, Sprite>({.position = glm::vec3(50, 100, 0)},
-                                             {.texture = "GRASS_TILE_1"});
+        m_Registry.Create<Transform, Sprite>(
+            {},
+            {.texture = "GRASS_TILE_1"});
+
+        m_Registry.Create<Transform, Sprite>(
+            {},
+            {.texture = "GRASS_TILE_1"});
+
+        m_Registry.Create<Transform, Sprite>(
+            {},
+            {.texture = "GRASS_TILE_1"});
+
+        Entity player = m_Registry.Create<Transform, Sprite, Movement>(
+            {},
+            {.color = BLUE},
+            {});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        auto elem = element(
-            {
-                .layout = UILayout{
-                    .sizing = {.width = GROW, .height = GROW},
-                    .direction = Direction::Vertical,
-                    .padding = 10.0_p,
-                    .gap = 10.0f,
-                },
-            },
-            {
-                element({
-                            .layout = UILayout{
-                                .sizing = {.width = GROW, .height = GROW},
-                                .direction = Direction::Horizontal,
-                                .padding = 10.0_p,
-                                .gap = 20.0f,
-                                .alignItems = AlignItems::Start,
-                                .justifyContent = JustifyContent::Start,
-                            },
-                            .style = UIStyle{
-
-                                .color = YELLOW,
-                            },
-                        },
-                        {
-                            element({
-                                .layout = UILayout{
-                                    .sizing = {.width = 50.0_pixels, .height = 50.0_pixels},
-                                    .padding = 10.0_p,
-                                },
-                                .style = UIStyle{
-
-                                    .color = GREEN,
-                                },
-                            }),
-                            element({
-                                .layout = UILayout{
-                                    .sizing = {.width = 20.0_percent, .height = HUG},
-                                    .padding = 10.0_p,
-                                },
-                                .style = UIStyle{
-
-                                    .color = RED,
-                                },
-                                .text = UIText{
-                                    .text = {.content = "Hello World! abc", .fontSize = 10},
-                                },
-                            }),
-                        }),
-                element({
-                            .layout = UILayout{
-                                .sizing{.width = GROW, .height = GROW},
-                            },
-                        },
-                        {
-                            element({
-                                .layout = UILayout{
-                                    .sizing = {.width = 20.0_percent, .height = GROW},
-                                    .padding = 10.0_p,
-                                },
-                                .style = UIStyle{
-                                    .color = GREEN,
-                                },
-                            }),
-                            element({
-                                .layout = UILayout{
-                                    .sizing = {.width = GROW, .height = GROW},
-                                    .padding = 10.0_p,
-                                },
-                                .style = UIStyle{
-                                    .color = RED,
-                                },
-                            }),
-                        }),
-            });
-
-        Entity root = CreateEntityFromUISpec(m_Registry, elem);
+        Entity root = BuildUI(m_Registry, SideBar(player));
     });
 
     simplex.SetScene(MainScene);

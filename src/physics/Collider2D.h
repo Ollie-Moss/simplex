@@ -1,0 +1,4 @@
+struct Collider2D
+{
+};
+

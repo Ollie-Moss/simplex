@@ -23,11 +23,11 @@ template <typename T>
 struct UIBinding
 {
     Entity target;
-    std::function<T(Registry &)> pull;
+    std::function<T(Entity)> pull;
 };
 
 template <typename T>
-UIBinding<T> Bind(Entity entity, std::function<T(Registry &)> pull)
+UIBinding<T> Bind(Entity entity, std::function<T(Entity)> pull)
 {
     return {.target = entity, .pull = pull};
 };
@@ -39,7 +39,7 @@ struct UIElement
     bool dirty = true;
 };
 
-struct Length
+struct SizeValue
 {
     float value = 100.0f;
     Unit unit = Unit::Pixels;
@@ -54,7 +54,7 @@ struct Length
 struct Axis
 {
     SizingMode mode = SizingMode::Hug;
-    Length length;
+    SizeValue length;
 };
 
 constexpr Padding operator""_p(long double val)
@@ -109,7 +109,7 @@ struct Sizing
     Axis height;
 };
 
-struct Text
+struct UIText
 {
     std::string fontName = "Arial";
     std::string content = "";
@@ -120,6 +120,8 @@ struct Text
     std::vector<int> breaks;
 };
 
+using UIBoundText = UIBinding<std::string>;
+
 struct UILayout
 {
     Sizing sizing;
@@ -129,25 +131,11 @@ struct UILayout
 
     AlignItems alignItems = AlignItems::Start;
     JustifyContent justifyContent = JustifyContent::Start;
-
-    JustifyContent justifySelf = JustifyContent::Start;
-    AlignItems alignSelf = AlignItems::Start;
 };
 
 struct UIStyle
 {
     Color color = BLUE;
-};
-
-struct UIText
-{
-    Text text;
-};
-
-struct UIBoundText
-{
-    Text text;
-    UIBinding<std::string> contentBinding;
 };
 
 struct UITransform

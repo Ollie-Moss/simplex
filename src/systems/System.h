@@ -1,7 +1,8 @@
 #include "core/Types.h"
 #include <set>
 
-class System {
+class System
+{
   public:
     System() {}
     virtual ~System() = default;
@@ -12,5 +13,5 @@ class System {
 
     virtual void Start() {}
     virtual void FixedUpdate() {}
-    virtual void Update() {}
+    virtual void Update(float timeStep) {}
 };

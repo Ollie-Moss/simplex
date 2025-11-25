@@ -27,6 +27,9 @@ class Simplex
     static Registry &GetRegistry();
     static RendererManager &GetRendererManager();
 
+    float GetFPS();
+    float GetDeltaTime();
+
   private:
     void Tick();
 
@@ -37,6 +40,9 @@ class Simplex
     RendererManager m_RendererManager;
 
     Scene m_CurrentScene;
+
+    float m_DeltaTime;
+    float m_Fps;
 
     inline static Simplex *s_Instance = nullptr;
 };

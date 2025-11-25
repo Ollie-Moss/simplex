@@ -8,7 +8,7 @@
 class Entity
 {
   public:
-    Entity();
+    Entity() {}
     Entity(EntityId id) : m_Id(id) {}
 
     template <typename T>

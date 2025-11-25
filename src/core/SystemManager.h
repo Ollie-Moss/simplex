@@ -3,7 +3,6 @@
 #include "systems/System.h"
 #include <cassert>
 #include <memory>
-#include <ostream>
 #include <typeinfo>
 #include <unordered_map>
 
@@ -26,9 +25,9 @@ class SystemManager {
         }
     }
 
-    void UpdateSystems() {
+    void UpdateSystems(float timeStep) {
         for (auto const &[name, system] : m_Systems) {
-            system->Update();
+            system->Update(timeStep);
         }
     }
     void FixedUpdateSystems() {

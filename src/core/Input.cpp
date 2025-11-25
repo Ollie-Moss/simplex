@@ -17,18 +17,17 @@ bool Input::Init()
 
 void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    assert(action == 1 || action == 0);
-    bool pressed = static_cast<bool>(action);
+    bool pressed = static_cast<bool>(action == GLFW_PRESS);
     Simplex::GetInput().SetMouseButtonState(button, pressed);
 }
 void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    assert(action == 1 || action == 0);
-    bool pressed = static_cast<bool>(action);
+    bool pressed = static_cast<bool>(action == GLFW_PRESS);
     Simplex::GetInput().SetKeyState(key, pressed);
 }
 
-void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+{
     Simplex::GetInput().m_Scroll = static_cast<float>(yoffset);
 }
 
@@ -44,7 +43,8 @@ void Input::SetKeyState(int button, bool state)
 
 bool Input::OnKeyDown(int key)
 {
-    if (Simplex::GetView().GetWindow() == nullptr) {
+    if(Simplex::GetView().GetWindow() == nullptr)
+    {
         return false;
     }
 
@@ -53,7 +53,8 @@ bool Input::OnKeyDown(int key)
 
 bool Input::OnMouseButtonDown(int button)
 {
-    if (Simplex::GetView().GetWindow() == nullptr) {
+    if(Simplex::GetView().GetWindow() == nullptr)
+    {
         return false;
     }
 
@@ -62,7 +63,8 @@ bool Input::OnMouseButtonDown(int button)
 
 bool Input::OnMouseButtonPressed(int button)
 {
-    if (Simplex::GetView().GetWindow() == nullptr) {
+    if(Simplex::GetView().GetWindow() == nullptr)
+    {
         return false;
     }
 
@@ -70,18 +72,21 @@ bool Input::OnMouseButtonPressed(int button)
 }
 bool Input::OnKeyPressed(int button)
 {
-    if (Simplex::GetView().GetWindow() == nullptr) {
+    if(Simplex::GetView().GetWindow() == nullptr)
+    {
         return false;
     }
 
     return m_KeyState[button];
 }
 
-glm::vec2 Input::GetMouseDelta() {
+glm::vec2 Input::GetMouseDelta()
+{
     return m_LastMousePosition - m_CurrentMousePosition;
 }
 
-float Input::GetScrollDelta() {
+float Input::GetScrollDelta()
+{
     return m_Scroll;
 }
 
@@ -107,13 +112,15 @@ void Input::PollEvents()
 
 void Input::ResetMouseButtons()
 {
-    for (auto &[button, pressed] : m_MouseButtonState) {
+    for(auto &[button, pressed] : m_MouseButtonState)
+    {
         pressed = false;
     }
 }
 void Input::ResetKeys()
 {
-    for (auto &[key, pressed] : m_KeyState) {
+    for(auto &[key, pressed] : m_KeyState)
+    {
         pressed = false;
     }
 }

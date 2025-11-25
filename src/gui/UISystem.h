@@ -8,58 +8,33 @@
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/render-commands/TextCommand.h"
 #include "graphics/util/RenderSpace.h"
+#include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 #include <string>
 #include <sys/types.h>
+#include <vector>
 
 class UIStateSystem : public System
 {
-};
-
-class UIRenderSystem : public System
-{
   public:
-    UIRenderSystem()
+    UIStateSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UIBoundText, UIText>();
     }
-    void Update() override
+    void Update(float timeStep) override
     {
         for(Entity e : m_Entities)
         {
-            RenderElements(e);
-        }
-    }
-    void RenderElements(Entity entity)
-    {
-        auto [element, transform] = entity.GetComponents<UIElement, UITransform>();
-
-        auto layoutPtr = entity.TryGetComponent<UILayout>();
-        auto stylePtr = entity.TryGetComponent<UIStyle>();
-        auto uiTextPtr = entity.TryGetComponent<UIText>();
-
-        UILayout layout = layoutPtr == nullptr ? UILayout{} : *layoutPtr;
-        UIStyle style = stylePtr == nullptr ? UIStyle{} : *stylePtr;
-        UIText uiText = uiTextPtr == nullptr ? UIText{} : *uiTextPtr;
-
-        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
-        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
-
-        if(!uiText.text.content.empty())
-        {
-            glm::vec2 pos = transform.position;
-            pos.x += layout.padding.left;
-            pos.y += layout.padding.top;
-
-            TextCommand cmd = {.text = uiText.text, .position = pos};
-            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
-        }
-
-        for(Entity child : element.children)
-        {
-            RenderElements(child);
+            auto [binding, uiText, elem] = e.GetComponents<UIBoundText, UIText, UIElement>();
+            std::string content = binding.pull(binding.target);
+            if(uiText.content != content)
+            {
+                uiText.content = content;
+                elem.dirty = true;
+            }
         }
     }
 };
@@ -71,7 +46,7 @@ class UILayoutSystem : public System
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout>();
     }
-    void Update() override
+    void Update(float timeStep) override
     {
         for(Entity e : m_Entities)
         {
@@ -79,26 +54,37 @@ class UILayoutSystem : public System
             if(element.parent != NULL_ENTITY)
                 continue;
 
-            // this should only happen if the tree changes
-            if(Simplex::GetView().HasWindowResized())
+            if(IsDirty(e))
             {
                 CalculateLayout(e);
             }
         }
     }
 
+    bool IsDirty(Entity entity)
+    {
+        UIElement element = entity.GetComponent<UIElement>();
+        if(element.dirty || Simplex::GetView().HasWindowResized())
+        {
+            return true;
+        }
+
+        for(Entity e : element.children)
+        {
+            if(IsDirty(e))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void CalculateLayout(Entity entity)
     {
-        auto [props, transform] = entity.GetComponents<UILayout, UITransform>();
+        auto [elem, transform] = entity.GetComponents<UIElement, UITransform>();
 
         InitialSizing(entity, Direction::Horizontal);
         InitialSizing(entity, Direction::Vertical);
-        // HUG Sizing for text content
-        // HugInitialSize(entity);
-
-        // Apply fixed sizes to transform
-        // SizeFixedElements(entity, FlexDirection::Row);
-        // SizeFixedElements(entity, FlexDirection::Column);
 
         // HUG Sizing width
         HugSize(entity, Direction::Horizontal);
@@ -117,6 +103,20 @@ class UILayoutSystem : public System
 
         // Calculate Positions
         CalculatePositions(entity, glm::vec2(0.0f));
+
+        // Marks all elements NOT dirty
+        CleanTree(entity);
+    }
+
+    void CleanTree(Entity entity)
+    {
+        UIElement &elem = entity.GetComponent<UIElement>();
+        elem.dirty = false;
+
+        for(Entity e : elem.children)
+        {
+            CleanTree(e);
+        }
     }
 
     Axis &GetAxis(Entity entity, Direction direction)
@@ -202,7 +202,7 @@ class UILayoutSystem : public System
         return growables;
     }
 
-    float MeasureText(Text text, Direction direction)
+    float MeasureText(UIText text, Direction direction)
     {
         Font font = Simplex::GetResources().GetFont(text.fontName);
 
@@ -259,14 +259,13 @@ class UILayoutSystem : public System
         if(ptr == nullptr)
             return;
 
-        auto &uiText = *ptr;
+        auto &text = *ptr;
 
-        if(uiText.text.content.empty())
+        if(text.content.empty())
             return;
 
         float width = GetLengthWithAxis(entity, Direction::Horizontal);
         float &height = GetLengthWithAxis(entity, Direction::Vertical);
-        Text &text = uiText.text;
         Font font = Simplex::GetResources().GetFont(text.fontName);
 
         float currentWidth = 0.0f;
@@ -326,13 +325,9 @@ class UILayoutSystem : public System
 
         auto ptr = entity.TryGetComponent<UIText>();
 
-        auto uiText = ptr ? *ptr : UIText{};
+        auto text = ptr ? *ptr : UIText{};
 
-        if(!uiText.text.content.empty() && axis.mode != SizingMode::Fixed)
-        {
-            float textLength = MeasureText(uiText.text, sizingAxis);
-            finalLength = std::max(textLength, finalLength);
-        }
+        auto padding = GetPadding(properties.padding, sizingAxis);
 
         if(axis.length.unit == Unit::Percent)
         {
@@ -343,18 +338,21 @@ class UILayoutSystem : public System
                 parentLength = GetLengthWithAxis(element.parent, sizingAxis);
             }
 
-            float newLength = parentLength * axis.length.GetValue();
-
-            finalLength = std::max(newLength, finalLength);
+            length = parentLength * axis.length.GetValue() + padding;
         }
 
         if(axis.length.unit == Unit::Pixels)
         {
-            float newLength = GetAxis(entity, sizingAxis).length.GetValue();
-            finalLength = std::max(newLength, finalLength);
+            length = GetAxis(entity, sizingAxis).length.GetValue() + padding;
         }
-
-        length = finalLength + GetPadding(properties.padding, sizingAxis);
+        if(!text.content.empty() && sizingAxis == Direction::Horizontal)
+        {
+            auto textLength = MeasureText(text, Direction::Horizontal);
+            if(length < textLength)
+            {
+                length = textLength;
+            }
+        }
 
         for(auto child : element.children)
         {
@@ -383,6 +381,7 @@ class UILayoutSystem : public System
         if(sizingAxis == properties.direction)
         {
             float &length = GetLengthWithAxis(entity, sizingAxis);
+
             length = SumChildrenLengths(entity, sizingAxis) + padding + gap;
         }
         else
@@ -422,7 +421,6 @@ class UILayoutSystem : public System
             {
                 float &length = GetLengthWithAxis(child, sizingAxis);
 
-                // std::cout << remainingLength << "\n";
                 length = remainingLength;
             }
             for(Entity child : element.children)
@@ -454,7 +452,6 @@ class UILayoutSystem : public System
 
         while(std::abs(remainingLength) > EPSILON && maxIterations-- > 0)
         {
-            // std::cout << maxIterations << "\n";
             //  Calculate total length of growables
             float totalLength = 0.0f;
             for(Entity child : growables)
@@ -570,6 +567,59 @@ class UILayoutSystem : public System
 
             // Recursively calculate children's positions
             CalculatePositions(child, localPos);
+        }
+    }
+};
+
+class UIRenderSystem : public System
+{
+  public:
+    UIRenderSystem()
+    {
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform>();
+    }
+    void Update(float timeStep) override
+    {
+        for(Entity e : m_Entities)
+        {
+            UIElement element = e.GetComponent<UIElement>();
+            if(element.parent != NULL_ENTITY)
+                continue;
+            RenderElements(e);
+        }
+    }
+    void RenderElements(Entity entity)
+    {
+        if(entity == NULL_ENTITY)
+        {
+            std::cout << "NULL ENTITY SOMEHOW" << "\n";
+        }
+        auto [element, transform] = entity.GetComponents<UIElement, UITransform>();
+
+        auto layoutPtr = entity.TryGetComponent<UILayout>();
+        auto stylePtr = entity.TryGetComponent<UIStyle>();
+        auto textPtr = entity.TryGetComponent<UIText>();
+
+        UILayout layout = layoutPtr == nullptr ? UILayout{} : *layoutPtr;
+        UIStyle style = stylePtr == nullptr ? UIStyle{} : *stylePtr;
+        UIText text = textPtr == nullptr ? UIText{} : *textPtr;
+
+        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
+
+        if(!text.content.empty())
+        {
+            glm::vec2 pos = transform.position;
+            pos.x += layout.padding.left;
+            pos.y += layout.padding.top;
+
+            TextCommand cmd = {.text = text, .position = pos};
+            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
+        }
+
+        for(Entity child : element.children)
+        {
+            RenderElements(child);
         }
     }
 };

@@ -15,7 +15,7 @@ class RenderSystem : public System
         m_Signature = Simplex::GetRegistry().CreateSignature<Sprite, Transform>();
     }
 
-    void Update() override
+    void Update(float timeStep) override
     {
         for(Entity e : m_Entities)
         {

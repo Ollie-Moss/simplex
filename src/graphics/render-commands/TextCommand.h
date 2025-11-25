@@ -4,6 +4,6 @@
 
 struct TextCommand
 {
-    Text text;
+    UIText text;
     glm::vec2 position;
 };

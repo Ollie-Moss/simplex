@@ -13,7 +13,7 @@ class CameraSystem : public System
         m_Signature = Simplex::GetRegistry().CreateSignature<Camera, Transform>();
     }
 
-    void Update() override
+    void Update(float timeStep) override
     {
         for (Entity e : m_Entities) {
             auto [cam, transform] = e.GetComponents<Camera, Transform>();

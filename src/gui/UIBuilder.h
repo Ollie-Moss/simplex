@@ -48,6 +48,12 @@ inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
     if(spec.properties.text.has_value())
         registry.AddComponent<UIText>(entity, *spec.properties.text);
 
+    if(spec.properties.bindText.has_value())
+    {
+        registry.AddComponent<UIText>(entity, UIText{});
+        registry.AddComponent<UIBoundText>(entity, *spec.properties.bindText);
+    }
+
     // Create Children
     std::vector<EntityId> children;
     for(auto child : spec.children)
@@ -61,7 +67,7 @@ inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
     return entity;
 }
 
-inline Entity CreateEntityFromUISpec(Registry &registry, const UISpec &spec)
+inline Entity BuildUI(Registry &registry, const UISpec &spec)
 {
     EntityId root = CreateEntities(registry, spec, NULL_ENTITY);
     return root;
