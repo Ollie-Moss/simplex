@@ -38,3 +38,5 @@ const Color MAGENTA = Color(1.0f, 0.0f, 1.0f, 1.0f);
 const Color GRAY = Color(0.5f, 0.5f, 0.5f, 1.0f);
 const Color OPAQUE = Color(0.0f, 0.0f, 0.0f, 1.0f);
 const Color TRANSPARENT = Color(0.0f, 0.0f, 0.0f, 0.0f);
+
+const float GRAVITY = 9.81f;
