@@ -18,6 +18,7 @@ class VertexArray
         glEnableVertexAttribArray(location);
         glVertexAttribPointer(location, sizeof(T) / sizeof(float), GL_FLOAT, GL_FALSE, 0, (void *)0);
     }
+
     template <typename TStruct, typename TProperty>
     void BindProperty(int location, int offset, VertexBuffer *buffer)
     {

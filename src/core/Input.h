@@ -7,9 +7,15 @@
 #include <map>
 #include <vector>
 
+enum class KeyState {
+    Released,
+    FirstPress,
+    Pressed,
+};
+
 class Input
 {
-   public:
+  public:
     Input();
     ~Input();
 
@@ -28,10 +34,10 @@ class Input
 
     void PollEvents();
 
-    void SetMouseButtonState(int button, bool state);
-    void SetKeyState(int button, bool state);
+    void SetMouseButtonState(int button, KeyState state);
+    void SetKeyState(int button, KeyState state);
 
-   private:
+  private:
     void ResetMouseButtons();
     void ResetKeys();
 
@@ -39,13 +45,16 @@ class Input
     static void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-   private:
-    std::map<int, bool> m_MouseButtonState;
-    std::map<int, bool> m_KeyState;
+  private:
+    std::map<int, KeyState> m_MouseButtonState;
+    std::map<int, KeyState> m_KeyState;
 
     glm::vec2 m_CurrentMousePosition;
     glm::vec2 m_LastMousePosition;
     float m_Scroll;
 
     std::vector<std::function<void(float)>> m_ScrollCallbacks;
+
+    std::map<int, bool> m_MouseButtonStateConsumed;
+    std::map<int, bool> m_KeyStateConsumed;
 };

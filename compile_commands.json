@@ -7,75 +7,63 @@
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Input.cpp.o -c /home/ollie/workspace/game-engine/src/core/Input.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Input.cpp.o -c /home/ollie/workspace/game-engine/src/core/Input.cpp",
   "file": "/home/ollie/workspace/game-engine/src/core/Input.cpp",
   "output": "CMakeFiles/GameEngine.dir/src/core/Input.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o -c /home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o -c /home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
   "file": "/home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
   "output": "CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Scene.cpp.o -c /home/ollie/workspace/game-engine/src/core/Scene.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Scene.cpp.o -c /home/ollie/workspace/game-engine/src/core/Scene.cpp",
   "file": "/home/ollie/workspace/game-engine/src/core/Scene.cpp",
   "output": "CMakeFiles/GameEngine.dir/src/core/Scene.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o -c /home/ollie/workspace/game-engine/src/core/Simplex.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o -c /home/ollie/workspace/game-engine/src/core/Simplex.cpp",
   "file": "/home/ollie/workspace/game-engine/src/core/Simplex.cpp",
   "output": "CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/VertexArray.cpp.o -c /home/ollie/workspace/game-engine/src/core/VertexArray.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/VertexArray.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/VertexArray.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/View.cpp.o -c /home/ollie/workspace/game-engine/src/core/View.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/View.cpp.o -c /home/ollie/workspace/game-engine/src/core/View.cpp",
   "file": "/home/ollie/workspace/game-engine/src/core/View.cpp",
   "output": "CMakeFiles/GameEngine.dir/src/core/View.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/RenderBuffer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/RenderBuffer.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/RenderBuffer.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/RenderBuffer.cpp.o"
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/renderers/SpriteRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/graphics/renderers/SpriteRenderer.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/Renderer2D.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/Renderer2D.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/Renderer2D.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/Renderer2D.cpp.o"
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/renderers/TextRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/graphics/renderers/TextRenderer.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/SpriteRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/SpriteRenderer.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/SpriteRenderer.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/SpriteRenderer.cpp.o"
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/util/Texture.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/graphics/util/Texture.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/TextRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/TextRenderer.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/TextRenderer.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/TextRenderer.cpp.o"
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/util/VertexArray.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
+  "output": "CMakeFiles/GameEngine.dir/src/graphics/util/VertexArray.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/Texture.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/Texture.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/Texture.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/Texture.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/main.cpp.o -c /home/ollie/workspace/game-engine/src/main.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/main.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/main.cpp.o"
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/build.dir/examples/main.cpp.o -c /home/ollie/workspace/game-engine/examples/main.cpp",
+  "file": "/home/ollie/workspace/game-engine/examples/main.cpp",
+  "output": "CMakeFiles/build.dir/examples/main.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",

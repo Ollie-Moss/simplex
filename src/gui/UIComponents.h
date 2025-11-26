@@ -5,7 +5,9 @@
 #include "core/Registry.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
+#include <functional>
 #include <glm/glm.hpp>
+#include <optional>
 #include <string>
 #include <variant>
 #include <vector>
@@ -17,17 +19,19 @@ enum class Direction { Horizontal, Vertical };
 enum class SizingMode { Fixed, Hug, Grow };
 enum class Unit { Pixels, Percent };
 // clang-format on
-//
+
+template <typename T>
+using UIBindingFunc = std::function<T(std::optional<Entity>)>;
 
 template <typename T>
 struct UIBinding
 {
-    Entity target;
-    std::function<T(Entity)> pull;
+    std::optional<Entity> target;
+    UIBindingFunc<T> pull;
 };
 
 template <typename T>
-UIBinding<T> Bind(Entity entity, std::function<T(Entity)> pull)
+UIBinding<T> Bind(std::optional<Entity> entity, UIBindingFunc<T> pull)
 {
     return {.target = entity, .pull = pull};
 };

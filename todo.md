@@ -33,8 +33,8 @@
 
 ### Overview
 
-- [ ] Components (Transform → Rigidbody → Collider)
-- [ ] Integration system
+- [x] Components (Transform → Rigidbody → Collider)
+- [x] Integration system
 - [ ] Broad-phase
 - [ ] Narrow-phase
 - [ ] Resolution (position + velocity)
@@ -45,21 +45,21 @@
 
 ### Components 
 
-- [ ] Transform2D (position, rotation, scale)
+- [x] Transform2D (position, rotation, scale)
 
-- [ ] Rigidbody2D (mass, velocity, forces, static/dynamic flag)
+- [x] Rigidbody2D (mass, velocity, forces, static/dynamic flag)
 
-- [ ] Collider2D (shape type, size parameters, offset)
+- [x] Collider2D (shape type, size parameters, offset)
 
 - [*] (Optional later) Physics material (friction, bounciness)
 
 ### Physics Integration System
 
-- [ ] Reading forces from Rigidbody2D
-- [ ] Converting forces into acceleration
-- [ ] Updating velocity
-- [ ] Integrating velocity into the Transform position
-- [ ] Clearing forces afterward
+- [x] Reading forces from Rigidbody2D
+- [x] Converting forces into acceleration
+- [x] Updating velocity
+- [x] Integrating velocity into the Transform position
+- [x] Clearing forces afterward
 
 ### Broad-Phase Collision Detection
 

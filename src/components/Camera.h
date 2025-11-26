@@ -2,8 +2,8 @@
 
 struct Camera
 {
-    float zoom = 1.0f;
-    float startTargetZoom = 1.0f;
-    float targetZoom = 1.0f;
+    float zoom = 100.0f;
+    float startTargetZoom = 100.0f;
+    float targetZoom = 100.0f;
     bool isActive = true;
 };

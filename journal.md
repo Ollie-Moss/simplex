@@ -1,15 +1,19 @@
 # 25/11/2025
 - Components (Transform → Rigidbody → Collider)
+- Integration system
+
+# 26/11/2025
+- Input module fixed so pressed and down input reads are handled correctly
+- Debug visualization
+
 
 # Todo
-- Integration system
 - Broad-phase
 - Narrow-phase
 - Resolution (position + velocity)
 - Friction
 - Triggers & events
 - System ordering
-- Debug visualization
 
 - Generic data binding for UI properties
 - Update data bind on bound entity change (required entity change tracking)

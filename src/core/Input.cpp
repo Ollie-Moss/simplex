@@ -2,6 +2,8 @@
 #include "core/Simplex.h"
 #include <GLFW/glfw3.h>
 #include <cassert>
+#include <string>
+#include <sys/types.h>
 
 Input::Input() {}
 Input::~Input() {}
@@ -17,13 +19,31 @@ bool Input::Init()
 
 void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    bool pressed = static_cast<bool>(action == GLFW_PRESS);
-    Simplex::GetInput().SetMouseButtonState(button, pressed);
+    switch(action)
+    {
+    case GLFW_PRESS:
+        Simplex::GetInput().SetMouseButtonState(button, KeyState::FirstPress);
+        break;
+    case GLFW_RELEASE:
+        Simplex::GetInput().SetMouseButtonState(button, KeyState::Released);
+        break;
+    default:
+        break;
+    }
 }
 void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    bool pressed = static_cast<bool>(action == GLFW_PRESS);
-    Simplex::GetInput().SetKeyState(key, pressed);
+    switch(action)
+    {
+    case GLFW_PRESS:
+        Simplex::GetInput().SetKeyState(key, KeyState::FirstPress);
+        break;
+    case GLFW_RELEASE:
+        Simplex::GetInput().SetKeyState(key, KeyState::Released);
+        break;
+    default:
+        break;
+    }
 }
 
 void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
@@ -31,12 +51,12 @@ void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
     Simplex::GetInput().m_Scroll = static_cast<float>(yoffset);
 }
 
-void Input::SetMouseButtonState(int button, bool state)
+void Input::SetMouseButtonState(int button, KeyState state)
 {
     m_MouseButtonState[button] = state;
 }
 
-void Input::SetKeyState(int button, bool state)
+void Input::SetKeyState(int button, KeyState state)
 {
     m_KeyState[button] = state;
 }
@@ -48,7 +68,8 @@ bool Input::OnKeyDown(int key)
         return false;
     }
 
-    return glfwGetKey(Simplex::GetView().GetWindow(), key) == GLFW_PRESS;
+    auto state = m_KeyState[key];
+    return state == KeyState::FirstPress || state == KeyState::Pressed;
 }
 
 bool Input::OnMouseButtonDown(int button)
@@ -58,7 +79,8 @@ bool Input::OnMouseButtonDown(int button)
         return false;
     }
 
-    return glfwGetMouseButton(Simplex::GetView().GetWindow(), button) == GLFW_PRESS;
+    auto state = m_MouseButtonState[button];
+    return state == KeyState::FirstPress || state == KeyState::Pressed;
 }
 
 bool Input::OnMouseButtonPressed(int button)
@@ -68,7 +90,12 @@ bool Input::OnMouseButtonPressed(int button)
         return false;
     }
 
-    return m_MouseButtonState[button];
+    KeyState &state = m_MouseButtonState[button];
+    bool isPressed = state == KeyState::FirstPress;
+    if(isPressed)
+        m_KeyStateConsumed[button] = true;
+
+    return isPressed;
 }
 bool Input::OnKeyPressed(int button)
 {
@@ -77,7 +104,13 @@ bool Input::OnKeyPressed(int button)
         return false;
     }
 
-    return m_KeyState[button];
+    KeyState &state = m_KeyState[button];
+    bool isPressed = state == KeyState::FirstPress;
+
+    if(isPressed)
+        m_KeyStateConsumed[button] = true;
+
+    return isPressed;
 }
 
 glm::vec2 Input::GetMouseDelta()
@@ -112,15 +145,23 @@ void Input::PollEvents()
 
 void Input::ResetMouseButtons()
 {
-    for(auto &[button, pressed] : m_MouseButtonState)
+    for(auto &[button, state] : m_MouseButtonState)
     {
-        pressed = false;
+        if(state == KeyState::FirstPress && m_MouseButtonStateConsumed[button])
+        {
+            state = KeyState::Pressed;
+            m_MouseButtonStateConsumed[button] = false;
+        }
     }
 }
 void Input::ResetKeys()
 {
-    for(auto &[key, pressed] : m_KeyState)
+    for(auto &[key, state] : m_KeyState)
     {
-        pressed = false;
+        if(state == KeyState::FirstPress && m_KeyStateConsumed[key])
+        {
+            state = KeyState::Pressed;
+            m_KeyStateConsumed[key] = false;
+        }
     }
 }

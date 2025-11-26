@@ -12,9 +12,11 @@
 #include "gui/UIComponents.h"
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <iomanip>
 #include <string>
 #include <sys/types.h>
+#include <variant>
 #include <vector>
 
 class UIStateSystem : public System
@@ -29,7 +31,9 @@ class UIStateSystem : public System
         for(Entity e : m_Entities)
         {
             auto [binding, uiText, elem] = e.GetComponents<UIBoundText, UIText, UIElement>();
+
             std::string content = binding.pull(binding.target);
+
             if(uiText.content != content)
             {
                 uiText.content = content;

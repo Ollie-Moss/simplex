@@ -89,9 +89,9 @@ class Registry
     {
         m_SystemManager.UpdateSystems(timeStep);
     }
-    void FixedUpdate()
+    void FixedUpdate(float timeStep)
     {
-        m_SystemManager.FixedUpdateSystems();
+        m_SystemManager.FixedUpdateSystems(timeStep);
     }
 
     template <typename... T>

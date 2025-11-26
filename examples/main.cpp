@@ -1,3 +1,4 @@
+#include "components/Sprite.h"
 #include "components/Transform.h"
 #include "core/Entity.h"
 #include "core/Scene.h"
@@ -5,19 +6,20 @@
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
+#include "physics/DebugPhysicsSystem.h"
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
 #include "gui/UISystem.h"
 #include "systems/CameraSystem.h"
 #include "systems/MoveableCameraSystem.h"
 #include "systems/RenderSystem.h"
-#include <cstddef>
+#include "physics/IntegrationSystem.h"
 #include <format>
 #include <string>
 
 struct Movement
 {
-    float moveSpeed = 500.0f;
+    float moveSpeed = 50.0f;
 };
 
 class MovementSystem : public System
@@ -67,7 +69,7 @@ UISpec SideBar(Entity player)
                                 .sizing = {.width = GROW, .height = HUG},
                             },
                             .style = UIStyle{.color = TRANSPARENT},
-                            .bindText = Bind<std::string>(NULL_ENTITY, [](Entity target) {
+                            .bindText = Bind<std::string>(std::nullopt, [&](std::optional<Entity> target) {
                                 auto fps = Simplex::Get().GetFPS();
                                 return std::format("fps: {:.0f}", fps);
                             }),
@@ -77,8 +79,8 @@ UISpec SideBar(Entity player)
                                 .sizing = {.width = GROW, .height = HUG},
                             },
                             .style = UIStyle{.color = TRANSPARENT},
-                            .bindText = Bind<std::string>(player, [](Entity target) {
-                                auto pos = target.GetComponent<Transform>().position;
+                            .bindText = Bind<std::string>(player, [&](std::optional<Entity> target) {
+                                auto &pos = target.value().GetComponent<Transform>().position;
                                 return std::format("x: {:.0f} \ny: {:.0f} ", pos.x, pos.y);
                             }),
                         }),
@@ -104,8 +106,12 @@ int main()
         m_Registry.RegisterSystem<UIRenderSystem>();
 
         m_Registry.RegisterSystem<MovementSystem>();
+        m_Registry.RegisterSystem<IntegrationSystem>();
+        m_Registry.RegisterSystem<DebugPhysicsSystem>();
 
         // Entities
+        auto test = m_Registry.Create<Transform, RigidBody2D, Sprite, Collider2D>({}, {}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
+
         m_Registry.Create<Transform, Sprite>(
             {},
             {.texture = "GRASS_TILE_1"});
@@ -125,7 +131,7 @@ int main()
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        Entity root = BuildUI(m_Registry, SideBar(player));
+        Entity root = BuildUI(m_Registry, SideBar(test));
     });
 
     simplex.SetScene(MainScene);

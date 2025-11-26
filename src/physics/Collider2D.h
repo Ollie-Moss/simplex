@@ -1,3 +1,5 @@
+#pragma once
+
 #include "glm/glm.hpp"
 
 enum class Shape2D {
@@ -11,8 +13,8 @@ struct Collider2D
     glm::vec2 offset = glm::vec2(0.0f, 0.0f);
 
     // Box
-    glm::vec2 halfxtents = glm::vec2(1.0f, 1.0f);
+    glm::vec2 halfExtents = glm::vec2(0.5f, 0.5f);
 
     // Circle
-    float radius = 1.0f;
+    float radius = 0.5f;
 };

@@ -23,6 +23,8 @@ bool ResourceManager::Init()
     
     LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
     LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
+    LoadShader("vCircleShader.glsl", "fCircleShader.glsl", "CircleShader");
+    LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
 
     LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
 

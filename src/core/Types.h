@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <glm/glm.hpp>
 #include "core/View.h"
+#include "glm/fwd.hpp"
 
 const uint32_t MAX_BUFFER_SIZE = 1000;
 const uint32_t MAX_RENDER_BUFFERS = 100;
@@ -39,4 +40,4 @@ const Color GRAY = Color(0.5f, 0.5f, 0.5f, 1.0f);
 const Color OPAQUE = Color(0.0f, 0.0f, 0.0f, 1.0f);
 const Color TRANSPARENT = Color(0.0f, 0.0f, 0.0f, 0.0f);
 
-const float GRAVITY = 9.81f;
+const glm::vec2 GRAVITY = glm::vec2(0.0f, -9.81f);

@@ -2,7 +2,9 @@
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
+#include "graphics/render-commands/ColliderCommand.h"
 #include "graphics/render-commands/TextCommand.h"
+#include "graphics/renderers/ColliderRenderer.h"
 #include "graphics/renderers/SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/renderers/TextRenderer.h"
@@ -29,6 +31,7 @@ bool Simplex::Init()
 
     m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
     m_RendererManager.Register<TextCommand, TextRenderer>();
+    m_RendererManager.Register<ColliderCommand, ColliderRenderer>();
     return true;
 }
 
@@ -118,7 +121,7 @@ void Simplex::Tick()
         // --- Fixed Update Loop ---
         if(accumulator >= fixedDelta)
         {
-            GetRegistry().FixedUpdate();
+            GetRegistry().FixedUpdate(accumulator);
             accumulator = 0.0;
         }
 
