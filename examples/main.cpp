@@ -10,6 +10,7 @@
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
 #include "gui/UISystem.h"
+#include "physics/RigidBody2D.h"
 #include "systems/CameraSystem.h"
 #include "systems/MoveableCameraSystem.h"
 #include "systems/RenderSystem.h"
@@ -33,7 +34,13 @@ class MovementSystem : public System
     {
         for(Entity e : m_Entities)
         {
-            auto [transform, movement] = e.GetComponents<Transform, Movement>();
+            auto [transform, movement, rb] = e.GetComponents<Transform, Movement, RigidBody2D>();
+            if(Simplex::GetInput().OnKeyPressed(GLFW_KEY_R))
+            {
+                transform.position = glm::vec3(0, 0, 0);
+                rb.velocity.y = 0;
+            }
+
             int horizontalAxis = Simplex::GetInput().OnKeyDown(GLFW_KEY_A) * -1 + Simplex::GetInput().OnKeyDown(GLFW_KEY_D);
             int verticalAxis = Simplex::GetInput().OnKeyDown(GLFW_KEY_S) * -1 + Simplex::GetInput().OnKeyDown(GLFW_KEY_W);
 
@@ -110,28 +117,17 @@ int main()
         m_Registry.RegisterSystem<DebugPhysicsSystem>();
 
         // Entities
-        auto test = m_Registry.Create<Transform, RigidBody2D, Sprite, Collider2D>({}, {}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
+        m_Registry.Create<Transform, Sprite, Collider2D>({.position = glm::vec3(-2, -3, 0), .size = glm::vec2(5, 1)}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
 
-        m_Registry.Create<Transform, Sprite>(
-            {},
-            {.texture = "GRASS_TILE_1"});
-
-        m_Registry.Create<Transform, Sprite>(
-            {},
-            {.texture = "GRASS_TILE_1"});
-
-        m_Registry.Create<Transform, Sprite>(
-            {},
-            {.texture = "GRASS_TILE_1"});
-
-        Entity player = m_Registry.Create<Transform, Sprite, Movement>(
+        Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D>(
             {},
             {.color = BLUE},
+            {},
             {});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        Entity root = BuildUI(m_Registry, SideBar(test));
+        Entity root = BuildUI(m_Registry, SideBar(player));
     });
 
     simplex.SetScene(MainScene);

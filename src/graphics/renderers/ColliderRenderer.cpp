@@ -81,7 +81,7 @@ void ColliderRenderer::RenderRect(const ColliderCommand &cmd)
     glm::vec3 position = cmd.transform.position + glm::vec3(cmd.collider.offset, 0.0f);
     for(auto &vert : vertices)
     {
-        vert *= glm::vec3(cmd.collider.halfExtents * 2.0f, 0.0f);
+        vert *= glm::vec3(cmd.transform.size, 0.0f);
         vert += position;
     }
 
