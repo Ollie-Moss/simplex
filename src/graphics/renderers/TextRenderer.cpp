@@ -52,6 +52,9 @@ void TextRenderer::RenderText(const TextCommand &data)
 
     for(auto breakIndex : data.text.breaks)
     {
+        if(breakIndex > text.size() - 1)
+            continue;
+
         text.insert(breakIndex + inserted, 1, '\n');
         inserted++;
     }

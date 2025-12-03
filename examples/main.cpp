@@ -106,24 +106,40 @@ int main()
         // Systems
         m_Registry.RegisterSystem<CameraSystem>();
         m_Registry.RegisterSystem<MoveableCameraSystem>();
-        m_Registry.RegisterSystem<RenderSystem>();
 
+        // Physics
+        m_Registry.RegisterSystem<IntegrationSystem>();
+
+        // UI
         m_Registry.RegisterSystem<UIStateSystem>();
         m_Registry.RegisterSystem<UILayoutSystem>();
-        m_Registry.RegisterSystem<UIRenderSystem>();
 
+        // Custom
         m_Registry.RegisterSystem<MovementSystem>();
-        m_Registry.RegisterSystem<IntegrationSystem>();
+
+        // Rendering
+        m_Registry.RegisterSystem<UIRenderSystem>();
+        m_Registry.RegisterSystem<RenderSystem>();
         m_Registry.RegisterSystem<DebugPhysicsSystem>();
 
         // Entities
         m_Registry.Create<Transform, Sprite, Collider2D>({.position = glm::vec3(-2, -3, 0), .size = glm::vec2(5, 1)}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
 
+<<<<<<< HEAD
         Entity player = m_Registry.Create<Transform, Sprite, RigidBody2D, Collider2D, Movement>(
             {},
             {.color = BLUE},
             {},
             {}, {});
+=======
+        Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D, RigidBody2D>(
+            {},
+            {.color = BLUE},
+            {},
+            {},
+            {} //
+        );
+>>>>>>> 4bd758df0b49333f4eae1e57f108c67f8961d3ca
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
