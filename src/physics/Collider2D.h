@@ -11,6 +11,7 @@ struct Collider2D
 {
     Shape2D shape = Shape2D::Box;
     glm::vec2 offset = glm::vec2(0.0f, 0.0f);
+    bool isTrigger = false;
 
     // Box
     glm::vec2 halfExtents = glm::vec2(0.5f, 0.5f);

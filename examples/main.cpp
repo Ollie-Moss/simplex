@@ -66,7 +66,7 @@ UISpec SideBar(Entity player)
             element({
                         .layout = UILayout{
                             .sizing = {.width = GROW, .height = 50.0_percent},
-                            .direction = Direction::Vertical,
+                            .direction = Direction::Horizontal,
                         },
                         .style = UIStyle{.color = GREEN},
                     },
@@ -119,11 +119,11 @@ int main()
         // Entities
         m_Registry.Create<Transform, Sprite, Collider2D>({.position = glm::vec3(-2, -3, 0), .size = glm::vec2(5, 1)}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
 
-        Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D>(
+        Entity player = m_Registry.Create<Transform, Sprite, RigidBody2D, Collider2D, Movement>(
             {},
             {.color = BLUE},
             {},
-            {});
+            {}, {});
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
