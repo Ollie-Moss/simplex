@@ -56,6 +56,7 @@ QuadTree build(Iterator begin, Iterator end)
 class CollisionSystem : public System
 {
   public:
+    QuadTree m_QuadTree;
     CollisionSystem()
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<Transform, RigidBody2D, Collider2D>();
@@ -63,12 +64,11 @@ class CollisionSystem : public System
 
     void FixedUpdate(float timeStep) override
     {
-        for(Entity e : m_Entities)
-        {}
     }
 
     std::vector<Entity> BroadPhase()
     {
+        build(m_Entities.begin(), m_Entities.end());
         return {};
     }
     std::vector<Entity> NarrowPhase()

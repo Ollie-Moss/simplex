@@ -125,13 +125,6 @@ int main()
         // Entities
         m_Registry.Create<Transform, Sprite, Collider2D>({.position = glm::vec3(-2, -3, 0), .size = glm::vec2(5, 1)}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
 
-<<<<<<< HEAD
-        Entity player = m_Registry.Create<Transform, Sprite, RigidBody2D, Collider2D, Movement>(
-            {},
-            {.color = BLUE},
-            {},
-            {}, {});
-=======
         Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D, RigidBody2D>(
             {},
             {.color = BLUE},
@@ -139,7 +132,6 @@ int main()
             {},
             {} //
         );
->>>>>>> 4bd758df0b49333f4eae1e57f108c67f8961d3ca
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
