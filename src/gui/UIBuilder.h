@@ -4,6 +4,7 @@
 #include "core/Registry.h"
 #include "core/Types.h"
 #include "gui/UIComponents.h"
+#include <initializer_list>
 #include <optional>
 #include <vector>
 
@@ -11,20 +12,18 @@ struct UIProps
 {
     std::optional<UILayout> layout;
     std::optional<UIStyle> style;
-    std::optional<UIText> text;
-    std::optional<UIBoundText> bindText;
+    std::optional<Text> text;
 };
 
 struct UISpec
 {
-    UITransform transform;
     UIProps properties;
     std::vector<UISpec> children;
 };
 
 inline UISpec element(UIProps properties, std::initializer_list<UISpec> children = {})
 {
-    UISpec spec = {.properties = properties, .children = children};
+    UISpec spec = UISpec{.properties = properties, .children = children};
 
     return spec;
 }
@@ -32,27 +31,16 @@ inline UISpec element(UIProps properties, std::initializer_list<UISpec> children
 inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
 {
     // Create new entity
-    Entity entity = registry.Create<UITransform, UIElement>(spec.transform, {.parent = parent});
+    Entity entity = registry.Create<UITransform, UIElement>({}, {.parent = parent});
 
-    // Add optional styles
-    if(spec.properties.layout.has_value())
-        registry.AddComponent<UILayout>(entity, *spec.properties.layout);
-    else
-    {
-        registry.AddComponent<UILayout>(entity, UILayout{});
-    }
+    UILayout layout = spec.properties.layout.has_value() ? *spec.properties.layout : UILayout{};
+    registry.AddComponent<UILayout>(entity, layout);
 
-    if(spec.properties.style.has_value())
-        registry.AddComponent<UIStyle>(entity, *spec.properties.style);
+    UIStyle style = spec.properties.style.has_value() ? *spec.properties.style : UIStyle{};
+    registry.AddComponent<UIStyle>(entity, style);
 
-    if(spec.properties.text.has_value())
-        registry.AddComponent<UIText>(entity, *spec.properties.text);
-
-    if(spec.properties.bindText.has_value())
-    {
-        registry.AddComponent<UIText>(entity, UIText{});
-        registry.AddComponent<UIBoundText>(entity, *spec.properties.bindText);
-    }
+    Text text = spec.properties.text.has_value() ? *spec.properties.text : Text{};
+    registry.AddComponent<Text>(entity, text);
 
     // Create Children
     std::vector<EntityId> children;

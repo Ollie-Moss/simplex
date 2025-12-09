@@ -47,7 +47,8 @@ void TextRenderer::RenderText(const TextCommand &data)
 
     float tallestChar = 0.0f;
 
-    std::string text = data.text.content;
+    std::string text = *data.text.content;
+
     int inserted = 0;
 
     for(auto breakIndex : data.text.breaks)

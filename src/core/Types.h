@@ -19,7 +19,7 @@ using ComponentId = uint32_t;
 using EntityId = uint32_t;
 using Signature = std::bitset<MAX_COMPONENTS>;
 
-const EntityId NULL_ENTITY = MAX_ENTITIES + 1;
+const EntityId NULL_ENTITY = -1;
 
 using Padding = RectBounds<float>;
 using Color = glm::vec4;

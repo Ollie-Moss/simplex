@@ -11,11 +11,13 @@
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <functional>
 #include <iomanip>
 #include <string>
 #include <sys/types.h>
+#include <tuple>
 #include <variant>
 #include <vector>
 
@@ -24,21 +26,28 @@ class UIStateSystem : public System
   public:
     UIStateSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UIBoundText, UIText>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, Text>();
     }
     void Update(float timeStep) override
     {
         for(Entity e : m_Entities)
         {
-            auto [binding, uiText, elem] = e.GetComponents<UIBoundText, UIText, UIElement>();
+            auto [elem, trans, layout, text] = e.GetComponents<UIElement, UITransform, UILayout, Text>();
 
-            std::string content = binding.pull(binding.target);
+            bool anyChanged = false;
+            std::apply(
+                [&](auto &...b) {
+                    ((anyChanged |= b.UpdateBinding()), ...);
+                },
+                layout.bindables());
 
-            if(uiText.content != content)
-            {
-                uiText.content = content;
-                elem.dirty = true;
-            }
+            std::apply(
+                [&](auto &...b) {
+                    ((anyChanged |= b.UpdateBinding()), ...);
+                },
+                text.bindables());
+
+            elem.dirty = anyChanged;
         }
     }
 };
@@ -48,7 +57,7 @@ class UILayoutSystem : public System
   public:
     UILayoutSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, Text>();
     }
     void Update(float timeStep) override
     {
@@ -96,7 +105,7 @@ class UILayoutSystem : public System
         // GROW Sizing width
         GrowSize(entity, Direction::Horizontal);
 
-        // Wrap Text - do later
+        // Wrap Text
         WrapText(entity);
 
         // HUG Sizing heights
@@ -128,9 +137,9 @@ class UILayoutSystem : public System
         UILayout &props = entity.GetComponent<UILayout>();
         if(direction == Direction::Horizontal)
         {
-            return props.sizing.width;
+            return props.sizing.Get().width.Get();
         }
-        return props.sizing.height;
+        return props.sizing.Get().height.Get();
     }
     float GetPadding(const Padding &padding, Direction direction)
     {
@@ -149,7 +158,7 @@ class UILayoutSystem : public System
             return 0.0f;
         }
         auto [parentElement, parentProperties] = parent.GetComponents<UIElement, UILayout>();
-        return GetPadding(parentProperties.padding, direction);
+        return GetPadding(*parentProperties.padding, direction);
     }
 
     float &GetLengthWithAxis(Entity entity, Direction direction)
@@ -206,7 +215,7 @@ class UILayoutSystem : public System
         return growables;
     }
 
-    float MeasureText(UIText text, Direction direction)
+    float MeasureText(Text text, Direction direction)
     {
         Font font = Simplex::GetResources().GetFont(text.fontName);
 
@@ -220,7 +229,7 @@ class UILayoutSystem : public System
 
         uint32_t lineCounter = 1;
 
-        for(c = text.content.begin(); c != text.content.end(); c++)
+        for(c = text.content.Get().begin(); c != text.content.Get().end(); c++)
         {
             Character ch = font.characters[*c];
 
@@ -252,20 +261,14 @@ class UILayoutSystem : public System
 
     void WrapText(Entity entity)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
 
         for(auto child : element.children)
         {
             WrapText(child);
         }
 
-        auto ptr = entity.TryGetComponent<UIText>();
-        if(ptr == nullptr)
-            return;
-
-        auto &text = *ptr;
-
-        if(text.content.empty())
+        if(text.content.Get().empty())
             return;
 
         float width = GetLengthWithAxis(entity, Direction::Horizontal);
@@ -279,9 +282,9 @@ class UILayoutSystem : public System
         int lineCounter = 1;
         std::vector<int> breaks;
 
-        for(int i = 0; i < text.content.length(); i++)
+        for(int i = 0; i < text.content.Get().length(); i++)
         {
-            char c = text.content[i];
+            char c = text.content.Get()[i];
 
             Character ch = font.characters[c];
 
@@ -298,7 +301,7 @@ class UILayoutSystem : public System
                 widthCount++;
             }
 
-            if(currentWidth + GetPadding(properties.padding, Direction::Horizontal) > width && widthCount > 2)
+            if(currentWidth + GetPadding(*properties.padding, Direction::Horizontal) > width && widthCount > 2)
             {
                 breaks.push_back(i);
                 currentWidth = (ch.Advance >> 6);
@@ -315,23 +318,19 @@ class UILayoutSystem : public System
 
         float lineGaps = std::max<int>(0, totalLines - 1) * text.lineHeight;
         float lineHeights = totalLines * largestHeight;
-        height = lineHeights + lineGaps + GetPadding(properties.padding, Direction::Horizontal);
+        height = lineHeights + lineGaps + GetPadding(*properties.padding, Direction::Horizontal);
     }
 
     void InitialSizing(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
 
         float finalLength = 0.0f;
 
-        auto ptr = entity.TryGetComponent<UIText>();
-
-        auto text = ptr ? *ptr : UIText{};
-
-        auto padding = GetPadding(properties.padding, sizingAxis);
+        auto padding = GetPadding(*properties.padding, sizingAxis);
 
         if(axis.length.unit == Unit::Percent)
         {
@@ -349,7 +348,8 @@ class UILayoutSystem : public System
         {
             length = GetAxis(entity, sizingAxis).length.GetValue() + padding;
         }
-        if(!text.content.empty() && sizingAxis == Direction::Horizontal)
+
+        if(!text.content.Get().empty() && sizingAxis == Direction::Horizontal && axis.mode != SizingMode::Fixed)
         {
             auto textLength = MeasureText(text, Direction::Horizontal);
             if(length < textLength)
@@ -367,32 +367,32 @@ class UILayoutSystem : public System
     // direction - size width or height axis
     void HugSize(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
-        if(element.children.empty())
-            return;
+        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
 
         for(auto child : element.children)
         {
             HugSize(child, sizingAxis);
         }
+
         if(GetAxis(entity, sizingAxis).mode != SizingMode::Hug)
             return;
 
-        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
-        float padding = GetPadding(properties.padding, sizingAxis);
+        float gap = glm::max(0, (int)element.children.size() - 1) * *properties.gap;
+        float padding = GetPadding(properties.padding.Get(), sizingAxis);
+        float textSize = MeasureText(text, sizingAxis);
 
         // Size with layout direction
-        if(sizingAxis == properties.direction)
+        if(sizingAxis == properties.direction.Get())
         {
             float &length = GetLengthWithAxis(entity, sizingAxis);
 
-            length = SumChildrenLengths(entity, sizingAxis) + padding + gap;
+            length = SumChildrenLengths(entity, sizingAxis) + padding + gap + textSize;
         }
         else
         {
             // Size across layout direction
             float &length = GetLengthWithAxis(entity, sizingAxis);
-            length = GetLargestChildLength(entity, sizingAxis) + padding + gap;
+            length = GetLargestChildLength(entity, sizingAxis) + padding + gap + textSize;
         }
     }
 
@@ -416,7 +416,7 @@ class UILayoutSystem : public System
         }
 
         float remainingLength = GetLengthWithAxis(entity, sizingAxis);
-        remainingLength -= GetPadding(properties.padding, sizingAxis);
+        remainingLength -= GetPadding(*properties.padding, sizingAxis);
 
         if(sizingAxis != properties.direction)
         {
@@ -435,7 +435,7 @@ class UILayoutSystem : public System
         }
 
         // Size with layout direction
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
 
         for(Entity child : element.children)
         {
@@ -501,18 +501,18 @@ class UILayoutSystem : public System
 
         Entity parent = element.parent;
 
-        float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.left : properties.padding.top;
-        float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.left : properties.padding.top;
+        float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.Get().left : properties.padding.Get().top;
+        float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.Get().left : properties.padding.Get().top;
 
         // Apply justify content positions
-        float remainingLength = GetLengthWithAxis(entity, properties.direction);
+        float remainingLength = GetLengthWithAxis(entity, *properties.direction);
 
         // remainingLength -= GetParentPadding(properties.padding, direction);
-        remainingLength -= GetPadding(properties.padding, properties.direction);
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        remainingLength -= GetPadding(*properties.padding, *properties.direction);
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
         for(Entity child : element.children)
         {
-            remainingLength -= GetLengthWithAxis(child, properties.direction);
+            remainingLength -= GetLengthWithAxis(child, *properties.direction);
         }
         if(properties.justifyContent == JustifyContent::Center)
         {
@@ -524,15 +524,15 @@ class UILayoutSystem : public System
         }
 
         // Apply align items positions
-        float length = GetLengthAgainstAxis(entity, properties.direction);
+        float length = GetLengthAgainstAxis(entity, *properties.direction);
 
         // Against axis padding (invert the direction to get the correct padding)
-        length -= GetPadding(properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
+        length -= GetPadding(*properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
 
         float largestLength = 0;
         for(Entity child : element.children)
         {
-            float length = GetLengthAgainstAxis(child, properties.direction);
+            float length = GetLengthAgainstAxis(child, *properties.direction);
             if(length > largestLength)
             {
                 largestLength = length;
@@ -558,12 +558,12 @@ class UILayoutSystem : public System
             if(properties.direction == Direction::Horizontal)
             {
                 localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
-                justifyContentOffset += childTransform.size.x + properties.gap;
+                justifyContentOffset += childTransform.size.x + *properties.gap;
             }
             else
             {
                 localPos += glm::vec2(alignItemsOffset, justifyContentOffset);
-                justifyContentOffset += childTransform.size.y + properties.gap;
+                justifyContentOffset += childTransform.size.y + *properties.gap;
             }
 
             // Assign the child's position relative to parent
@@ -598,24 +598,16 @@ class UIRenderSystem : public System
         {
             std::cout << "NULL ENTITY SOMEHOW" << "\n";
         }
-        auto [element, transform] = entity.GetComponents<UIElement, UITransform>();
-
-        auto layoutPtr = entity.TryGetComponent<UILayout>();
-        auto stylePtr = entity.TryGetComponent<UIStyle>();
-        auto textPtr = entity.TryGetComponent<UIText>();
-
-        UILayout layout = layoutPtr == nullptr ? UILayout{} : *layoutPtr;
-        UIStyle style = stylePtr == nullptr ? UIStyle{} : *stylePtr;
-        UIText text = textPtr == nullptr ? UIText{} : *textPtr;
+        auto [element, transform, layout, style, text] = entity.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
 
         SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
         Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
 
-        if(!text.content.empty())
+        if(!text.content.Get().empty())
         {
             glm::vec2 pos = transform.position;
-            pos.x += layout.padding.left;
-            pos.y += layout.padding.top;
+            pos.x += layout.padding.Get().left;
+            pos.y += layout.padding.Get().top;
 
             TextCommand cmd = {.text = text, .position = pos};
             Simplex::GetRendererManager().Submit<TextCommand>(cmd);

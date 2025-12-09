@@ -15,12 +15,16 @@
 #include "systems/MoveableCameraSystem.h"
 #include "systems/RenderSystem.h"
 #include "physics/IntegrationSystem.h"
-#include <format>
-#include <string>
+#include <optional>
 
 struct Movement
 {
     float moveSpeed = 50.0f;
+};
+
+struct PlayerStats
+{
+    float health = 100.0f;
 };
 
 class MovementSystem : public System
@@ -34,11 +38,14 @@ class MovementSystem : public System
     {
         for(Entity e : m_Entities)
         {
+            auto &stats = e.GetComponent<PlayerStats>();
+
             auto [transform, movement, rb] = e.GetComponents<Transform, Movement, RigidBody2D>();
             if(Simplex::GetInput().OnKeyPressed(GLFW_KEY_R))
             {
                 transform.position = glm::vec3(0, 0, 0);
                 rb.velocity.y = 0;
+                stats.health -= 1;
             }
 
             int horizontalAxis = Simplex::GetInput().OnKeyDown(GLFW_KEY_A) * -1 + Simplex::GetInput().OnKeyDown(GLFW_KEY_D);
@@ -55,43 +62,36 @@ UISpec SideBar(Entity player)
     return element(
         {
             .layout = UILayout{
-                .sizing = {.width = 20.0_percent, .height = 100.0_percent},
+                .sizing = Sizing{
+                    .width = Axis(SizingMode::Fixed, Percent(20.0f)),
+                    .height = Axis(SizingMode::Fixed, Pixels(100.0f))},
                 .direction = Direction::Vertical,
-                .padding = 10.0_p,
+                .padding = 10.0,
                 .gap = 10.0f,
             },
         },
         {
-
             element({
-                        .layout = UILayout{
-                            .sizing = {.width = GROW, .height = 50.0_percent},
-                            .direction = Direction::Horizontal,
-                        },
-                        .style = UIStyle{.color = GREEN},
+                .layout = UILayout{
+                    .sizing = Sizing{
+                        .width = Bind<Axis>(player, [&](std::optional<Entity> player) {
+                            auto stats = player->GetComponent<PlayerStats>();
+
+                            return Axis(SizingMode::Fixed, Percent(stats.health));
+                        }),
+                        .height = HUG,
                     },
-                    {
-                        element({
-                            .layout = UILayout{
-                                .sizing = {.width = GROW, .height = HUG},
-                            },
-                            .style = UIStyle{.color = TRANSPARENT},
-                            .bindText = Bind<std::string>(std::nullopt, [&](std::optional<Entity> target) {
-                                auto fps = Simplex::Get().GetFPS();
-                                return std::format("fps: {:.0f}", fps);
-                            }),
-                        }),
-                        element({
-                            .layout = UILayout{
-                                .sizing = {.width = GROW, .height = HUG},
-                            },
-                            .style = UIStyle{.color = TRANSPARENT},
-                            .bindText = Bind<std::string>(player, [&](std::optional<Entity> target) {
-                                auto &pos = target.value().GetComponent<Transform>().position;
-                                return std::format("x: {:.0f} \ny: {:.0f} ", pos.x, pos.y);
-                            }),
-                        }),
+                    .direction = Direction::Vertical,
+                    .gap = 10.0f,
+                },
+                .style = UIStyle{.color = GREEN},
+                .text = Text{
+                    .content = Bind<std::string>(player, [](std::optional<Entity> target) {
+                        return std::to_string((*target).GetComponent<PlayerStats>().health);
                     }),
+                },
+            }),
+
         });
 }
 
@@ -125,9 +125,10 @@ int main()
         // Entities
         m_Registry.Create<Transform, Sprite, Collider2D>({.position = glm::vec3(-2, -3, 0), .size = glm::vec2(5, 1)}, {.color = TRANSPARENT}, {.shape = Shape2D::Box});
 
-        Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D, RigidBody2D>(
+        Entity player = m_Registry.Create<Transform, Sprite, Movement, Collider2D, RigidBody2D, PlayerStats>(
             {},
             {.color = BLUE},
+            {},
             {},
             {},
             {} //

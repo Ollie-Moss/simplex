@@ -124,7 +124,7 @@ void View::SetCamera(Transform transform, Camera camera)
     float cameraTop = transform.position.y - orthoHeight / 2.0f;
     float cameraBottom = transform.position.y + orthoHeight / 2.0f;
 
-    m_CameraBounds = {.top = cameraTop, .right = cameraRight, .bottom = cameraBottom, .left = cameraLeft};
+    m_CameraBounds = RectBounds<float>(cameraTop, cameraRight, cameraBottom, cameraLeft);
 }
 
 RectBounds<float> View::GetCameraBounds()
