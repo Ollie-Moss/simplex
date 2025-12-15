@@ -26,7 +26,7 @@
 - [] Slider element
 - [] Overflow handling
 - [] Scroll areas
-- [-] Data binding
+- [x] Data binding
 - [] Developer user interface for debugging
 
 ## 2D Physics
