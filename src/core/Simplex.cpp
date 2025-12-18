@@ -9,6 +9,7 @@
 #include "graphics/renderers/SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/renderers/TextRenderer.h"
+#include "graphics/util/Shader.h"
 #include <chrono>
 #include <filesystem>
 #include <string_view>
@@ -30,10 +31,6 @@ bool Simplex::Init()
     if(!m_Input.Init())
         return false;
 
-
-    // Simplex::GetResourceManager().LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
-    // Simplex::GetResourceManager().LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
-    // Simplex::GetResourceManager().LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
 
     Simplex::GetAssetManager().Load<Shader>("SpriteShader", {.vertexShaderPath = "vSpriteShader.glsl", .fragmentShaderPath = "fSpriteShader.glsl"});
     Simplex::GetAssetManager().Load<Shader>("TextShader", {.vertexShaderPath = "vTextShader.glsl", .fragmentShaderPath = "fTextShader.glsl"});

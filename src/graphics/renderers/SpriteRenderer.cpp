@@ -6,6 +6,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdio>
+#include "graphics/util/Texture.h"
 #include "graphics/util/VertexBuffer.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
@@ -118,7 +119,6 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
         glActiveTexture(GL_TEXTURE0);
 
         Simplex::GetAssetManager().Get<Texture>("atlas").Bind();
-        // Simplex::GetResourceManager().GetTexture(texture).Bind();
     }
 
     // render

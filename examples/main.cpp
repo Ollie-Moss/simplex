@@ -6,6 +6,8 @@
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
+#include "graphics/text/Font.h"
+#include "graphics/util/Texture.h"
 #include "physics/DebugPhysicsSystem.h"
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
@@ -103,10 +105,6 @@ int main()
     {
         return 0;
     }
-    // Simplex::GetResourceManager().LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
-    //
-    // Simplex::GetResourceManager().LoadFont("Arial", "arial.ttf");
-    //
     Simplex::GetAssetManager().Load<Texture>("GRASS_TILE_1", {.path = "grass_tile_1.png", .alpha = true});
     Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
 

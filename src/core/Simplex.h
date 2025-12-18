@@ -3,7 +3,6 @@
 #include "assets/AssetManager.h"
 #include "core/Scene.h"
 #include "Registry.h"
-#include "core/ResourceManager.h"
 #include "core/View.h"
 #include "core/Input.h"
 #include "graphics/RendererManager.h"
