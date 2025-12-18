@@ -217,7 +217,7 @@ class UILayoutSystem : public System
 
     float MeasureText(Text text, Direction direction)
     {
-        Font font = Simplex::GetResources().GetFont(text.fontName);
+        Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
 
         std::string::const_iterator c;
 
@@ -273,7 +273,7 @@ class UILayoutSystem : public System
 
         float width = GetLengthWithAxis(entity, Direction::Horizontal);
         float &height = GetLengthWithAxis(entity, Direction::Vertical);
-        Font font = Simplex::GetResources().GetFont(text.fontName);
+        Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
 
         float currentWidth = 0.0f;
         int widthCount = 0;

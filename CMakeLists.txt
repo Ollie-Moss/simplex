@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
+set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 add_subdirectory( vendor/glfw )
 add_subdirectory( vendor/glm )

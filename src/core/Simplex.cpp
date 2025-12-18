@@ -1,4 +1,5 @@
 #include "Simplex.h"
+#include "assets/AssetManager.h"
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
@@ -8,10 +9,14 @@
 #include "graphics/renderers/SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/renderers/TextRenderer.h"
+#include "graphics/util/Shader.h"
 #include <chrono>
+#include <filesystem>
 #include <string_view>
 #include <sys/types.h>
 #include <utility>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 Simplex::Simplex()
 {
@@ -26,12 +31,15 @@ bool Simplex::Init()
     if(!m_Input.Init())
         return false;
 
-    if(!m_ResourceManager.Init())
-        return false;
+
+    Simplex::GetAssetManager().Load<Shader>("SpriteShader", {.vertexShaderPath = "vSpriteShader.glsl", .fragmentShaderPath = "fSpriteShader.glsl"});
+    Simplex::GetAssetManager().Load<Shader>("TextShader", {.vertexShaderPath = "vTextShader.glsl", .fragmentShaderPath = "fTextShader.glsl"});
+    Simplex::GetAssetManager().Load<Shader>("DefaultShader", {.vertexShaderPath = "vDefaultShader.glsl", .fragmentShaderPath = "fDefaultShader.glsl"});
 
     m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
     m_RendererManager.Register<TextCommand, TextRenderer>();
     m_RendererManager.Register<ColliderCommand, ColliderRenderer>();
+
     return true;
 }
 
@@ -59,14 +67,15 @@ Input &Simplex::GetInput()
     return Get().m_Input;
 }
 
-ResourceManager &Simplex::GetResources()
-{
-    return Get().m_ResourceManager;
-}
 
 RendererManager &Simplex::GetRendererManager()
 {
     return Get().m_RendererManager;
+}
+
+AssetManager &Simplex::GetAssetManager()
+{
+    return Get().m_AssetManager;
 }
 
 Scene &Simplex::GetScene()

@@ -6,6 +6,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdio>
+#include "graphics/util/Texture.h"
 #include "graphics/util/VertexBuffer.h"
 #include "core/Simplex.h"
 #include "core/Types.h"
@@ -71,8 +72,17 @@ void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> &buffer)
 
 void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size_t &rangeStart, const size_t &rangeEnd)
 {
-    std::string texture = buffer[rangeStart].sprite.texture;
-    std::vector<RenderData> data(buffer.GetRawData().begin() + rangeStart, buffer.GetRawData().begin() + rangeEnd + 1);
+    std::vector<RenderData> data;
+    data.reserve(buffer.Size());
+
+    for(const auto &spriteCmd : buffer.GetRawData())
+    {
+        data.push_back({
+            .position = spriteCmd.transform.position,
+            .size = spriteCmd.transform.size,
+            .color = spriteCmd.sprite.color,
+        });
+    }
 
     // Move to vbo
     m_InstanceBuffer.Fill<RenderData>(data);
@@ -90,10 +100,8 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     m_VertexArray.BindProperty<RenderData, glm::vec4>(2, offsetof(RenderData, color) / sizeof(float), &m_InstanceBuffer);
     m_VertexArray.AttributeDivisor(2, 1);
 
-    m_VertexArray.Bind<glm::vec3>(3, &m_QuadBuffer);
-
     // set shader
-    Shader shader = Simplex::GetResources().GetShader("SpriteShader");
+    Shader shader = Simplex::GetAssetManager().Get<Shader>("SpriteShader");
     shader.use();
 
     // set projection
@@ -102,13 +110,15 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     shader.setMat4("projection", projection);
 
     // set texture
-    bool useTexture = (texture != "");
+    // bool useTexture = (texture != "");
+    bool useTexture = false;
     shader.setBool("useTexture", useTexture);
 
     if(useTexture)
     {
         glActiveTexture(GL_TEXTURE0);
-        Simplex::GetResources().GetTexture(texture).Bind();
+
+        Simplex::GetAssetManager().Get<Texture>("atlas").Bind();
     }
 
     // render
