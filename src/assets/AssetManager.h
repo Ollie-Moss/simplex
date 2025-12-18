@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetProvider.h"
+#include "assets/HasLoaderConfig.h"
 #include "core/Types.h"
 #include <cassert>
 #include <cstdint>
@@ -14,7 +15,7 @@ class AssetManager
     AssetManager() : m_Index(0) {}
 
     // Ideally names should not conflict
-    template <typename TAsset>
+    template <HasLoaderConfig TAsset>
     const TAsset &Get(const std::string &name)
     {
         std::shared_ptr<AssetProvider<TAsset>> provider = GetAssetProvider<TAsset>();
@@ -22,8 +23,8 @@ class AssetManager
         return provider->Get(name);
     }
 
-    template <typename TConfig, typename TAsset>
-    const TAsset &Load(const std::string &name, const TConfig &config)
+    template <HasLoaderConfig TAsset>
+    const TAsset &Load(const std::string &name, const TAsset::LoaderConfig &config)
     {
         std::shared_ptr<AssetProvider<TAsset>> provider = GetAssetProvider<TAsset>();
 
@@ -32,7 +33,7 @@ class AssetManager
 
   public:
   private:
-    template <typename TAsset>
+    template <HasLoaderConfig TAsset>
     std::shared_ptr<AssetProvider<TAsset>> GetAssetProvider()
     {
         std::type_index type = typeid(TAsset);

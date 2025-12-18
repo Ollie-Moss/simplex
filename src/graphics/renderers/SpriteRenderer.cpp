@@ -100,7 +100,7 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     m_VertexArray.AttributeDivisor(2, 1);
 
     // set shader
-    Shader shader = Simplex::GetResourceManager().GetShader("SpriteShader");
+    Shader shader = Simplex::GetAssetManager().Get<Shader>("SpriteShader");
     shader.use();
 
     // set projection
@@ -109,7 +109,7 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     shader.setMat4("projection", projection);
 
     // set texture
-    //bool useTexture = (texture != "");
+    // bool useTexture = (texture != "");
     bool useTexture = false;
     shader.setBool("useTexture", useTexture);
 
@@ -117,7 +117,7 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     {
         glActiveTexture(GL_TEXTURE0);
 
-        Simplex::GetResourceManager().GetTexture("atlas").Bind();
+        Simplex::GetAssetManager().Get<Texture>("atlas").Bind();
         // Simplex::GetResourceManager().GetTexture(texture).Bind();
     }
 

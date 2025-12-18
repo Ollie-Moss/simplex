@@ -33,7 +33,7 @@ void main() {
     int index = gl_VertexID / 6;
     int currVertexID = gl_VertexID % 6;
 
-    vec3 quadVertex = facePositions[indices[currVertexID]]
+    vec3 quadVertex = facePositions[indices[currVertexID]];
 
     vec3 scale = vec3(inSize, 1.0);
     vec3 position = (quadVertex * scale) + inPosition;

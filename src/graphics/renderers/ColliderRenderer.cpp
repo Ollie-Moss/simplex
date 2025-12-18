@@ -50,7 +50,7 @@ void ColliderRenderer::RenderCircle(const ColliderCommand &cmd)
     m_VertexBuffer.Fill(vertices);
     m_VertexArray.Bind<glm::vec3>(0, &m_VertexBuffer);
 
-    Shader shader = Simplex::GetResourceManager().GetShader("DefaultShader");
+    Shader shader = Simplex::GetAssetManager().Get<Shader>("DefaultShader");
     shader.use();
 
     // set color
@@ -88,7 +88,7 @@ void ColliderRenderer::RenderRect(const ColliderCommand &cmd)
     m_VertexBuffer.Fill(vertices);
     m_VertexArray.Bind<glm::vec3>(0, &m_VertexBuffer);
 
-    Shader shader = Simplex::GetResourceManager().GetShader("DefaultShader");
+    Shader shader = Simplex::GetAssetManager().Get<Shader>("DefaultShader");
     shader.use();
 
     // set color

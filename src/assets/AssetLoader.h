@@ -1,8 +1,9 @@
 #pragma once
 
-template <typename T>
+#include "assets/HasLoaderConfig.h"
+
+template <HasLoaderConfig TAsset>
 struct AssetLoader
 {
-    template <typename TConfig>
-    static T Load(const TConfig &config);
+    static TAsset Load(const TAsset::LoaderConfig &config);
 };

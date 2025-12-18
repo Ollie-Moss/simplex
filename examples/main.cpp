@@ -99,14 +99,17 @@ int main()
 {
     Simplex simplex;
 
-    Simplex::GetResourceManager().LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
-
-    Simplex::GetResourceManager().LoadFont("Arial", "arial.ttf");
-
     if(!simplex.Init())
     {
         return 0;
     }
+    // Simplex::GetResourceManager().LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
+    //
+    // Simplex::GetResourceManager().LoadFont("Arial", "arial.ttf");
+    //
+    Simplex::GetAssetManager().Load<Texture>("GRASS_TILE_1", {.path = "grass_tile_1.png", .alpha = true});
+    Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
+
     Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
         // Systems
         m_Registry.RegisterSystem<CameraSystem>();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetLoader.h"
+#include "assets/HasLoaderConfig.h"
 #include <string>
 #include <unordered_map>
 
@@ -9,15 +10,14 @@ class IAssetProvider
   public:
 };
 
-template <typename TAsset>
+template <HasLoaderConfig TAsset>
 class AssetProvider : public IAssetProvider
 {
   public:
-    template <typename TConfig>
-    const TAsset &Load(const std::string &name, const TConfig &config)
+    const TAsset &Load(const std::string &name, const TAsset::LoaderConfig &config)
     {
         auto [it, inserted] =
-            m_assets.try_emplace(name, AssetLoader<TAsset>::template Load<TConfig>(config));
+            m_assets.try_emplace(name, AssetLoader<TAsset>::Load(config));
         return it->second;
     }
 

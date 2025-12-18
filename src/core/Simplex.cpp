@@ -1,4 +1,5 @@
 #include "Simplex.h"
+#include "assets/AssetManager.h"
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
@@ -29,37 +30,20 @@ bool Simplex::Init()
     if(!m_Input.Init())
         return false;
 
-    if(!m_ResourceManager.Init())
-        return false;
 
-    Simplex::GetResourceManager().LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
-    Simplex::GetResourceManager().LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
-    Simplex::GetResourceManager().LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
+    // Simplex::GetResourceManager().LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
+    // Simplex::GetResourceManager().LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
+    // Simplex::GetResourceManager().LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
+
+    Simplex::GetAssetManager().Load<Shader>("SpriteShader", {.vertexShaderPath = "vSpriteShader.glsl", .fragmentShaderPath = "fSpriteShader.glsl"});
+    Simplex::GetAssetManager().Load<Shader>("TextShader", {.vertexShaderPath = "vTextShader.glsl", .fragmentShaderPath = "fTextShader.glsl"});
+    Simplex::GetAssetManager().Load<Shader>("DefaultShader", {.vertexShaderPath = "vDefaultShader.glsl", .fragmentShaderPath = "fDefaultShader.glsl"});
 
     m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
     m_RendererManager.Register<TextCommand, TextRenderer>();
     m_RendererManager.Register<ColliderCommand, ColliderRenderer>();
 
     return true;
-}
-
-void LoadSprites()
-{
-    std::filesystem::path atlasPath = "assets/sprites/atlas.png";
-
-    std::filesystem::path spritesPath = "assets/sprites";
-
-    // for(const auto &spriteFile : std::filesystem::directory_iterator(atlasPath))
-    // {
-    //     // load image
-    //     int width, height, nrChannels;
-    //     unsigned char *data = stbi_load(spriteFile.path().c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
-    //
-    //     // and finally free image data
-    //     stbi_image_free(data);
-    // }
-    //
-    Simplex::GetResourceManager().LoadTexture("atlas", 1.0f, atlasPath.c_str());
 }
 
 Simplex::~Simplex() {}
@@ -86,14 +70,15 @@ Input &Simplex::GetInput()
     return Get().m_Input;
 }
 
-ResourceManager &Simplex::GetResourceManager()
-{
-    return Get().m_ResourceManager;
-}
 
 RendererManager &Simplex::GetRendererManager()
 {
     return Get().m_RendererManager;
+}
+
+AssetManager &Simplex::GetAssetManager()
+{
+    return Get().m_AssetManager;
 }
 
 Scene &Simplex::GetScene()

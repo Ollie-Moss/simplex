@@ -23,7 +23,6 @@ class Simplex
 
     static View &GetView();
     static Input &GetInput();
-    static ResourceManager &GetResourceManager();
     static Scene &GetScene();
     static Registry &GetRegistry();
     static RendererManager &GetRendererManager();
@@ -38,7 +37,6 @@ class Simplex
   private:
     View m_View;
     Input m_Input;
-    ResourceManager m_ResourceManager;
     AssetManager m_AssetManager;
     RendererManager m_RendererManager;
 
