@@ -4,11 +4,10 @@
 #include "graphics/util/Texture.h"
 #include <map>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include "ft2build.h"
 #include FT_FREETYPE_H
+
+#include "stb_image.h"
 
 const Shader &ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile, std::string name)
 {
@@ -20,16 +19,6 @@ const Shader &ResourceManager::LoadShader(const char *vShaderFile, const char *f
 bool ResourceManager::Init()
 {
     stbi_set_flip_vertically_on_load(true);
-    
-    LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
-    LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
-    LoadShader("vCircleShader.glsl", "fCircleShader.glsl", "CircleShader");
-    LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
-
-    LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
-
-    // Fonts
-    LoadFont("Arial", "arial.ttf");
     return true;
 };
 

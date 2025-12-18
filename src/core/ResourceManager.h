@@ -1,12 +1,14 @@
 #pragma once
 
+
 #include <map>
 #include "graphics/util/Shader.h"
 #include "graphics/text/Font.h"
 #include "graphics/util/Texture.h"
 #include <string>
 
-class ResourceManager {
+class ResourceManager
+{
   public:
     bool Init();
 

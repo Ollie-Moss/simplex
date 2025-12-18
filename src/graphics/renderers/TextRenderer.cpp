@@ -29,8 +29,8 @@ void TextRenderer::Render()
 
 void TextRenderer::RenderText(const TextCommand &data)
 {
-    Font font = Simplex::GetResources().GetFont(data.text.fontName);
-    Shader shader = Simplex::GetResources().GetShader("TextShader");
+    Font font = Simplex::GetResourceManager().GetFont(data.text.fontName);
+    Shader shader = Simplex::GetResourceManager().GetShader("TextShader");
     shader.use();
 
     shader.setVec3("textColor", data.text.color);

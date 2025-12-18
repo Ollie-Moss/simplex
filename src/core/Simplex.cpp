@@ -9,9 +9,12 @@
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/renderers/TextRenderer.h"
 #include <chrono>
+#include <filesystem>
 #include <string_view>
 #include <sys/types.h>
 #include <utility>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 Simplex::Simplex()
 {
@@ -29,10 +32,34 @@ bool Simplex::Init()
     if(!m_ResourceManager.Init())
         return false;
 
+    Simplex::GetResourceManager().LoadShader("vSpriteShader.glsl", "fSpriteShader.glsl", "SpriteShader");
+    Simplex::GetResourceManager().LoadShader("vTextShader.glsl", "fTextShader.glsl", "TextShader");
+    Simplex::GetResourceManager().LoadShader("vDefaultShader.glsl", "fDefaultShader.glsl", "DefaultShader");
+
     m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
     m_RendererManager.Register<TextCommand, TextRenderer>();
     m_RendererManager.Register<ColliderCommand, ColliderRenderer>();
+
     return true;
+}
+
+void LoadSprites()
+{
+    std::filesystem::path atlasPath = "assets/sprites/atlas.png";
+
+    std::filesystem::path spritesPath = "assets/sprites";
+
+    // for(const auto &spriteFile : std::filesystem::directory_iterator(atlasPath))
+    // {
+    //     // load image
+    //     int width, height, nrChannels;
+    //     unsigned char *data = stbi_load(spriteFile.path().c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+    //
+    //     // and finally free image data
+    //     stbi_image_free(data);
+    // }
+    //
+    Simplex::GetResourceManager().LoadTexture("atlas", 1.0f, atlasPath.c_str());
 }
 
 Simplex::~Simplex() {}
@@ -59,7 +86,7 @@ Input &Simplex::GetInput()
     return Get().m_Input;
 }
 
-ResourceManager &Simplex::GetResources()
+ResourceManager &Simplex::GetResourceManager()
 {
     return Get().m_ResourceManager;
 }

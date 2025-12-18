@@ -8,38 +8,12 @@
 #include "glm/fwd.hpp"
 #include "physics/RigidBody2D.h"
 #include "physics/Collider2D.h"
+#include "util/Quad.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <iterator>
-#include <memory>
 #include <vector>
 
-class Quad
-{
-  public:
-    Quad(glm::vec2 min, glm::vec2 max) : min(min), max(max)
-    {
-    }
-
-    bool InBounds(glm::vec2 position)
-    {
-        return (position.x >= min.x && position.y >= min.y) &&
-               (position.x <= max.x && position.y <= max.y);
-    }
-
-    glm::vec2 min;
-    glm::vec2 max;
-
-    // Quad &operator|=(glm::vec2 const &p)
-    // {
-    //     min.x = std::min(min.x, p.x);
-    //     min.y = std::min(min.y, p.y);
-    //     max.x = std::max(max.x, p.x);
-    //     max.y = std::max(max.y, p.y);
-    //     return *this;
-    // }
-};
 
 constexpr uint32_t MAX_COLLISION_GROUP_SIZE = 5;
 using CollisionGroup = std::array<EntityId, MAX_COLLISION_GROUP_SIZE>;
@@ -51,6 +25,7 @@ constexpr size_t MAX_QUAD_TREE_SIZE = 10000;
 class Node
 {
   public:
+    Node() {};
     NodeId children[4] = {
         NULL_NODE,
         NULL_NODE,
@@ -77,6 +52,8 @@ class Node
 class QuadTree
 {
   public:
+    QuadTree() {}
+
   public:
     void Insert(EntityId entity, Transform transform, RigidBody2D rigidBody)
     {
@@ -148,7 +125,7 @@ class QuadTree
     Node m_Root;
     size_t m_TreeIndex;
 
-    // Stores contained entities in the quad tree for quick lookup
+    // Stores contained entities in the quad tree for quick checking if a given entitiy is in the tree
     std::set<EntityId> m_Entities;
 };
 

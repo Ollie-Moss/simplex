@@ -98,6 +98,11 @@ UISpec SideBar(Entity player)
 int main()
 {
     Simplex simplex;
+
+    Simplex::GetResourceManager().LoadTexture("GRASS_TILE_1", 1.0f, "grass_tile_1.png");
+
+    Simplex::GetResourceManager().LoadFont("Arial", "arial.ttf");
+
     if(!simplex.Init())
     {
         return 0;

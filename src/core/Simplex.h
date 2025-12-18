@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets/AssetManager.h"
 #include "core/Scene.h"
 #include "Registry.h"
 #include "core/ResourceManager.h"
@@ -22,10 +23,11 @@ class Simplex
 
     static View &GetView();
     static Input &GetInput();
-    static ResourceManager &GetResources();
+    static ResourceManager &GetResourceManager();
     static Scene &GetScene();
     static Registry &GetRegistry();
     static RendererManager &GetRendererManager();
+    static AssetManager &GetAssetManager();
 
     float GetFPS();
     float GetDeltaTime();
@@ -37,6 +39,7 @@ class Simplex
     View m_View;
     Input m_Input;
     ResourceManager m_ResourceManager;
+    AssetManager m_AssetManager;
     RendererManager m_RendererManager;
 
     Scene m_CurrentScene;
