@@ -20,7 +20,6 @@
 - [x] Text wrapping
 - [] Input handling
 - [] Input field
-- [] Image element
 - [] Button element
 - [] Checkbox element
 - [] Slider element

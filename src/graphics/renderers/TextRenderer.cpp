@@ -22,6 +22,8 @@ void TextRenderer::Render()
 {
     const Shader &shader = Simplex::GetAssetManager().Get<Shader>("TextShader");
     shader.use();
+    glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
+    shader.setMat4("projection", projection);
     for(size_t i = 0; i < m_Buffer.Size(); ++i)
     {
         RenderText(m_Buffer[i], shader);
@@ -31,91 +33,30 @@ void TextRenderer::Render()
 
 void TextRenderer::RenderText(const TextCommand &data, const Shader &shader)
 {
-    Font font = Simplex::GetAssetManager().Get<Font>(data.text.fontName);
-
-    shader.setVec3("textColor", data.text.color);
-    glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
-    shader.setMat4("projection", projection);
-
-    glActiveTexture(GL_TEXTURE0);
-    m_VertexArray.Bind();
-
-    // iterate through all characters
-    std::string::const_iterator c;
-    glm::vec2 position = data.position;
-
-    float tallestChar = 0.0f;
-
-    std::string text = *data.text.content;
-
-    int inserted = 0;
-
-    for(auto breakIndex : data.text.breaks)
+    shader.setVec3("textColor", data.color);
+    for(auto &glyph : data.glyphs)
     {
-        if(breakIndex > text.size() - 1)
-            continue;
-
-        text.insert(breakIndex + inserted, 1, '\n');
-        inserted++;
-    }
-
-    for(c = text.begin(); c != text.end(); c++)
-    {
-        Character ch = font.characters[*c];
-        float height = ch.Size.y;
-        if(height > tallestChar)
-        {
-            tallestChar = height;
-        }
-    }
-
-    char lastChar;
-    for(c = text.begin(); c != text.end(); c++)
-    {
-        // Skip spaces that start on new lines (this should potentially only be breaks defined in text.breaks)
-        if(lastChar == '\n' && *c == ' ')
-        {
-            continue;
-        }
-        lastChar = *c;
-
-        // Reset position for newlines
-        if(*c == '\n')
-        {
-            position.y += tallestChar + data.text.lineHeight;
-            position.x = data.position.x;
-            continue;
-        }
-
-        // Setup character position and bounds
-        Character ch = font.characters[*c];
-
-        float xpos = position.x;
-        float ypos = position.y - ch.Bearing.y;
-        ypos += tallestChar;
-
-        float w = ch.Size.x;
-        float h = ch.Size.y;
+        glm::vec2 pos = glm::vec2(glyph.transform.position) + data.position;
+        float w = glyph.transform.size.x;
+        float h = glyph.transform.size.y;
 
         // update VBO for each character
         glm::vec4 vertices[6] = //
             {
-                glm::vec4(xpos, ypos, 0.0f, 0.0f),         //
-                glm::vec4(xpos, ypos + h, 0.0f, 1.0f),     //
-                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f), //
-                glm::vec4(xpos, ypos, 0.0f, 0.0f),         //
-                glm::vec4(xpos + w, ypos + h, 1.0f, 1.0f), //
-                glm::vec4(xpos + w, ypos, 1.0f, 0.0f)      //
+                glm::vec4(pos.x, pos.y, 0.0f, 0.0f),         //
+                glm::vec4(pos.x, pos.y + h, 0.0f, 1.0f),     //
+                glm::vec4(pos.x + w, pos.y + h, 1.0f, 1.0f), //
+                glm::vec4(pos.x, pos.y, 0.0f, 0.0f),         //
+                glm::vec4(pos.x + w, pos.y + h, 1.0f, 1.0f), //
+                glm::vec4(pos.x + w, pos.y, 1.0f, 0.0f)      //
             }; //
 
         // render glyph texture over quad
-        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+        glBindTexture(GL_TEXTURE_2D, glyph.texture);
         m_VertexBuffer.Fill<glm::vec4>(6, &vertices[0]);
 
         // render quad
         m_VertexArray.Render(6, GL_TRIANGLES);
-
-        position.x += (ch.Advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 }

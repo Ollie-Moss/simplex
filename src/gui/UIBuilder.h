@@ -18,7 +18,7 @@ inline UISpec element(UIProps properties, Bindable<std::vector<UISpec>> children
 inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
 {
     // Create new entity
-    Entity entity = registry.QueueCreate<UITransform, UILayout, UIStyle, Text, UIEvents>({}, spec.properties.layout, spec.properties.style, spec.properties.text, spec.properties.events);
+    Entity entity = registry.QueueCreate<UITransform, UILayout, UIStyle, TextLayout, Text, UIEvents>({}, spec.properties.layout, spec.properties.style, {}, spec.properties.text, spec.properties.events);
 
     // Create Children
     std::vector<EntityId> children;

@@ -2,6 +2,8 @@
 
 #include "core/Simplex.h"
 #include "graphics/render-commands/ColliderCommand.h"
+#include "graphics/text/Character.h"
+#include "gui/Text.h"
 #include "gui/UIBuilder.h"
 #include "core/SystemManager.h"
 #include "core/Entity.h"
@@ -16,6 +18,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <numeric>
 #include <string>
 #include <sys/types.h>
 #include <tuple>
@@ -132,6 +135,8 @@ class UILayoutSystem : public System
     {
         auto [elem, transform] = entity.GetComponents<UIElement, UITransform>();
 
+        bool shouldWrap = false;
+        TextSize(entity, shouldWrap);
         InitialSizing(entity, Direction::Horizontal);
         InitialSizing(entity, Direction::Vertical);
 
@@ -142,7 +147,8 @@ class UILayoutSystem : public System
         GrowSize(entity, Direction::Horizontal);
 
         // Wrap Text
-        WrapText(entity);
+        shouldWrap = true;
+        TextSize(entity, shouldWrap);
 
         // HUG Sizing heights
         HugSize(entity, Direction::Vertical);
@@ -251,78 +257,95 @@ class UILayoutSystem : public System
         return growables;
     }
 
-    float MeasureText(Text text, Direction direction)
+    void TextSize(Entity entity, bool shouldWrap)
     {
-        glm::vec2 size = text.Measure();
+        auto [text, textLayout, transform, elem, layout] = entity.GetComponents<Text, TextLayout, UITransform, UIElement, UILayout>();
 
-        return (direction == Direction::Horizontal) ? size.x : size.y;
-    }
-
-    void WrapText(Entity entity)
-    {
-        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
-
-        for(auto child : element.children)
+        for(Entity e : elem.children)
         {
-            WrapText(child);
+            TextSize(e, shouldWrap);
         }
-
         if(text.content.Get().empty())
             return;
 
-        float width = GetLengthWithAxis(entity, Direction::Horizontal);
-        float &height = GetLengthWithAxis(entity, Direction::Vertical);
+        if(textLayout.size.x + layout.padding.Get().left <= transform.size.x && shouldWrap)
+            return;
+
+        // do some wrapping
         Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
 
-        float currentWidth = 0.0f;
-        int widthCount = 0;
-        float textWidth = 0.0f;
-        float largestHeight = 0.0f;
-        int lineCounter = 1;
-        std::vector<int> breaks;
+        float penX = 0.0f;
+        float penY = font.maxAscent;
+        float lineWidth = 0.0f;
+        float lineHeight = 0.0f;
 
-        for(int i = 0; i < text.content.Get().length(); i++)
+        float accumulatedHeight = penY;
+        float bottomLineDescent = 0.0f;
+
+        float largestLineWidth = 0.0f;
+        float maxWidth = transform.size.x;
+
+        int numOfLines = 0;
+
+        std::vector<GlyphQuad> glyphs;
+        std::vector<float> lineWidths;
+
+        auto newLine = [&]() {
+            lineWidths.push_back(lineWidth);
+            accumulatedHeight += font.lineHeight;
+
+            penX = 0;
+            penY += font.lineHeight * text.lineHeight;
+            lineWidth = 0.0f;
+            lineHeight = 0.0f;
+            numOfLines++;
+        };
+
+        for(size_t i = 0; i < text.content.Get().size(); i++)
         {
             char c = text.content.Get()[i];
-
             Character ch = font.characters[c];
 
+            // newline if '\n' found or we exceed the width of the container
             if(c == '\n')
             {
-                currentWidth = 0;
-                widthCount = 0;
-                lineCounter++;
+                // Save data
+                newLine();
                 continue;
             }
-            else
+            if(penX + ch.Size.x + layout.padding.Get().left > maxWidth && shouldWrap)
             {
-                currentWidth += (ch.Advance >> 6);
-                widthCount++;
+                newLine();
+                numOfLines++;
             }
 
-            if(currentWidth + GetPadding(*properties.padding, Direction::Horizontal) > width && widthCount > 2)
-            {
-                breaks.push_back(i);
-                currentWidth = (ch.Advance >> 6);
-                widthCount = 0;
-            }
-            if(ch.Size.y > largestHeight)
-            {
-                largestHeight = ch.Size.y;
-            }
+            lineWidth = penX + ch.Size.x;
+            if(lineWidth > largestLineWidth)
+                largestLineWidth = lineWidth;
+
+            GlyphQuad glyph;
+            glyph.charIndex = i;
+            glyph.transform = {glm::vec3{penX, penY - ch.Bearing.y, 0}, ch.Size};
+            glyph.texture = ch.TextureID;
+            glyphs.push_back(glyph);
+
+            // Advance
+            penX += ch.Advance;
         }
-        text.breaks = breaks;
 
-        int totalLines = breaks.size() + lineCounter;
+        // (fontsize*lineheight-fontsize) = (total lineheight - base lineheight ) resulting in the any extra length
+        float lineGaps = std::max<int>(0, numOfLines - 1) * (text.fontSize * text.lineHeight - text.fontSize);
 
-        float lineGaps = std::max<int>(0, totalLines - 1) * text.lineHeight;
-        float lineHeights = totalLines * largestHeight;
-        height = lineHeights + lineGaps + GetPadding(*properties.padding, Direction::Horizontal);
+        float width = largestLineWidth;
+        float height = accumulatedHeight + font.maxDescent;
+
+        textLayout.size = glm::vec2{width, height};
+        textLayout.glyphs = glyphs;
+        textLayout.lineWidths = lineWidths;
     }
-
     void InitialSizing(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
+        auto [element, properties, transform, text, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, Text, TextLayout>();
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
@@ -348,7 +371,7 @@ class UILayoutSystem : public System
 
         if(!text.content.Get().empty() && sizingAxis == Direction::Horizontal && axis.mode != SizingMode::Fixed)
         {
-            auto textLength = MeasureText(text, Direction::Horizontal);
+            float textLength = sizingAxis == Direction::Horizontal ? textLayout.size.x : textLayout.size.y;
             if(length < textLength)
             {
                 length = textLength;
@@ -364,7 +387,7 @@ class UILayoutSystem : public System
     // direction - size width or height axis
     void HugSize(Entity entity, Direction sizingAxis)
     {
-        auto [element, properties, transform, text] = entity.GetComponents<UIElement, UILayout, UITransform, Text>();
+        auto [element, properties, transform, text, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, Text, TextLayout>();
 
         for(auto child : element.children)
         {
@@ -376,9 +399,9 @@ class UILayoutSystem : public System
 
         float gap = glm::max(0, (int)element.children.size() - 1) * *properties.gap;
         float padding = GetPadding(properties.padding.Get(), sizingAxis);
-        float textSize = MeasureText(text, sizingAxis);
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
+        float textSize = sizingAxis == Direction::Horizontal ? textLayout.size.x : textLayout.size.y;
         length = padding + gap + textSize;
 
         // Size with layout direction
@@ -595,7 +618,7 @@ class UIRenderSystem : public System
         {
             std::cout << "NULL ENTITY SOMEHOW" << "\n";
         }
-        auto [element, transform, layout, style, text] = entity.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
+        auto [element, transform, layout, style, text, textLayout] = entity.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text, TextLayout>();
 
         SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color.Get()}, .transform = transform, .renderSpace = RenderSpace::Screen};
         ColliderCommand debugCmd = {
@@ -612,9 +635,8 @@ class UIRenderSystem : public System
             pos.x += layout.padding.Get().left;
             pos.y += layout.padding.Get().top;
 
-            TextCommand cmd = {.text = text, .position = pos};
-            ColliderCommand ccmd = {.transform = {.position = glm::vec3(pos, 0.0f), .size = MeasureText(text, Direction::Vertical)}};
-            // Simplex::GetRendererManager().Submit<ColliderCommand>(ccmd);
+            TextCommand cmd = {.glyphs = textLayout.glyphs, .position = pos, .color = text.color};
+            // Simplex::GetRendererManager().Submit<ColliderCommand>({.transform = {glm::vec3(pos, 0), textLayout.size}});
             Simplex::GetRendererManager().Submit<TextCommand>(cmd);
         }
 
@@ -622,50 +644,6 @@ class UIRenderSystem : public System
         {
             RenderElements(child);
         }
-    }
-    glm::vec2 MeasureText(Text text, Direction direction)
-    {
-        Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
-
-        std::string::const_iterator c;
-
-        float width = 0.0f;
-        float height = 0.0f;
-        float currentWidth = 0.0f;
-        float largestWidth = 0.0f;
-        float largestHeight = 0.0f;
-
-        uint32_t lineCounter = 1;
-
-        for(c = text.content.Get().begin(); c != text.content.Get().end(); c++)
-        {
-            Character ch = font.characters[*c];
-            float chHeight = ch.Size.y + (ch.Size.y - ch.Bearing.y);
-
-            if(*c == '\n')
-            {
-                lineCounter += 1;
-                largestWidth = std::max(currentWidth, largestWidth);
-                currentWidth = 0;
-            }
-            else
-            {
-                currentWidth += (ch.Advance >> 6);
-            }
-
-            if(chHeight > largestHeight)
-            {
-                largestHeight = chHeight;
-            }
-        }
-
-        width = std::max(currentWidth, largestWidth);
-
-        float lineGaps = std::max<int>(0, lineCounter - 1) * text.lineHeight;
-        float lineHeights = (lineCounter * largestHeight);
-        height = lineHeights + lineGaps;
-
-        return glm::vec2(width, height);
     }
 };
 
@@ -683,7 +661,6 @@ class UIEventSystem : public System
             auto [transform, events] = e.GetComponents<UITransform, UIEvents>();
 
             glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
-
 
             bool mouseDown = false;
             int button = GLFW_MOUSE_BUTTON_1;

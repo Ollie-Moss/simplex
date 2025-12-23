@@ -32,7 +32,6 @@ struct TodoItem
 struct TodoState
 {
     std::vector<TodoItem> items;
-    int selected = 0;
 };
 
 // ------------------------------------------------------------
@@ -57,23 +56,10 @@ class TodoSystem : public System
             if(Simplex::GetInput().OnKeyPressed(GLFW_KEY_N))
             {
                 state.items.push_back({"New Todo Item", false});
-                state.selected = static_cast<int>(state.items.size()) - 1;
             }
 
             if(state.items.empty())
                 continue;
-
-            // Delete selected item
-            if(Simplex::GetInput().OnKeyPressed(GLFW_KEY_DELETE))
-            {
-                state.items.erase(state.items.begin() + state.selected);
-
-                if(state.selected >= static_cast<int>(state.items.size()))
-                    state.selected = static_cast<int>(state.items.size()) - 1;
-
-                if(state.selected < 0)
-                    state.selected = 0;
-            }
         }
     }
 };
@@ -127,7 +113,6 @@ UISpec TodoUI(Entity stateEntity)
                         for(size_t i = 0; i < state.items.size(); ++i)
                         {
                             auto &item = state.items[i];
-                            bool selected = static_cast<int>(i) == state.selected;
 
                             rows.push_back(
                                 element({
@@ -137,23 +122,22 @@ UISpec TodoUI(Entity stateEntity)
                                         .padding = 20.0f,
                                     },
                                     .style = UIStyle{
-                                        .color = selected         ? Hex(0x3949ABFF)  // selected
-                                                 : item.completed ? Hex(0x2E7D32FF)  // completed
-                                                                  : Hex(0x2A2A2AFF), // normal
+                                        .color = item.completed ? Hex(0x2E7D32FF)  // completed
+                                                                : Hex(0x2A2A2AFF), // normal
                                     },
                                     .text = Text{
                                         .content = std::format("{}{}", (item.completed ? "[x] " : "[ ] "), item.text),
+                                        .color = item.completed ? BLACK  // completed
+                                                                : WHITE, // normal
                                     },
                                     .events = {
-                                        .onClick = [i, &item, selected, &state](const ClickEvent &, Entity) {
-                                            if(selected)
+                                        .onClick = [i, &item, &state](const ClickEvent &e, Entity) {
+                                            if(e.button == GLFW_MOUSE_BUTTON_2)
                                             {
-                                                item.completed = !item.completed;
+                                                state.items.erase(state.items.begin() + i);
+                                                return;
                                             }
-                                            else
-                                            {
-                                                state.selected = i;
-                                            }
+                                            item.completed = !item.completed;
                                         },
                                     },
                                 }));
@@ -164,14 +148,12 @@ UISpec TodoUI(Entity stateEntity)
 
             // Footer
             element({
-                .layout = UILayout{
-                    .sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = HUG},
-                },
+                .layout = UILayout{.sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(20)), .height = HUG}, .padding = 20.0f},
                 .style = UIStyle{
                     .color = Hex(0xAAAAAAFF),
                 },
                 .text = Text{
-                    .content = "Click a todo to select and toggle completion.\nN = New Todo\nDELETE = Remove Todo",
+                    .content = "Left Click = Toggle Completion\nRight Click = Remove Todo\nN = New Todo",
                 },
             }),
         }));

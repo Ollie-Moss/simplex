@@ -1,4 +1,5 @@
 #include "Font.h"
+#include <format>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -31,6 +32,21 @@ Font AssetLoader<Font>::Load(const Font::LoaderConfig &config)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
     Font font;
+    FT_Size_Metrics &m = face->size->metrics;
+
+    float ascent = m.ascender / 64.0f;
+    float descent = -m.descender / 64.0f;
+    float height = m.height / 64.0f;
+    float lineGap = height - (ascent + descent);
+
+    font.maxAscent = ascent;
+    font.maxDescent = descent;
+    font.lineHeight = ascent + descent + lineGap;
+
+    lineGap = std::max(0.0f, lineGap);
+    font.lineHeight = ascent + descent + lineGap;
+    std::cout << std::format("height: {}, gap: {}, ascent: {}, descent: {}", font.lineHeight, lineGap, ascent, descent) << "\n";
+
     for(unsigned char c = 0; c < 128; c++)
     {
         // load character glyph
@@ -51,7 +67,7 @@ Font AssetLoader<Font>::Load(const Font::LoaderConfig &config)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // now store character for later use
         Character character = {texture, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows), glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                               (unsigned int)face->glyph->advance.x};
+                               (unsigned int)(face->glyph->advance.x / 64.0f)};
         font.characters.insert(std::pair<char, Character>(c, character));
     }
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
