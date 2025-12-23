@@ -1,162 +1,23 @@
 #pragma once
 
 #include "components/Transform.h"
-#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
+#include "gui/UILayoutTypes.h"
+#include "Bindable.h"
 #include <functional>
 #include <glm/glm.hpp>
-#include <optional>
-#include <string>
-#include <tuple>
-#include <type_traits>
 #include <vector>
 
-// clang-format off
-enum class AlignItems { Start, End, Center, Stretch };
-enum class JustifyContent { Start, End, Center, SpaceBetween, SpaceAround };
-enum class Direction { Horizontal, Vertical };
-enum class SizingMode { Fixed, Hug, Grow };
-enum class Unit { Pixels, Percent };
-// clang-format on
-
-template <typename T>
-using BindingFunc = std::function<T(std::optional<Entity>)>;
-
-template <typename T>
-class Bindable
-{
-  public:
-    Bindable() {}
-
-    Bindable(std::optional<Entity> target, BindingFunc<T> binding)
-        : m_Target(target),
-          m_Binding(binding)
-    {}
-
-    Bindable(const T &value)
-        : m_Value(value)
-    {}
-
-    template <typename U, typename = std::enable_if<std::is_assignable<T, U>::value>>
-    Bindable(const U &value) : m_Value(value)
-    {}
-
-    bool operator==(const Bindable<T> &rhs) const
-    {
-        return m_Value == rhs.m_Value;
-    }
-
-    // returns true based on whether the binding provided a different value
-    bool UpdateBinding()
-    {
-        if(!m_Binding.has_value())
-            return false;
-
-        auto val = m_Binding.value()(m_Target);
-        if(m_Value != val)
-        {
-            m_Value = val;
-            return true;
-        }
-        return false;
-    }
-
-    T &Get() { return m_Value; }
-    const T &Get() const { return m_Value; }
-
-    T &operator*() { return m_Value; }
-    const T &operator*() const { return m_Value; }
-
-    void Set(const T &value) { m_Value = value; }
-
-    void Set(const BindingFunc<T> &binding) { m_Binding = binding; }
-
-  private:
-    std::optional<Entity> m_Target;
-    std::optional<BindingFunc<T>> m_Binding;
-    T m_Value;
-};
-
-template <typename T>
-Bindable<T> Bind(std::optional<Entity> entity, BindingFunc<T> binding)
-{
-    return Bindable<T>(entity, binding);
-};
+struct UISpec;
 
 struct UIElement
 {
     EntityId parent = NULL_ENTITY;
     std::vector<EntityId> children;
+    Bindable<std::vector<UISpec>> childrenSpec;
+    bool toBeDeleted = false;
     bool dirty = true;
-};
-
-struct SizeValue
-{
-    SizeValue() {}
-    SizeValue(float value, Unit unit)
-        : value(value), unit(unit)
-    {}
-
-    float GetValue() const
-    {
-        return (unit == Unit::Pixels) ? value : value / 100.0f;
-    }
-
-    bool operator==(const SizeValue &rhs) const
-    {
-        return GetValue() == rhs.GetValue();
-    }
-
-    float value = 100.0f;
-    Unit unit = Unit::Pixels;
-};
-
-struct Axis
-{
-    Axis() {}
-    Axis(SizingMode mode, SizeValue length) : mode(mode), length(length) {}
-
-    bool operator==(const Axis &rhs) const
-    {
-        return (mode == rhs.mode) && (length == rhs.length);
-    }
-
-    SizingMode mode = SizingMode::Hug;
-    SizeValue length;
-};
-
-inline SizeValue Percent(float value) { return SizeValue(value, Unit::Percent); }
-inline SizeValue Pixels(float value) { return SizeValue(value, Unit::Percent); }
-
-const Axis GROW = Axis(SizingMode::Grow, Percent(100.0f));
-const Axis HUG = Axis(SizingMode::Hug, Pixels(0.0f));
-
-struct Sizing
-{
-    Bindable<Axis> width;
-    Bindable<Axis> height;
-
-    bool operator==(const Sizing &rhs) const
-    {
-        return (width == rhs.width) && (height == rhs.height);
-    }
-};
-
-struct Text
-{
-    std::string fontName = "Arial";
-    Bindable<std::string> content = "";
-    float fontSize = 12;
-    Color color = BLACK;
-    float lineHeight = 20.0f;
-
-    std::vector<int> breaks;
-
-    auto bindables()
-    {
-        return std::tie(content);
-    }
 };
 
 // This describes the flex layout properties of a given element
@@ -182,12 +43,22 @@ struct UILayout
             sizing.Get().width,
             sizing.Get().height);
     }
+
+    bool operator==(const UILayout &rhs) const = default;
 };
 
 // This describes the style of a given element that does not effect its final UITransform
 struct UIStyle
 {
-    Color color = BLUE;
+    Bindable<Color> color = TRANSPARENT;
+
+    auto bindables()
+    {
+        return std::tie(
+            color);
+    }
+
+    bool operator==(const UIStyle &rhs) const = default;
 };
 
 // This component describes the actual rendered dimensions of a given elements
@@ -201,5 +72,70 @@ struct UITransform
     {
         return Transform{.position = glm::vec3(position.x, position.y, 0),
                          .size = size};
+    }
+    bool operator==(const UITransform &rhs) const = default;
+};
+
+// Describes a function with the parameters of Event, type TEvent, and the associated Entity corresponding to the UI element
+template <typename TEvent>
+using EventHandler = std::function<void(const TEvent &, Entity)>;
+
+struct ClickEvent
+{
+    glm::vec2 mousePos;
+    int button;
+};
+
+struct HoverEnterEvent
+{
+    glm::vec2 mousePos;
+};
+
+struct HoverExitEvent
+{
+    glm::vec2 mousePos;
+};
+
+struct KeyBoardEvent
+{
+    std::string key;
+};
+
+struct ChangeEvent
+{
+};
+
+struct UIEvents
+{
+    EventHandler<ClickEvent> onClick;
+    EventHandler<HoverEnterEvent> onHoverEnter;
+    EventHandler<HoverExitEvent> onHoverExit;
+    EventHandler<KeyBoardEvent> onKeyDown;
+    EventHandler<ChangeEvent> onChange;
+
+    bool operator==(const UIEvents &rhs) const
+    {
+        return true;
+    }
+};
+
+struct UIInput
+{
+    std::string value;
+
+    bool focused = false;
+    bool readOnly = false;
+
+    size_t cursor = 0;
+    size_t selectionStart = 0;
+    size_t selectionEnd = 0;
+
+    // Optional constraints
+    size_t maxLength = 0;
+    std::function<bool(char)> filter; // e.g. numeric-only
+
+    bool operator==(const UIInput &) const
+    {
+        return true;
     }
 };

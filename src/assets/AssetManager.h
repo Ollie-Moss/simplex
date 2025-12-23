@@ -14,6 +14,9 @@ class AssetManager
   public:
     AssetManager() : m_Index(0) {}
 
+    // Load default assets
+    bool Init();
+
     // Ideally names should not conflict
     template <HasLoaderConfig TAsset>
     const TAsset &Get(const std::string &name)

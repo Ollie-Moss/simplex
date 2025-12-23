@@ -6,7 +6,15 @@
 #include "core/Types.h"
 #include <array>
 #include <cstddef>
+#include <functional>
 #include <memory>
+#include <set>
+
+struct PendingEntity
+{
+    EntityId id;
+    std::function<void()> build;
+};
 
 class Registry
 {
@@ -23,18 +31,36 @@ class Registry
     }
 
     template <typename... T>
-    EntityId Create(T... args)
+    EntityId QueueCreate(T... args)
     {
         EntityId entity = Create();
-        ([&] { AddComponent<T>(entity, args); }(), ...);
+        std::function<void()> build = [&, entity, args...]() { BuildEntity<T...>(entity, args...); };
+        PendingEntity pending = {entity, build};
+
+        m_EntitiesToCreate.insert({entity, pending});
         return entity;
     }
 
-    void Remove(EntityId entity)
+    template <typename... T>
+    EntityId Create(T... args)
     {
-        m_EntityManager.DestroyEntity(entity);
-        m_Entities[entity] = m_Entities[entityIndex];
-        entityIndex--;
+        EntityId entity = Create();
+        BuildEntity(entity, args...);
+        return entity;
+    }
+
+    void Destroy(EntityId entity)
+    {
+        m_EntitiesToDelete.insert(entity);
+    }
+
+    template <typename T>
+    void QueueComponent(EntityId entity, T component)
+    {
+        auto &pending = m_EntitiesToCreate[entity];
+        auto oldBuild = pending.build;
+        auto build = [&, oldBuild, entity, component]() {oldBuild(); AddComponent(entity, component); };
+        pending.build = build;
     }
 
     template <typename T>
@@ -81,12 +107,25 @@ class Registry
         return m_SystemManager.RegisterSystem<T>();
     }
 
+    int GetEntityCount()
+    {
+        return entityIndex;
+    }
+
+    int GetComponentCount()
+    {
+        return m_ComponentManager.GetComponentCount();
+    }
+
     void Start()
     {
         m_SystemManager.StartSystems();
     }
     void Update(float timeStep)
     {
+        DestroyEntities();
+        CreateEntites();
+
         m_SystemManager.UpdateSystems(timeStep);
     }
     void FixedUpdate(float timeStep)
@@ -123,7 +162,39 @@ class Registry
     }
 
   private:
+    void CreateEntites()
+    {
+        for(auto [id, entity] : m_EntitiesToCreate)
+        {
+            entity.build();
+        }
+        m_EntitiesToCreate.clear();
+    }
+
+    void DestroyEntities()
+    {
+        for(auto entity : m_EntitiesToDelete)
+        {
+            m_EntityManager.DestroyEntity(entity);
+            m_Entities[entity] = m_Entities[entityIndex];
+            entityIndex--;
+
+            m_SystemManager.EntityDestroyed(entity);
+            m_ComponentManager.EntityDestroyed(entity);
+        }
+        m_EntitiesToDelete.clear();
+    }
+
+    template <typename... T>
+    void BuildEntity(EntityId entity, T... args)
+    {
+        (AddComponent<T>(entity, args), ...);
+    }
+
+  private:
     std::array<EntityId, MAX_ENTITIES> m_Entities;
+    std::set<EntityId> m_EntitiesToDelete;
+    std::unordered_map<EntityId, PendingEntity> m_EntitiesToCreate;
 
     EntityManager m_EntityManager;
     ComponentManager m_ComponentManager;

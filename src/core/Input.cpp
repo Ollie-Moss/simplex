@@ -1,7 +1,10 @@
 #include "Input.h"
 #include "core/Simplex.h"
+#include "glm/fwd.hpp"
+#include "graphics/util/RenderSpace.h"
 #include <GLFW/glfw3.h>
 #include <cassert>
+#include <charconv>
 #include <string>
 #include <sys/types.h>
 
@@ -13,6 +16,7 @@ bool Input::Init()
     glfwSetMouseButtonCallback(Simplex::GetView().GetWindow(), MouseButtonCallback);
     glfwSetKeyCallback(Simplex::GetView().GetWindow(), KeyCallback);
     glfwSetScrollCallback(Simplex::GetView().GetWindow(), ScrollCallback);
+    glfwSetCharCallback(Simplex::GetView().GetWindow(), CharacterCallback);
 
     return true;
 }
@@ -49,6 +53,16 @@ void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
 void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
 {
     Simplex::GetInput().m_Scroll = static_cast<float>(yoffset);
+}
+
+void Input::CharacterCallback(GLFWwindow *window, unsigned int codepoint)
+{
+    Simplex::GetInput().m_TextInputBuffer += (unsigned char)codepoint;
+}
+
+std::string Input::GetTextInput()
+{
+    return m_TextInputBuffer;
 }
 
 void Input::SetMouseButtonState(int button, KeyState state)
@@ -93,7 +107,7 @@ bool Input::OnMouseButtonPressed(int button)
     KeyState &state = m_MouseButtonState[button];
     bool isPressed = state == KeyState::FirstPress;
     if(isPressed)
-        m_KeyStateConsumed[button] = true;
+        m_MouseButtonStateConsumed[button] = true;
 
     return isPressed;
 }
@@ -123,11 +137,17 @@ float Input::GetScrollDelta()
     return m_Scroll;
 }
 
-glm::vec2 Input::GetMousePosition()
+glm::vec2 Input::GetMousePosition(RenderSpace space)
 {
     double mouseX, mouseY;
     glfwGetCursorPos(Simplex::GetView(), &mouseX, &mouseY);
-    glm::vec2 mousePos = glm::vec2((float)mouseX, Simplex::GetView().GetWindowHeight() - (float)mouseY);
+    // glm::vec2 mousePos = glm::vec2((float)mouseX, Simplex::GetView().GetWindowHeight() - (float)mouseY);
+
+    if(space == RenderSpace::World)
+        mouseY = Simplex::GetView().GetWindowHeight() - (float)mouseY;
+
+    glm::vec2 mousePos = {mouseX, mouseY};
+
     return mousePos;
 }
 
@@ -139,6 +159,7 @@ void Input::PollEvents()
     m_Scroll = 0;
     m_LastMousePosition = m_CurrentMousePosition;
     m_CurrentMousePosition = GetMousePosition();
+    m_TextInputBuffer.clear();
 
     glfwPollEvents();
 }

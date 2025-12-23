@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #include "graphics/text/Font.h"
 #include "graphics/util/Texture.h"
+#include "gui/UILayoutHelpers.h"
 #include "physics/DebugPhysicsSystem.h"
 #include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
@@ -62,17 +63,18 @@ class MovementSystem : public System
 UISpec SideBar(Entity player)
 {
     return element(
-        {
-            .layout = UILayout{
-                .sizing = Sizing{
-                    .width = Axis(SizingMode::Fixed, Percent(20.0f)),
-                    .height = Axis(SizingMode::Fixed, Pixels(100.0f))},
-                .direction = Direction::Vertical,
-                .padding = 10.0,
-                .gap = 10.0f,
-            },
-        },
-        {
+        {.layout = UILayout{
+             .sizing = Sizing{
+                 .width = Axis(SizingMode::Fixed, Percent(20.0f)),
+                 .height = Axis(SizingMode::Fixed, Pixels(100.0f))},
+             .direction = Direction::Vertical,
+             .padding = 10.0,
+             .gap = 10.0f,
+         },
+         .style = UIStyle{
+             .color = Hex(0xFFFFFF),
+         }},
+        std::vector<UISpec>{
             element({
                 .layout = UILayout{
                     .sizing = Sizing{

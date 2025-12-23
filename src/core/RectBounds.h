@@ -30,4 +30,21 @@ struct RectBounds
         return (left <= x && x <= right &&
                 bottom <= y && y <= top);
     };
+
+    template <typename Vec3, typename Vec2>
+    bool IsQuadVisible(const Vec3 &position, const Vec2 &size) const
+    {
+        // Ignore the z component of the position (only care about x and y)
+        T quadLeft = position.x;
+        T quadRight = position.x + size.x;
+        T quadBottom = position.y;
+        T quadTop = position.y + size.y;
+
+        // Check if the quad (the rectangle defined by position and size) is within the RectBounds
+        if(quadRight < left || quadLeft > right || quadTop < bottom || quadBottom > top)
+            return false;
+
+        // If none of the above, the quad is visible in the RectBounds
+        return true;
+    }
 };

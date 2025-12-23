@@ -11,6 +11,9 @@
 class RendererManager
 {
   public:
+    // Registers Default Renderers
+    bool Init();
+
     template <typename TData, typename TRenderer>
     void Register()
     {

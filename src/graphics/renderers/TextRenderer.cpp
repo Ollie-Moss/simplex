@@ -20,18 +20,18 @@ void TextRenderer::Submit(const TextCommand &data)
 
 void TextRenderer::Render()
 {
+    const Shader &shader = Simplex::GetAssetManager().Get<Shader>("TextShader");
+    shader.use();
     for(size_t i = 0; i < m_Buffer.Size(); ++i)
     {
-        RenderText(m_Buffer[i]);
+        RenderText(m_Buffer[i], shader);
     }
     m_Buffer.Clear();
 }
 
-void TextRenderer::RenderText(const TextCommand &data)
+void TextRenderer::RenderText(const TextCommand &data, const Shader &shader)
 {
     Font font = Simplex::GetAssetManager().Get<Font>(data.text.fontName);
-    Shader shader = Simplex::GetAssetManager().Get<Shader>("TextShader");
-    shader.use();
 
     shader.setVec3("textColor", data.text.color);
     glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
@@ -43,7 +43,6 @@ void TextRenderer::RenderText(const TextCommand &data)
     // iterate through all characters
     std::string::const_iterator c;
     glm::vec2 position = data.position;
-    float lineHeightPadding = 20.0f;
 
     float tallestChar = 0.0f;
 
@@ -83,7 +82,7 @@ void TextRenderer::RenderText(const TextCommand &data)
         // Reset position for newlines
         if(*c == '\n')
         {
-            position.y += tallestChar + lineHeightPadding;
+            position.y += tallestChar + data.text.lineHeight;
             position.x = data.position.x;
             continue;
         }
@@ -91,7 +90,7 @@ void TextRenderer::RenderText(const TextCommand &data)
         // Setup character position and bounds
         Character ch = font.characters[*c];
 
-        float xpos = position.x + ch.Bearing.x;
+        float xpos = position.x;
         float ypos = position.y - ch.Bearing.y;
         ypos += tallestChar;
 

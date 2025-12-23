@@ -82,6 +82,16 @@ class ComponentManager
         m_CurrentComponent++;
     }
 
+    int GetComponentCount()
+    {
+        int total = 0;
+        for(auto [id, list] : m_Components)
+        {
+            total += list->GetComponentCount();
+        }
+        return total;
+    }
+
   private:
     template <typename T>
     std::shared_ptr<ComponentList<T>> GetComponentList()

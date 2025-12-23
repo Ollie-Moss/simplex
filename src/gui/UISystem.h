@@ -1,38 +1,57 @@
 #pragma once
 
 #include "core/Simplex.h"
+#include "graphics/render-commands/ColliderCommand.h"
+#include "gui/UIBuilder.h"
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/render-commands/TextCommand.h"
+#include "graphics/text/Font.h"
 #include "graphics/util/RenderSpace.h"
-#include "gui/UIBuilder.h"
 #include "gui/UIComponents.h"
+#include "gui/UILayoutTypes.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
-#include <functional>
-#include <iomanip>
 #include <string>
 #include <sys/types.h>
 #include <tuple>
-#include <variant>
 #include <vector>
+
+inline int spriteCommandCount = 0;
 
 class UIStateSystem : public System
 {
   public:
     UIStateSystem()
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, Text>();
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text>();
     }
     void Update(float timeStep) override
     {
         for(Entity e : m_Entities)
         {
-            auto [elem, trans, layout, text] = e.GetComponents<UIElement, UITransform, UILayout, Text>();
+            auto [elem, trans, layout, style, text] = e.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
+
+            bool changed = elem.childrenSpec.UpdateBinding();
+            if(changed)
+            {
+                for(auto child : elem.children)
+                {
+                    DeleteTree(child);
+                }
+                elem.children.clear();
+
+                // Create new children
+                for(auto childSpec : elem.childrenSpec.Get())
+                {
+                    auto child = BuildUI(Simplex::GetRegistry(), childSpec);
+                    elem.children.push_back(child);
+                }
+            }
 
             bool anyChanged = false;
             std::apply(
@@ -45,10 +64,27 @@ class UIStateSystem : public System
                 [&](auto &...b) {
                     ((anyChanged |= b.UpdateBinding()), ...);
                 },
+                style.bindables());
+
+            std::apply(
+                [&](auto &...b) {
+                    ((anyChanged |= b.UpdateBinding()), ...);
+                },
                 text.bindables());
 
-            elem.dirty = anyChanged;
+            elem.dirty = (anyChanged || changed);
         }
+    }
+
+    void DeleteTree(Entity e)
+    {
+        auto &elem = e.GetComponent<UIElement>();
+        for(auto child : elem.children)
+        {
+            DeleteTree(child);
+        }
+        elem.children.clear();
+        Simplex::GetRegistry().Destroy(e);
     }
 };
 
@@ -76,7 +112,7 @@ class UILayoutSystem : public System
 
     bool IsDirty(Entity entity)
     {
-        UIElement element = entity.GetComponent<UIElement>();
+        UIElement &element = entity.GetComponent<UIElement>();
         if(element.dirty || Simplex::GetView().HasWindowResized())
         {
             return true;
@@ -217,46 +253,9 @@ class UILayoutSystem : public System
 
     float MeasureText(Text text, Direction direction)
     {
-        Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
+        glm::vec2 size = text.Measure();
 
-        std::string::const_iterator c;
-
-        float width = 0.0f;
-        float height = 0.0f;
-        float currentWidth = 0.0f;
-        float largestWidth = 0.0f;
-        float largestHeight = 0.0f;
-
-        uint32_t lineCounter = 1;
-
-        for(c = text.content.Get().begin(); c != text.content.Get().end(); c++)
-        {
-            Character ch = font.characters[*c];
-
-            if(*c == '\n')
-            {
-                lineCounter += 1;
-                largestWidth = std::max(currentWidth, largestWidth);
-                currentWidth = 0;
-            }
-            else
-            {
-                currentWidth += (ch.Advance >> 6);
-            }
-
-            if(ch.Size.y > largestHeight)
-            {
-                largestHeight = ch.Size.y;
-            }
-        }
-
-        width = std::max(currentWidth, largestWidth);
-
-        float lineGaps = std::max<int>(0, lineCounter - 1) * text.lineHeight;
-        float lineHeights = (lineCounter * largestHeight);
-        height = lineHeights + lineGaps;
-
-        return (direction == Direction::Horizontal) ? width : height;
+        return (direction == Direction::Horizontal) ? size.x : size.y;
     }
 
     void WrapText(Entity entity)
@@ -328,8 +327,6 @@ class UILayoutSystem : public System
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
 
-        float finalLength = 0.0f;
-
         auto padding = GetPadding(*properties.padding, sizingAxis);
 
         if(axis.length.unit == Unit::Percent)
@@ -381,18 +378,18 @@ class UILayoutSystem : public System
         float padding = GetPadding(properties.padding.Get(), sizingAxis);
         float textSize = MeasureText(text, sizingAxis);
 
+        float &length = GetLengthWithAxis(entity, sizingAxis);
+        length = padding + gap + textSize;
+
         // Size with layout direction
         if(sizingAxis == properties.direction.Get())
         {
-            float &length = GetLengthWithAxis(entity, sizingAxis);
-
-            length = SumChildrenLengths(entity, sizingAxis) + padding + gap + textSize;
+            length += SumChildrenLengths(entity, sizingAxis);
         }
         else
         {
             // Size across layout direction
-            float &length = GetLengthWithAxis(entity, sizingAxis);
-            length = GetLargestChildLength(entity, sizingAxis) + padding + gap + textSize;
+            length += GetLargestChildLength(entity, sizingAxis);
         }
     }
 
@@ -539,7 +536,6 @@ class UILayoutSystem : public System
             }
         }
         length -= largestLength;
-
         if(properties.alignItems == AlignItems::Center)
         {
             alignItemsOffset += length / 2.0f;
@@ -589,6 +585,7 @@ class UIRenderSystem : public System
             UIElement element = e.GetComponent<UIElement>();
             if(element.parent != NULL_ENTITY)
                 continue;
+
             RenderElements(e);
         }
     }
@@ -600,7 +597,13 @@ class UIRenderSystem : public System
         }
         auto [element, transform, layout, style, text] = entity.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
 
-        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color.Get()}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        ColliderCommand debugCmd = {
+            .transform = transform,
+        };
+
+        // Simplex::GetRendererManager().Submit<ColliderCommand>(debugCmd);
+
         Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
 
         if(!text.content.Get().empty())
@@ -610,6 +613,8 @@ class UIRenderSystem : public System
             pos.y += layout.padding.Get().top;
 
             TextCommand cmd = {.text = text, .position = pos};
+            ColliderCommand ccmd = {.transform = {.position = glm::vec3(pos, 0.0f), .size = MeasureText(text, Direction::Vertical)}};
+            // Simplex::GetRendererManager().Submit<ColliderCommand>(ccmd);
             Simplex::GetRendererManager().Submit<TextCommand>(cmd);
         }
 
@@ -617,5 +622,98 @@ class UIRenderSystem : public System
         {
             RenderElements(child);
         }
+    }
+    glm::vec2 MeasureText(Text text, Direction direction)
+    {
+        Font font = Simplex::GetAssetManager().Get<Font>(text.fontName);
+
+        std::string::const_iterator c;
+
+        float width = 0.0f;
+        float height = 0.0f;
+        float currentWidth = 0.0f;
+        float largestWidth = 0.0f;
+        float largestHeight = 0.0f;
+
+        uint32_t lineCounter = 1;
+
+        for(c = text.content.Get().begin(); c != text.content.Get().end(); c++)
+        {
+            Character ch = font.characters[*c];
+            float chHeight = ch.Size.y + (ch.Size.y - ch.Bearing.y);
+
+            if(*c == '\n')
+            {
+                lineCounter += 1;
+                largestWidth = std::max(currentWidth, largestWidth);
+                currentWidth = 0;
+            }
+            else
+            {
+                currentWidth += (ch.Advance >> 6);
+            }
+
+            if(chHeight > largestHeight)
+            {
+                largestHeight = chHeight;
+            }
+        }
+
+        width = std::max(currentWidth, largestWidth);
+
+        float lineGaps = std::max<int>(0, lineCounter - 1) * text.lineHeight;
+        float lineHeights = (lineCounter * largestHeight);
+        height = lineHeights + lineGaps;
+
+        return glm::vec2(width, height);
+    }
+};
+
+class UIEventSystem : public System
+{
+  public:
+    UIEventSystem()
+    {
+        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text, UIEvents>();
+    }
+    void Update(float timeStep) override
+    {
+        for(Entity e : m_Entities)
+        {
+            auto [transform, events] = e.GetComponents<UITransform, UIEvents>();
+
+            glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
+
+
+            bool mouseDown = false;
+            int button = GLFW_MOUSE_BUTTON_1;
+
+            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+            {
+                mouseDown = true;
+                button = GLFW_MOUSE_BUTTON_1;
+            }
+
+            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_2))
+            {
+                mouseDown = true;
+                button = GLFW_MOUSE_BUTTON_2;
+            }
+
+            if(mouseDown && Intersecting(transform, mousePos))
+            {
+                ClickEvent evt = {mousePos, button};
+                if(events.onClick)
+                    events.onClick(evt, e);
+            }
+        }
+    }
+
+    bool Intersecting(Transform transform, glm::vec2 position)
+    {
+        glm::vec2 min = transform.position;
+        glm::vec2 max = glm::vec2(transform.position) + transform.size;
+
+        return (position.x > min.x && position.y > min.y) && (position.x < max.x && position.y < max.y);
     }
 };

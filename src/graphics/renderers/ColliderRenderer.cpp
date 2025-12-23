@@ -96,7 +96,7 @@ void ColliderRenderer::RenderRect(const ColliderCommand &cmd)
 
     // set projection
     glm::mat4 projection;
-    projection = Simplex::GetView().CalculateProjection(RenderSpace::World);
+    projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
     shader.setMat4("projection", projection);
 
     glLineWidth(cmd.lineWidth);

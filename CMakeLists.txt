@@ -44,6 +44,7 @@ target_link_libraries(GameEngine
     Xcursor 
     g 
     -O0
+    -pg
 )
 
 set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders)
@@ -71,8 +72,9 @@ function(attach_resources target)
     endif()
 endfunction()
 
+SET(example"todo")
 
-add_executable(build "examples/main.cpp")
+add_executable(build "examples/${example}.cpp")
 target_link_libraries(build GameEngine)
 
 # Apply to this exe

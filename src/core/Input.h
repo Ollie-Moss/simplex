@@ -4,7 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 #include "glm/glm.hpp"
+#include "graphics/util/RenderSpace.h"
 #include <map>
+#include <string>
 #include <vector>
 
 enum class KeyState {
@@ -27,7 +29,9 @@ class Input
     bool OnKeyDown(int button);
     bool OnMouseButtonDown(int button);
 
-    glm::vec2 GetMousePosition();
+    std::string GetTextInput();
+
+    glm::vec2 GetMousePosition(RenderSpace space = RenderSpace::Screen);
     glm::vec2 GetMouseDelta();
 
     float GetScrollDelta();
@@ -44,6 +48,7 @@ class Input
     static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
     static void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    static void CharacterCallback(GLFWwindow *window, unsigned int codepoint);
 
   private:
     std::map<int, KeyState> m_MouseButtonState;
@@ -57,4 +62,6 @@ class Input
 
     std::map<int, bool> m_MouseButtonStateConsumed;
     std::map<int, bool> m_KeyStateConsumed;
+
+    std::string m_TextInputBuffer;
 };

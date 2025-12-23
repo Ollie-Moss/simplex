@@ -3,25 +3,12 @@
 #include "core/Entity.h"
 #include "core/Registry.h"
 #include "core/Types.h"
-#include "gui/UIComponents.h"
-#include <initializer_list>
-#include <optional>
 #include <vector>
+#include "Text.h"
+#include "gui/UIBuilderTypes.h"
+#include "gui/UIComponents.h"
 
-struct UIProps
-{
-    std::optional<UILayout> layout;
-    std::optional<UIStyle> style;
-    std::optional<Text> text;
-};
-
-struct UISpec
-{
-    UIProps properties;
-    std::vector<UISpec> children;
-};
-
-inline UISpec element(UIProps properties, std::initializer_list<UISpec> children = {})
+inline UISpec element(UIProps properties, Bindable<std::vector<UISpec>> children = {})
 {
     UISpec spec = UISpec{.properties = properties, .children = children};
 
@@ -31,27 +18,18 @@ inline UISpec element(UIProps properties, std::initializer_list<UISpec> children
 inline EntityId CreateEntities(Registry &registry, UISpec spec, EntityId parent)
 {
     // Create new entity
-    Entity entity = registry.Create<UITransform, UIElement>({}, {.parent = parent});
-
-    UILayout layout = spec.properties.layout.has_value() ? *spec.properties.layout : UILayout{};
-    registry.AddComponent<UILayout>(entity, layout);
-
-    UIStyle style = spec.properties.style.has_value() ? *spec.properties.style : UIStyle{};
-    registry.AddComponent<UIStyle>(entity, style);
-
-    Text text = spec.properties.text.has_value() ? *spec.properties.text : Text{};
-    registry.AddComponent<Text>(entity, text);
+    Entity entity = registry.QueueCreate<UITransform, UILayout, UIStyle, Text, UIEvents>({}, spec.properties.layout, spec.properties.style, spec.properties.text, spec.properties.events);
 
     // Create Children
     std::vector<EntityId> children;
-    for(auto child : spec.children)
+    for(auto child : spec.children.Get())
     {
         EntityId childEntity = CreateEntities(registry, child, entity);
 
         children.push_back(childEntity);
     }
 
-    entity.GetComponent<UIElement>().children = children;
+    registry.QueueComponent<UIElement>(entity, {.parent = parent, .children = children, .childrenSpec = spec.children});
     return entity;
 }
 

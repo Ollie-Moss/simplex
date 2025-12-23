@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gui/UIComponents.h"
+#include <gui/Text.h>
 
 struct TextCommand
 {

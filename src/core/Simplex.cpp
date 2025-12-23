@@ -3,18 +3,13 @@
 #include "core/Scene.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
-#include "graphics/render-commands/ColliderCommand.h"
-#include "graphics/render-commands/TextCommand.h"
-#include "graphics/renderers/ColliderRenderer.h"
-#include "graphics/renderers/SpriteRenderer.h"
-#include "graphics/render-commands/SpriteCommand.h"
-#include "graphics/renderers/TextRenderer.h"
-#include "graphics/util/Shader.h"
 #include <chrono>
-#include <filesystem>
+#include <ostream>
 #include <string_view>
 #include <sys/types.h>
 #include <utility>
+
+// Define at simplex so all other files can just include "stb_image.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -31,14 +26,11 @@ bool Simplex::Init()
     if(!m_Input.Init())
         return false;
 
+    if(!m_RendererManager.Init())
+        return false;
 
-    Simplex::GetAssetManager().Load<Shader>("SpriteShader", {.vertexShaderPath = "vSpriteShader.glsl", .fragmentShaderPath = "fSpriteShader.glsl"});
-    Simplex::GetAssetManager().Load<Shader>("TextShader", {.vertexShaderPath = "vTextShader.glsl", .fragmentShaderPath = "fTextShader.glsl"});
-    Simplex::GetAssetManager().Load<Shader>("DefaultShader", {.vertexShaderPath = "vDefaultShader.glsl", .fragmentShaderPath = "fDefaultShader.glsl"});
-
-    m_RendererManager.Register<SpriteCommand, SpriteRenderer>();
-    m_RendererManager.Register<TextCommand, TextRenderer>();
-    m_RendererManager.Register<ColliderCommand, ColliderRenderer>();
+    if(!m_AssetManager.Init())
+        return false;
 
     return true;
 }
@@ -66,7 +58,6 @@ Input &Simplex::GetInput()
 {
     return Get().m_Input;
 }
-
 
 RendererManager &Simplex::GetRendererManager()
 {
@@ -127,6 +118,7 @@ void Simplex::Tick()
         m_Input.PollEvents();
         m_View.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
+        GetRegistry().Update(m_DeltaTime);
         // --- Fixed Update Loop ---
         if(accumulator >= fixedDelta)
         {
@@ -134,7 +126,6 @@ void Simplex::Tick()
             accumulator = 0.0;
         }
 
-        GetRegistry().Update(m_DeltaTime);
         m_RendererManager.Render();
 
         m_View.SwapBuffers();

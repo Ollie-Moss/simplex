@@ -9,6 +9,7 @@ class IComponentList
   public:
     virtual ~IComponentList() = default;
     virtual void EntityDestroyed(EntityId entity) = 0;
+    virtual int GetComponentCount() = 0;
 };
 
 template <typename T>
@@ -65,6 +66,11 @@ class ComponentList : public IComponentList
             // Remove the entity's component if it existed
             RemoveData(entity);
         }
+    }
+
+    int GetComponentCount() override
+    {
+        return index;
     }
 
   private:

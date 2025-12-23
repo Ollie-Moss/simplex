@@ -4,6 +4,7 @@
 #include "graphics/render-commands/TextCommand.h"
 #include "graphics/renderers/IRenderer.h"
 #include "graphics/util/Buffer.h"
+#include "graphics/util/Shader.h"
 #include "graphics/util/VertexArray.h"
 
 class TextRenderer : public IRenderer<TextCommand>
@@ -14,7 +15,7 @@ class TextRenderer : public IRenderer<TextCommand>
     void Render() override;
 
   private:
-    void RenderText(const TextCommand &data);
+    void RenderText(const TextCommand &data, const Shader &shader);
 
   private:
     VertexBuffer m_VertexBuffer;

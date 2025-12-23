@@ -22,7 +22,7 @@ Font AssetLoader<Font>::Load(const Font::LoaderConfig &config)
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
     }
-    FT_Set_Pixel_Sizes(face, 0, 50);
+    FT_Set_Pixel_Sizes(face, 0, 16);
     if(FT_Load_Char(face, 'X', FT_LOAD_RENDER))
     {
         std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
