@@ -268,7 +268,10 @@ class UILayoutSystem : public System
         if(text.content.Get().empty())
             return;
 
-        if(textLayout.size.x + layout.padding.Get().left <= transform.size.x && shouldWrap)
+        float maxWidth = transform.size.x - layout.padding.Get().right;
+
+        // Skip recalculation if text size is smaller max width (ONLY IF WRAPPING IS BEING CALCULATED)
+        if(textLayout.size.x + layout.padding.Get().left <= maxWidth && shouldWrap)
             return;
 
         // do some wrapping
@@ -283,7 +286,6 @@ class UILayoutSystem : public System
         float bottomLineDescent = 0.0f;
 
         float largestLineWidth = 0.0f;
-        float maxWidth = transform.size.x;
 
         int numOfLines = 0;
 
@@ -313,16 +315,20 @@ class UILayoutSystem : public System
                 newLine();
                 continue;
             }
+
+            // Wrap text if text size is larger max width (ONLY IF WRAPPING IS BEING CALCULATED)
             if(penX + ch.Size.x + layout.padding.Get().left > maxWidth && shouldWrap)
             {
                 newLine();
                 numOfLines++;
             }
 
+            // Update lineWidth and
             lineWidth = penX + ch.Size.x;
             if(lineWidth > largestLineWidth)
                 largestLineWidth = lineWidth;
 
+            // Create Glyph Quad
             GlyphQuad glyph;
             glyph.charIndex = i;
             glyph.transform = {glm::vec3{penX, penY - ch.Bearing.y, 0}, ch.Size};
@@ -333,9 +339,7 @@ class UILayoutSystem : public System
             penX += ch.Advance;
         }
 
-        // (fontsize*lineheight-fontsize) = (total lineheight - base lineheight ) resulting in the any extra length
-        float lineGaps = std::max<int>(0, numOfLines - 1) * (text.fontSize * text.lineHeight - text.fontSize);
-
+        // Create text bounds and update text layout
         float width = largestLineWidth;
         float height = accumulatedHeight + font.maxDescent;
 
