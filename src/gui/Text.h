@@ -3,7 +3,6 @@
 #include <string>
 #include "Bindable.h"
 #include "glm/fwd.hpp"
-#include "graphics/text/Font.h"
 
 struct GlyphQuad
 {

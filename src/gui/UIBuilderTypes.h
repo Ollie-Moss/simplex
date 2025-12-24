@@ -1,22 +1,35 @@
 #pragma once
 
+#include "gui/Bindable.h"
 #include "gui/Text.h"
 #include "gui/UIComponents.h"
 
-struct UIProps
+struct DefaultUIProps
 {
     UILayout layout;
     UIStyle style;
     Text text;
     UIEvents events;
 
-    bool operator==(const UIProps &rhs) const = default;
+    bool operator==(const DefaultUIProps &rhs) const = default;
 };
 
-struct UISpec
+struct UISpecification
 {
-    UIProps properties;
-    Bindable<std::vector<UISpec>> children;
+    DefaultUIProps properties;
+    std::tuple<> extraComponents;
 
-    bool operator==(const UISpec &rhs) const = default;
+    Bindable<std::vector<UISpecification>> children;
+
+    void AddChild(const UISpecification &spec)
+    {
+        children.Get().push_back(spec);
+    }
+
+    void BindChildren(BindingFunc<std::vector<UISpecification>> &bind)
+    {
+        children.Set(bind);
+    }
+
+    bool operator==(const UISpecification &rhs) const = default;
 };

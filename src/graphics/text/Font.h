@@ -13,12 +13,10 @@ struct Font
         std::string path;
     };
 
-    std::map<char, Character> characters;
+    std::map<char32_t, Character> characters;
     float maxAscent;
     float maxDescent;
-    // from the baseline to the top of the line
     float lineHeight;
-    // the gap from the baseline to the top of the next line
     float lineGap;
 };
 

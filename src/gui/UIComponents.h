@@ -9,13 +9,13 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-struct UISpec;
+struct UISpecification;
 
 struct UIElement
 {
     EntityId parent = NULL_ENTITY;
     std::vector<EntityId> children;
-    Bindable<std::vector<UISpec>> childrenSpec;
+    Bindable<std::vector<UISpecification>> childrenSpec;
     bool toBeDeleted = false;
     bool dirty = true;
 };

@@ -174,7 +174,7 @@ class UILayoutSystem : public System
         }
     }
 
-    Axis &GetAxis(Entity entity, Direction direction)
+    const Axis &GetAxis(Entity entity, Direction direction)
     {
         UILayout &props = entity.GetComponent<UILayout>();
         if(direction == Direction::Horizontal)
