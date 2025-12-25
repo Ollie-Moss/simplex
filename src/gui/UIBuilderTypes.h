@@ -26,10 +26,41 @@ struct UISpecification
         children.Get().push_back(spec);
     }
 
-    void BindChildren(BindingFunc<std::vector<UISpecification>> &bind)
-    {
-        children.Set(bind);
-    }
-
     bool operator==(const UISpecification &rhs) const = default;
 };
+
+class ElementHandle
+{
+  public:
+    static std::vector<UISpecification *> context;
+
+    template <typename... TComponents>
+    ElementHandle(DefaultUIProps props, TComponents &&...extra)
+    {
+        spec = UISpecification{.properties = props};
+        if(!context.empty())
+        {
+            auto parent = context.back();
+            parent->children.Set([&](std::vector<UISpecification> &children) { children.push_back(spec); });
+        }
+    }
+
+    ElementHandle &Children(std::function<void()> childrenFn)
+    {
+        // make this parent
+        context.push_back(&spec);
+        childrenFn();
+        context.pop_back();
+        return *this;
+    }
+
+    // Expose spec when needed (root)
+    UISpecification Take()
+    {
+        return spec;
+    }
+
+  private:
+    UISpecification spec;
+};
+inline std::vector<UISpecification *> ElementHandle::context;

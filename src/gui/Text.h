@@ -2,6 +2,8 @@
 
 #include <string>
 #include "Bindable.h"
+#include "components/Transform.h"
+#include "core/Types.h"
 #include "glm/fwd.hpp"
 
 struct GlyphQuad
@@ -26,8 +28,6 @@ struct Text
     float fontSize = 12;
     Color color = BLACK;
     float lineHeight = 1.0f;
-
-    std::vector<int> breaks;
 
     auto bindables()
     {

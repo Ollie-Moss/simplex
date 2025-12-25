@@ -18,7 +18,6 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
-#include <numeric>
 #include <string>
 #include <sys/types.h>
 #include <tuple>
@@ -662,7 +661,7 @@ class UIEventSystem : public System
     {
         for(Entity e : m_Entities)
         {
-            auto [transform, events] = e.GetComponents<UITransform, UIEvents>();
+            auto [elem, transform, events] = e.GetComponents<UIElement, UITransform, UIEvents>();
 
             glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
 
@@ -681,12 +680,24 @@ class UIEventSystem : public System
                 button = GLFW_MOUSE_BUTTON_2;
             }
 
+            // OnClick
             if(mouseDown && Intersecting(transform, mousePos))
             {
                 ClickEvent evt = {mousePos, button};
                 if(events.onClick)
+                {
                     events.onClick(evt, e);
+                    elem.dirty = true;
+                }
             }
+
+            // Mouse Down
+
+            // Mouse Up
+
+            // Hover Enter
+
+            // Hover Exit
         }
     }
 

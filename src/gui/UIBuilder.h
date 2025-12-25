@@ -3,21 +3,10 @@
 #include "core/Entity.h"
 #include "core/Registry.h"
 #include "core/Types.h"
-#include <functional>
 #include <vector>
 #include "Text.h"
 #include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
-
-template <typename... TComponents>
-inline UISpecification element(DefaultUIProps properties, TComponents &&...extraComponents, std::function<void(UISpecification &self)> buildChildren = [](UISpecification &) {})
-{
-    UISpecification spec = UISpecification{.properties = properties};
-    spec.extraComponents = std::make_tuple(std::forward<TComponents>(extraComponents)...);
-    buildChildren(spec);
-
-    return spec;
-}
 
 inline EntityId CreateEntities(Registry &registry, UISpecification spec, EntityId parent)
 {

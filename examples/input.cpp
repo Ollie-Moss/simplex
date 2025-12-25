@@ -12,25 +12,26 @@
 #include "systems/RenderSystem.h"
 #include <format>
 
-UISpec UI()
+UISpecification UI()
 {
-    return element({
-        .layout = {
-            .sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = GROW},
-            .padding = 20.0f,
-        },
-        .style = {
-            .color = BLUE,
-        },
-        .text = {
-            .content = "Hi",
-        },
-        .events = {
-            .onClick = [](const ClickEvent &e, Entity entity) {
-                entity.GetComponent<Text>().content = std::format("button: {}\nx: {:.0f}, y: {:.0f}", e.button, e.mousePos.x, e.mousePos.y);
-            },
-        },
-    });
+    return Element({
+                       .layout = {
+                           .sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = GROW},
+                           .padding = 20.0f,
+                       },
+                       .style = {
+                           .color = BLUE,
+                       },
+                       .text = {
+                           .content = "Hi",
+                       },
+                       .events = {
+                           .onClick = [](const ClickEvent &e, Entity self) {
+                               auto &text = self.GetComponent<Text>().content = std::format("button: {}\nx: {:.0f}, y: {:.0f}", e.button, e.mousePos.x, e.mousePos.y);
+                           },
+                       },
+                   })
+        .Take();
 }
 
 int main()

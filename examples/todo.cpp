@@ -72,33 +72,13 @@ class TodoSystem : public System
 
 UISpecification TodoUI(Entity stateEntity)
 {
-    return element({
-                       .layout = UILayout{
-                           .sizing = Sizing{.width = GROW, .height = GROW},
-                           .direction = Direction::Vertical,
-                           .padding = 16.0f,
-                           .gap = 12.0f,
-                           .alignItems = AlignItems::Start,
-                           .justifyContent = JustifyContent::Start,
-                       },
-                       .style = UIStyle{
-                           .color = Hex(0x1E1E1EFF),
-                       },
-
-                   },
-                   [&](UISpecification &self) {
-                       auto &state = stateEntity.GetComponent<TodoState>();
-
-                       for(size_t i = 0; i < state.items.size(); ++i)
-                       {
-                           auto &item = state.items[i];
-                           auto child = TextElement([&item](std::optional<Entity>) {
-                               return item.text;
-                           });
-                           self.AddChild(child);
-                       }
-                   });
+    return Element({})
+        .Children([] {
+            Element({.text = {.content = "abc"}});
+        })
+        .Take();
 }
+
 // UISpecification TodoUI(Entity stateEntity)
 // {
 //     return element(

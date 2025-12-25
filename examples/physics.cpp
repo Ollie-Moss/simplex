@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #include "graphics/text/Font.h"
 #include "graphics/util/Texture.h"
+#include "gui/UIElements.h"
 #include "gui/UILayoutHelpers.h"
 #include "physics/DebugPhysicsSystem.h"
 #include "gui/UIBuilder.h"
@@ -60,45 +61,6 @@ class MovementSystem : public System
     }
 };
 
-UISpec SideBar(Entity player)
-{
-    return element(
-        {.layout = UILayout{
-             .sizing = Sizing{
-                 .width = Axis(SizingMode::Fixed, Percent(20.0f)),
-                 .height = Axis(SizingMode::Fixed, Pixels(100.0f))},
-             .direction = Direction::Vertical,
-             .padding = 10.0,
-             .gap = 10.0f,
-         },
-         .style = UIStyle{
-             .color = Hex(0xFFFFFF),
-         }},
-        std::vector<UISpec>{
-            element({
-                .layout = UILayout{
-                    .sizing = Sizing{
-                        .width = Bind<Axis>(player, [&](std::optional<Entity> player) {
-                            auto stats = player->GetComponent<PlayerStats>();
-
-                            return Axis(SizingMode::Fixed, Percent(stats.health));
-                        }),
-                        .height = HUG,
-                    },
-                    .direction = Direction::Vertical,
-                    .gap = 10.0f,
-                },
-                .style = UIStyle{.color = GREEN},
-                .text = Text{
-                    .content = Bind<std::string>(player, [](std::optional<Entity> target) {
-                        return std::to_string((*target).GetComponent<PlayerStats>().health);
-                    }),
-                },
-            }),
-
-        });
-}
-
 int main()
 {
     Simplex simplex;
@@ -144,7 +106,7 @@ int main()
 
         m_Registry.Create<Transform, Camera, MoveableCamera>({}, {}, {});
 
-        Entity root = BuildUI(m_Registry, SideBar(player));
+        BuildUI(m_Registry, DebugUI());
     });
 
     simplex.SetScene(MainScene);

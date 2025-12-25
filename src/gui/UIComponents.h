@@ -1,6 +1,7 @@
 #pragma once
 
 #include "components/Transform.h"
+#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "gui/UILayoutTypes.h"
@@ -129,10 +130,6 @@ struct UIInput
     size_t cursor = 0;
     size_t selectionStart = 0;
     size_t selectionEnd = 0;
-
-    // Optional constraints
-    size_t maxLength = 0;
-    std::function<bool(char)> filter; // e.g. numeric-only
 
     bool operator==(const UIInput &) const
     {

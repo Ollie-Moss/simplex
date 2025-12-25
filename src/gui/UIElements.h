@@ -1,55 +1,78 @@
 #pragma once
 
 #include "UIBuilderTypes.h"
-#include "UIBuilder.h"
+#include "core/Input.h"
 #include "core/Types.h"
 #include "gui/Bindable.h"
 #include "gui/UIComponents.h"
 #include "gui/UILayoutHelpers.h"
-#include "gui/UILayoutTypes.h"
 #include <format>
-#include <optional>
 
-inline UISpecification TextElement(Text text)
+template <typename... TComponents>
+inline ElementHandle Element(DefaultUIProps props, TComponents &...extra)
 {
-    return element({.text = text});
+    return ElementHandle(props, std::forward<TComponents>(extra)...);
 }
 
-inline UISpecification TextElement(std::string content, Color color = BLACK)
+//---------------------------=
+// Text
+//---------------------------=
+
+inline ElementHandle TextElement(Text text)
+{
+    return Element({.text = text});
+}
+
+inline ElementHandle TextElement(std::string content, Color color = BLACK)
 {
     Text text = {.content = content, .color = color};
     return TextElement(text);
 }
-inline UISpecification TextElement(BindingFunc<std::string> bind, Color color = BLACK)
+inline ElementHandle TextElement(BindingFunc<std::string> bind, Color color = BLACK)
 {
     Text text = {.content = Bind<std::string>(bind), .color = color};
     return TextElement(text);
 }
 
+//---------------------------=
+// Input
+//---------------------------=
+
+//---------------------------=
+// Checkbox
+//---------------------------=
+
+//---------------------------=
+// Slider
+//---------------------------=
+
+//---------------------------=
+// Helper User Interfaces
+//---------------------------=
 inline UISpecification DebugUI()
 {
-    return element(
-        {
-            .layout = {
-                .sizing = Sizing{.width = GROW},
-                .direction = Direction::Vertical,
-                .padding = Padding(10.0f),
-                .gap = 10.0f,
-                .alignItems = AlignItems::End,
-            },
-            .style = UIStyle{},
-        },
-        [](UISpecification &self) {
-            self.AddChild(TextElement([](std::optional<Entity>) {
+    return Element({
+                       .layout = UILayout{
+                           .sizing = Sizing{.width = GROW},
+                           .direction = Direction::Vertical,
+                           .padding = Padding(10.0f),
+                           .gap = 10.0f,
+                           .alignItems = AlignItems::End,
+                       },
+                       .style = UIStyle{},
+                   })
+        .Children([] {
+            TextElement([] {
                 return std::format("FPS: {:^10.0f}", Simplex::Get().GetFPS());
-            }));
+            });
 
-            self.AddChild(TextElement([](std::optional<Entity>) {
+            TextElement([] {
                 return std::format("Entities: {}", Simplex::GetRegistry().GetEntityCount());
-            }));
+            });
 
-            self.AddChild(TextElement([](std::optional<Entity>) {
+            TextElement([] {
                 return std::format("Components: {}", Simplex::GetRegistry().GetComponentCount());
-            }));
-        });
+            });
+        })
+        .Take();
 }
