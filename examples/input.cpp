@@ -6,9 +6,12 @@
 #include "gui/UIComponents.h"
 #include "gui/UIElements.h"
 #include "gui/UIBuilder.h"
+#include "gui/UIEventSystem.h"
 #include "gui/UILayoutHelpers.h"
+#include "gui/UILayoutSystem.h"
 #include "gui/UILayoutTypes.h"
-#include "gui/UISystem.h"
+#include "gui/UIRenderSystem.h"
+#include "gui/UIStateSystem.h"
 #include "systems/RenderSystem.h"
 #include <format>
 

@@ -1,18 +1,13 @@
 #pragma once
 
 #include "core/Simplex.h"
-#include "graphics/render-commands/ColliderCommand.h"
 #include "graphics/text/Character.h"
 #include "gui/Text.h"
-#include "gui/UIBuilder.h"
 #include "core/SystemManager.h"
 #include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
-#include "graphics/render-commands/SpriteCommand.h"
-#include "graphics/render-commands/TextCommand.h"
 #include "graphics/text/Font.h"
-#include "graphics/util/RenderSpace.h"
 #include "gui/UIComponents.h"
 #include "gui/UILayoutTypes.h"
 #include <algorithm>
@@ -20,75 +15,7 @@
 #include <cmath>
 #include <string>
 #include <sys/types.h>
-#include <tuple>
 #include <vector>
-
-inline int spriteCommandCount = 0;
-
-class UIStateSystem : public System
-{
-  public:
-    UIStateSystem()
-    {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text>();
-    }
-    void Update(float timeStep) override
-    {
-        for(Entity e : m_Entities)
-        {
-            auto [elem, trans, layout, style, text] = e.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
-
-            bool changed = elem.childrenSpec.UpdateBinding();
-            if(changed)
-            {
-                for(auto child : elem.children)
-                {
-                    DeleteTree(child);
-                }
-                elem.children.clear();
-
-                // Create new children
-                for(auto childSpec : elem.childrenSpec.Get())
-                {
-                    auto child = BuildUI(Simplex::GetRegistry(), childSpec);
-                    elem.children.push_back(child);
-                }
-            }
-
-            bool anyChanged = false;
-            std::apply(
-                [&](auto &...b) {
-                    ((anyChanged |= b.UpdateBinding()), ...);
-                },
-                layout.bindables());
-
-            std::apply(
-                [&](auto &...b) {
-                    ((anyChanged |= b.UpdateBinding()), ...);
-                },
-                style.bindables());
-
-            std::apply(
-                [&](auto &...b) {
-                    ((anyChanged |= b.UpdateBinding()), ...);
-                },
-                text.bindables());
-
-            elem.dirty = (anyChanged || changed);
-        }
-    }
-
-    void DeleteTree(Entity e)
-    {
-        auto &elem = e.GetComponent<UIElement>();
-        for(auto child : elem.children)
-        {
-            DeleteTree(child);
-        }
-        elem.children.clear();
-        Simplex::GetRegistry().Destroy(e);
-    }
-};
 
 class UILayoutSystem : public System
 {
@@ -594,118 +521,5 @@ class UILayoutSystem : public System
             // Recursively calculate children's positions
             CalculatePositions(child, localPos);
         }
-    }
-};
-
-class UIRenderSystem : public System
-{
-  public:
-    UIRenderSystem()
-    {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform>();
-    }
-    void Update(float timeStep) override
-    {
-        for(Entity e : m_Entities)
-        {
-            UIElement element = e.GetComponent<UIElement>();
-            if(element.parent != NULL_ENTITY)
-                continue;
-
-            RenderElements(e);
-        }
-    }
-    void RenderElements(Entity entity)
-    {
-        if(entity == NULL_ENTITY)
-        {
-            std::cout << "NULL ENTITY SOMEHOW" << "\n";
-        }
-        auto [element, transform, layout, style, text, textLayout] = entity.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text, TextLayout>();
-
-        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color.Get()}, .transform = transform, .renderSpace = RenderSpace::Screen};
-        ColliderCommand debugCmd = {
-            .transform = transform,
-        };
-
-        // Simplex::GetRendererManager().Submit<ColliderCommand>(debugCmd);
-
-        Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
-
-        if(!text.content.Get().empty())
-        {
-            glm::vec2 pos = transform.position;
-            pos.x += layout.padding.Get().left;
-            pos.y += layout.padding.Get().top;
-
-            TextCommand cmd = {.glyphs = textLayout.glyphs, .position = pos, .color = text.color};
-            // Simplex::GetRendererManager().Submit<ColliderCommand>({.transform = {glm::vec3(pos, 0), textLayout.size}});
-            Simplex::GetRendererManager().Submit<TextCommand>(cmd);
-        }
-
-        for(Entity child : element.children)
-        {
-            RenderElements(child);
-        }
-    }
-};
-
-class UIEventSystem : public System
-{
-  public:
-    UIEventSystem()
-    {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text, UIEvents>();
-    }
-    void Update(float timeStep) override
-    {
-        for(Entity e : m_Entities)
-        {
-            auto [elem, transform, events] = e.GetComponents<UIElement, UITransform, UIEvents>();
-
-            glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
-
-            bool mouseDown = false;
-            int button = GLFW_MOUSE_BUTTON_1;
-
-            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
-            {
-                mouseDown = true;
-                button = GLFW_MOUSE_BUTTON_1;
-            }
-
-            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_2))
-            {
-                mouseDown = true;
-                button = GLFW_MOUSE_BUTTON_2;
-            }
-
-            // OnClick
-            if(mouseDown && Intersecting(transform, mousePos))
-            {
-                ClickEvent evt = {mousePos, button};
-                if(events.onClick)
-                {
-                    events.onClick(evt, e);
-                    elem.dirty = true;
-                }
-            }
-
-            // Mouse Down
-
-            // Mouse Up
-
-            // Hover Enter
-
-            // Hover Exit
-        }
-    }
-
-    bool Intersecting(Transform transform, glm::vec2 position)
-    {
-        glm::vec2 min = transform.position;
-        glm::vec2 max = glm::vec2(transform.position) + transform.size;
-
-        return (position.x > min.x && position.y > min.y) && (position.x < max.x && position.y < max.y);
     }
 };

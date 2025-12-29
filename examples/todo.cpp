@@ -7,11 +7,14 @@
 #include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
 #include "gui/UIElements.h"
+#include "gui/UIEventSystem.h"
 #include "gui/UILayoutHelpers.h"
+#include "gui/UILayoutSystem.h"
 #include "gui/UILayoutTypes.h"
-#include "gui/UISystem.h"
 
 #include "graphics/text/Font.h"
+#include "gui/UIRenderSystem.h"
+#include "gui/UIStateSystem.h"
 
 #include <functional>
 #include <vector>
