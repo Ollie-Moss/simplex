@@ -11,7 +11,10 @@ struct GlyphQuad
     Transform transform;
 
     unsigned int texture; // Character::TextureID
-    size_t charIndex;     // index in original string
+    
+    float ascent;
+    float descent;
+    float advance;
 };
 
 struct TextLayout

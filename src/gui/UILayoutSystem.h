@@ -8,6 +8,7 @@
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/text/Font.h"
+#include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
 #include "gui/UILayoutTypes.h"
 #include <algorithm>
@@ -229,6 +230,25 @@ class UILayoutSystem : public System
             numOfLines++;
         };
 
+        auto insertChar = [&](Character ch) {
+            // Update lineWidth and
+            lineWidth = penX + ch.Size.x;
+            if(lineWidth > largestLineWidth)
+                largestLineWidth = lineWidth;
+
+            // Create Glyph Quad
+            GlyphQuad glyph;
+            glyph.descent = ch.Size.y - ch.Bearing.y;
+            glyph.ascent = ch.Size.y - glyph.descent;
+            glyph.advance = ch.Advance;
+            glyph.transform = {glm::vec3{penX, penY - ch.Bearing.y, 0}, ch.Size};
+            glyph.texture = ch.TextureID;
+            glyphs.push_back(glyph);
+
+            // Advance
+            penX += ch.Advance;
+        };
+
         for(size_t i = 0; i < text.content.Get().size(); i++)
         {
             char c = text.content.Get()[i];
@@ -241,6 +261,13 @@ class UILayoutSystem : public System
                 newLine();
                 continue;
             }
+            if(c == '\t')
+            {
+                for(int j = 0; j < TABWIDTH; ++j)
+                    insertChar(font.characters[' ']);
+
+                continue;
+            }
 
             // Wrap text if text size is larger max width (ONLY IF WRAPPING IS BEING CALCULATED)
             if(penX + ch.Size.x + layout.padding.Get().left > maxWidth && shouldWrap)
@@ -249,20 +276,7 @@ class UILayoutSystem : public System
                 numOfLines++;
             }
 
-            // Update lineWidth and
-            lineWidth = penX + ch.Size.x;
-            if(lineWidth > largestLineWidth)
-                largestLineWidth = lineWidth;
-
-            // Create Glyph Quad
-            GlyphQuad glyph;
-            glyph.charIndex = i;
-            glyph.transform = {glm::vec3{penX, penY - ch.Bearing.y, 0}, ch.Size};
-            glyph.texture = ch.TextureID;
-            glyphs.push_back(glyph);
-
-            // Advance
-            penX += ch.Advance;
+            insertChar(ch);
         }
 
         // Create text bounds and update text layout
@@ -447,7 +461,7 @@ class UILayoutSystem : public System
 
     void CalculatePositions(Entity entity, glm::vec2 parentPosition)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+        auto [element, properties, transform, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, TextLayout>();
 
         Entity parent = element.parent;
 

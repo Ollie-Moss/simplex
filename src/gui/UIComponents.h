@@ -51,7 +51,7 @@ struct UILayout
 // This describes the style of a given element that does not effect its final UITransform
 struct UIStyle
 {
-    Bindable<Color> color = TRANSPARENT;
+    Bindable<Color> color = BLUE;
 
     auto bindables()
     {
@@ -113,6 +113,9 @@ struct UIEvents
     EventHandler<HoverExitEvent> onHoverExit;
     EventHandler<KeyBoardEvent> onKeyDown;
     EventHandler<ChangeEvent> onChange;
+    EventHandler<ChangeEvent> onFocus;
+    EventHandler<ChangeEvent> onBlur;
+
 
     bool operator==(const UIEvents &rhs) const
     {

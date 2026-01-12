@@ -7,6 +7,7 @@
 #include "gui/UIElements.h"
 #include "gui/UIBuilder.h"
 #include "gui/UIEventSystem.h"
+#include "gui/UIInputSystem.h"
 #include "gui/UILayoutHelpers.h"
 #include "gui/UILayoutSystem.h"
 #include "gui/UILayoutTypes.h"
@@ -25,15 +26,15 @@ UISpecification UI()
                        .style = {
                            .color = BLUE,
                        },
-                       .text = {
-                           .content = "Hi",
-                       },
-                       .events = {
-                           .onClick = [](const ClickEvent &e, Entity self) {
-                               auto &text = self.GetComponent<Text>().content = std::format("button: {}\nx: {:.0f}, y: {:.0f}", e.button, e.mousePos.x, e.mousePos.y);
-                           },
-                       },
+                       // .events = {
+                       //     .onClick = [](const ClickEvent &e, Entity self) {
+                       //         auto &text = self.GetComponent<Text>().content = std::format("button: {}\nx: {:.0f}, y: {:.0f}", e.button, e.mousePos.x, e.mousePos.y);
+                       //     },
+                       // },
                    })
+        .Children([] {
+            InputElement({});
+        })
         .Take();
 }
 
@@ -51,16 +52,18 @@ int main()
         // Systems
 
         // UI
+        m_Registry.RegisterSystem<UIInputSystem>();
         m_Registry.RegisterSystem<UIStateSystem>();
         m_Registry.RegisterSystem<UILayoutSystem>();
 
         // Rendering
         m_Registry.RegisterSystem<UIRenderSystem>();
         m_Registry.RegisterSystem<UIEventSystem>();
+        m_Registry.RegisterSystem<UIInputRenderSystem>();
         m_Registry.RegisterSystem<RenderSystem>();
 
-        BuildUI(m_Registry, UI());
-        BuildUI(m_Registry, DebugUI());
+        auto root = BuildUI(m_Registry, UI());
+        BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root));
     });
 
     simplex.SetScene(MainScene);

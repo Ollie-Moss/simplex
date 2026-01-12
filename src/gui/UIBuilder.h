@@ -3,6 +3,7 @@
 #include "core/Entity.h"
 #include "core/Registry.h"
 #include "core/Types.h"
+#include <iostream>
 #include <vector>
 #include "Text.h"
 #include "gui/UIBuilderTypes.h"
@@ -12,12 +13,10 @@ inline EntityId CreateEntities(Registry &registry, UISpecification spec, EntityI
 {
     // Create new entity
     Entity entity = registry.QueueCreate<UITransform, UILayout, UIStyle, TextLayout, Text, UIEvents>({}, spec.properties.layout, spec.properties.style, {}, spec.properties.text, spec.properties.events);
-
-    // Add extraComponents
-    std::apply([&](auto &&...components) {
-        (registry.QueueComponent(entity, components), ...);
-    },
-               spec.extraComponents);
+    for(auto builder : spec.extraComponents)
+    {
+        builder(entity);
+    }
 
     // Create Children
     std::vector<EntityId> children;

@@ -25,30 +25,19 @@ class UIEventSystem : public System
             auto [elem, transform, events] = e.GetComponents<UIElement, UITransform, UIEvents>();
 
             glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
+            const std::vector<int> &buttons = Simplex::GetInput().GetMouseInput();
 
-            bool mouseDown = false;
-            int button = GLFW_MOUSE_BUTTON_1;
-
-            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+            for(auto &button : buttons)
             {
-                mouseDown = true;
-                button = GLFW_MOUSE_BUTTON_1;
-            }
-
-            if(Simplex::GetInput().OnMouseButtonPressed(GLFW_MOUSE_BUTTON_2))
-            {
-                mouseDown = true;
-                button = GLFW_MOUSE_BUTTON_2;
-            }
-
-            // OnClick
-            if(mouseDown && Intersecting(transform, mousePos))
-            {
-                ClickEvent evt = {mousePos, button};
-                if(events.onClick)
+                // OnClick
+                if(Intersecting(transform, mousePos))
                 {
-                    events.onClick(evt, e);
-                    elem.dirty = true;
+                    ClickEvent evt = {mousePos, button};
+                    if(events.onClick)
+                    {
+                        events.onClick(evt, e);
+                        elem.dirty = true;
+                    }
                 }
             }
 

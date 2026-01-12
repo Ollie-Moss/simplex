@@ -101,6 +101,12 @@ class Registry
         return m_ComponentManager.TryGetComponent<T>(entity);
     }
 
+    template <typename TComponent>
+    ComponentId GetComponentId()
+    {
+        return m_ComponentManager.GetComponentType<TComponent>();
+    }
+
     template <typename T>
     std::shared_ptr<T> RegisterSystem()
     {

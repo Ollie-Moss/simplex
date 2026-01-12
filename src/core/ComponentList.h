@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/Types.h"
-#include "iostream"
 #include <unordered_map>
 
 class IComponentList

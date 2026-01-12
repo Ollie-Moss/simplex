@@ -1,6 +1,5 @@
 #include "core/Types.h"
 #include <cassert>
-#include <cstdint>
 #include <memory>
 #include "core/ComponentList.h"
 #include <typeinfo>
@@ -96,8 +95,7 @@ class ComponentManager
     template <typename T>
     std::shared_ptr<ComponentList<T>> GetComponentList()
     {
-        const char *componentName = typeid(T).name();
-        std::uint32_t component = m_ComponentTypes[componentName];
+        ComponentId component = GetComponentType<T>();
         return std::static_pointer_cast<ComponentList<T>>(m_Components[component]);
     }
 

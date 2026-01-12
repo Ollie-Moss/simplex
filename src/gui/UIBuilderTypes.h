@@ -1,8 +1,13 @@
 #pragma once
 
+#include "core/Simplex.h"
+#include "core/Types.h"
 #include "gui/Bindable.h"
 #include "gui/Text.h"
 #include "gui/UIComponents.h"
+#include <any>
+#include <functional>
+#include <iostream>
 
 struct DefaultUIProps
 {
@@ -17,16 +22,14 @@ struct DefaultUIProps
 struct UISpecification
 {
     DefaultUIProps properties;
-    std::tuple<> extraComponents;
+    std::vector<std::function<void(EntityId)>> extraComponents;
 
     Bindable<std::vector<UISpecification>> children;
 
-    void AddChild(const UISpecification &spec)
+    bool operator==(const UISpecification &rhs) const
     {
-        children.Get().push_back(spec);
-    }
-
-    bool operator==(const UISpecification &rhs) const = default;
+        return false;
+    };
 };
 
 class ElementHandle
@@ -37,7 +40,13 @@ class ElementHandle
     template <typename... TComponents>
     ElementHandle(DefaultUIProps props, TComponents &&...extra)
     {
-        spec = UISpecification{.properties = props};
+        std::vector<std::function<void(EntityId)>> components;
+        (components.push_back([extra](EntityId entity) { Simplex::GetRegistry().QueueComponent(entity, extra); }), ...);
+
+        spec = UISpecification{
+            .properties = props,
+            .extraComponents = components};
+
         if(!context.empty())
         {
             auto parent = context.back();
@@ -48,9 +57,26 @@ class ElementHandle
     ElementHandle &Children(std::function<void()> childrenFn)
     {
         // make this parent
+        std::cout << "MAKING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
         context.push_back(&spec);
         childrenFn();
         context.pop_back();
+        std::cout << "POPPING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
+        return *this;
+    }
+
+    ElementHandle &BindChildren(std::function<void()> childBuildFn)
+    {
+        auto childFn = [=]() {
+            // make this parent
+            UISpecification tempSpec = {};
+            context.push_back(&tempSpec);
+            childBuildFn();
+            context.pop_back();
+            return tempSpec.children.Get();
+        };
+        spec.children.Set(childFn);
+
         return *this;
     }
 

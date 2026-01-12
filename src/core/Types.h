@@ -41,4 +41,8 @@ const Color GRAY = Color(0.5f, 0.5f, 0.5f, 1.0f);
 const Color OPAQUE = Color(0.0f, 0.0f, 0.0f, 1.0f);
 const Color TRANSPARENT = Color(0.0f, 0.0f, 0.0f, 0.0f);
 
+// Physics
 const glm::vec2 GRAVITY = glm::vec2(0.0f, -9.81f);
+
+// Text
+const uint32_t TABWIDTH = 4;

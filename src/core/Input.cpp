@@ -1,10 +1,9 @@
-#include "Input.h"
 #include "core/Simplex.h"
+#include "Input.h"
 #include "glm/fwd.hpp"
 #include "graphics/util/RenderSpace.h"
 #include <GLFW/glfw3.h>
 #include <cassert>
-#include <charconv>
 #include <string>
 #include <sys/types.h>
 
@@ -23,31 +22,22 @@ bool Input::Init()
 
 void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    switch(action)
-    {
-    case GLFW_PRESS:
-        Simplex::GetInput().SetMouseButtonState(button, KeyState::FirstPress);
-        break;
-    case GLFW_RELEASE:
-        Simplex::GetInput().SetMouseButtonState(button, KeyState::Released);
-        break;
-    default:
-        break;
-    }
+    Simplex::GetInput().SetMouseButton(button, Key((KeyState)action, (KeyMod)mods));
+
+    if(Simplex::GetInput().GetMouseButton(button).IsDown())
+        Simplex::GetInput().m_MouseInputBuffer.push_back(button);
 }
+
 void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    switch(action)
-    {
-    case GLFW_PRESS:
-        Simplex::GetInput().SetKeyState(key, KeyState::FirstPress);
-        break;
-    case GLFW_RELEASE:
-        Simplex::GetInput().SetKeyState(key, KeyState::Released);
-        break;
-    default:
-        break;
-    }
+    Simplex::GetInput().SetKey(key, Key((KeyState)action, (KeyMod)mods));
+
+    if(key == GLFW_KEY_ENTER && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        Simplex::GetInput().m_TextInputBuffer += "\n";
+    if(key == GLFW_KEY_TAB && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        Simplex::GetInput().m_TextInputBuffer += "\t";
+    if(key == GLFW_KEY_BACKSPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        Simplex::GetInput().m_TextInputBuffer += "\b";
 }
 
 void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
@@ -60,81 +50,55 @@ void Input::CharacterCallback(GLFWwindow *window, unsigned int codepoint)
     Simplex::GetInput().m_TextInputBuffer += (unsigned char)codepoint;
 }
 
+//---------------------------=
+// Keyboard Input
+//---------------------------=
 std::string Input::GetTextInput()
 {
     return m_TextInputBuffer;
 }
 
-void Input::SetMouseButtonState(int button, KeyState state)
+void Input::SetKey(int glfwButton, const Key &key)
 {
-    m_MouseButtonState[button] = state;
+    m_Keys[glfwButton] = key;
 }
 
-void Input::SetKeyState(int button, KeyState state)
+Key &Input::GetKey(int glfwButton)
 {
-    m_KeyState[button] = state;
+    return m_Keys[glfwButton];
 }
 
-bool Input::OnKeyDown(int key)
-{
-    if(Simplex::GetView().GetWindow() == nullptr)
-    {
-        return false;
-    }
+//---------------------------=
+// Mouse Input
+//---------------------------=
 
-    auto state = m_KeyState[key];
-    return state == KeyState::FirstPress || state == KeyState::Pressed;
+const std::vector<int> &Input::GetMouseInput()
+{
+    return m_MouseInputBuffer;
 }
 
-bool Input::OnMouseButtonDown(int button)
+void Input::SetMouseButton(int glfwButton, const Key &key)
 {
-    if(Simplex::GetView().GetWindow() == nullptr)
-    {
-        return false;
-    }
-
-    auto state = m_MouseButtonState[button];
-    return state == KeyState::FirstPress || state == KeyState::Pressed;
+    m_MouseButtons[glfwButton] = key;
 }
 
-bool Input::OnMouseButtonPressed(int button)
+Key &Input::GetMouseButton(int glfwButton)
 {
-    if(Simplex::GetView().GetWindow() == nullptr)
-    {
-        return false;
-    }
-
-    KeyState &state = m_MouseButtonState[button];
-    bool isPressed = state == KeyState::FirstPress;
-    if(isPressed)
-        m_MouseButtonStateConsumed[button] = true;
-
-    return isPressed;
-}
-bool Input::OnKeyPressed(int button)
-{
-    if(Simplex::GetView().GetWindow() == nullptr)
-    {
-        return false;
-    }
-
-    KeyState &state = m_KeyState[button];
-    bool isPressed = state == KeyState::FirstPress;
-
-    if(isPressed)
-        m_KeyStateConsumed[button] = true;
-
-    return isPressed;
-}
-
-glm::vec2 Input::GetMouseDelta()
-{
-    return m_LastMousePosition - m_CurrentMousePosition;
-}
+    return m_MouseButtons[glfwButton];
+};
 
 float Input::GetScrollDelta()
 {
     return m_Scroll;
+}
+
+//---------------------------=
+// Mouse Position
+//---------------------------=
+
+glm::vec2 Input::GetMouseDelta()
+{
+    return m_LastMousePosition - m_CurrentMousePosition;
 }
 
 glm::vec2 Input::GetMousePosition(RenderSpace space)
@@ -151,38 +115,23 @@ glm::vec2 Input::GetMousePosition(RenderSpace space)
     return mousePos;
 }
 
+//---------------------------=
+// Helpers
+//---------------------------=
+
 void Input::PollEvents()
 {
-    ResetMouseButtons();
-    ResetKeys();
+    for(auto &[glfwButton, key] : m_Keys)
+        key.Reset();
+
+    for(auto &[glfwButton, key] : m_MouseButtons)
+        key.Reset();
 
     m_Scroll = 0;
     m_LastMousePosition = m_CurrentMousePosition;
     m_CurrentMousePosition = GetMousePosition();
     m_TextInputBuffer.clear();
+    m_MouseInputBuffer.clear();
 
     glfwPollEvents();
-}
-
-void Input::ResetMouseButtons()
-{
-    for(auto &[button, state] : m_MouseButtonState)
-    {
-        if(state == KeyState::FirstPress && m_MouseButtonStateConsumed[button])
-        {
-            state = KeyState::Pressed;
-            m_MouseButtonStateConsumed[button] = false;
-        }
-    }
-}
-void Input::ResetKeys()
-{
-    for(auto &[key, state] : m_KeyState)
-    {
-        if(state == KeyState::FirstPress && m_KeyStateConsumed[key])
-        {
-            state = KeyState::Pressed;
-            m_KeyStateConsumed[key] = false;
-        }
-    }
 }
