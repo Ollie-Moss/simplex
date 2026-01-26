@@ -51,7 +51,7 @@ struct UILayout
 // This describes the style of a given element that does not effect its final UITransform
 struct UIStyle
 {
-    Bindable<Color> color = BLUE;
+    Bindable<Color> color = TRANSPARENT;
 
     auto bindables()
     {

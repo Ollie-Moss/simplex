@@ -63,7 +63,7 @@ int main()
         m_Registry.RegisterSystem<RenderSystem>();
 
         auto root = BuildUI(m_Registry, UI());
-        BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root));
+        BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root).Take());
     });
 
     simplex.SetScene(MainScene);

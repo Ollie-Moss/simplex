@@ -2,7 +2,6 @@
 
 #include "UIBuilderTypes.h"
 #include "core/Entity.h"
-#include "core/Input.h"
 #include "core/Types.h"
 #include "gui/Bindable.h"
 #include "gui/Text.h"
@@ -41,13 +40,13 @@ inline ElementHandle TextElement(BindingFunc<std::string> bind, Color color = BL
 //---------------------------=
 // Drop Down
 //---------------------------=
-inline ElementHandle DropDown(std::string title = "", const std::function<void()> &children = [] {})
+inline ElementHandle DropDown(std::string title = "", std::function<void()> childrenFn = [] {})
 {
     return TextElement(title).Children([&] {
         Element({
                     .layout = {
                         .sizing = Sizing{
-                            .height = Axis(SizingMode::Fixed, Pixels(100.0f)),
+                            .height = Axis(SizingMode::Fixed, Pixels(0.0f)),
                         },
                     },
                     .events{
@@ -57,7 +56,7 @@ inline ElementHandle DropDown(std::string title = "", const std::function<void()
                         },
                     },
                 })
-            .Children(children);
+            .Children(childrenFn);
     });
 }
 
@@ -82,7 +81,7 @@ inline ElementHandle InputElement(UIInput input)
 // Helper User Interfaces
 //---------------------------=
 
-inline UISpecification SIMPLEX__DEBUG_STATS()
+inline ElementHandle SIMPLEX__DEBUG_STATS()
 {
     return Element({
                        .layout = UILayout{
@@ -106,33 +105,21 @@ inline UISpecification SIMPLEX__DEBUG_STATS()
             TextElement([] {
                 return std::format("Components: {}", Simplex::GetRegistry().GetComponentCount());
             });
-        })
-        .Take();
+        });
 }
 
 inline ElementHandle SIMPLEX__DEBUG_ELEMENT(Entity elementEntity)
 {
-    return Element({
+    return DropDown(std::format("Element: {}", (int)elementEntity), [&] {
+        auto [elem, transform, layout, textLayout, text] = elementEntity.GetComponents<UIElement, UITransform, UILayout, TextLayout, Text>();
 
-                       // .layout = UILayout{
-                       //     .sizing = Sizing{.width = GROW},
-                       //     .direction = Direction::Vertical,
-                       //     .padding = Padding(10.0f),
-                       //     .gap = 10.0f,
-                       //     .alignItems = AlignItems::End,
-                       // },
-                       // .style = UIStyle{.color = GREEN},
-                   })
-        .Children([&] {
-            auto [elem, transform, layout, textLayout, text] = elementEntity.GetComponents<UIElement, UITransform, UILayout, TextLayout, Text>();
-
-            TextElement([&] { return std::format("Element Dirty: {}", elem.dirty); });
-            TextElement([&] { return std::format("Position: x: {} y: {}", transform.position.x, transform.position.y); });
-            TextElement([&] { return std::format("Size: x: {} y: {}", transform.size.x, transform.size.y); });
-        });
+        TextElement([&] { return std::format("Element Dirty: {}", elem.dirty); });
+        TextElement([&] { return std::format("Position: x: {} y: {}", transform.position.x, transform.position.y); });
+        TextElement([&] { return std::format("Size: x: {} y: {}", transform.size.x, transform.size.y); });
+    });
 }
 
-inline UISpecification SIMPLEX__DEBUG_UI_TREE(Entity UIRoot)
+inline ElementHandle SIMPLEX__DEBUG_UI_TREE(Entity UIRoot)
 {
     return Element({
                        .layout = UILayout{
@@ -145,6 +132,7 @@ inline UISpecification SIMPLEX__DEBUG_UI_TREE(Entity UIRoot)
                        .style = UIStyle{},
                    })
         .Children([&] {
+            SIMPLEX__DEBUG_STATS();
             Element({
 
                         .layout = UILayout{
@@ -164,6 +152,5 @@ inline UISpecification SIMPLEX__DEBUG_UI_TREE(Entity UIRoot)
                         SIMPLEX__DEBUG_ELEMENT(child);
                     }
                 });
-        })
-        .Take();
+        });
 }
