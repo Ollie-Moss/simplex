@@ -1,482 +1,1154 @@
 [
 {
   "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/cc  -I/home/ollie/workspace/game-engine/vendor/glad/include  -o CMakeFiles/glad.dir/vendor/glad/src/glad.c.o -c /home/ollie/workspace/game-engine/vendor/glad/src/glad.c",
+  "command": "/bin/cc  -I/home/ollie/workspace/game-engine/vendor/glad/include -g -o CMakeFiles/glad.dir/vendor/glad/src/glad.c.o -c /home/ollie/workspace/game-engine/vendor/glad/src/glad.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glad/src/glad.c",
   "output": "CMakeFiles/glad.dir/vendor/glad/src/glad.c.o"
 },
 {
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Input.cpp.o -c /home/ollie/workspace/game-engine/src/core/Input.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/Input.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/Input.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o -c /home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/ResourceManager.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/ResourceManager.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Scene.cpp.o -c /home/ollie/workspace/game-engine/src/core/Scene.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/Scene.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/Scene.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o -c /home/ollie/workspace/game-engine/src/core/Simplex.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/Simplex.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/Simplex.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/core/View.cpp.o -c /home/ollie/workspace/game-engine/src/core/View.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/core/View.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/core/View.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/renderers/SpriteRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/renderers/SpriteRenderer.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/renderers/TextRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/renderers/TextRenderer.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/util/Texture.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/util/Texture.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/GameEngine.dir/src/graphics/util/VertexArray.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
-  "file": "/home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
-  "output": "CMakeFiles/GameEngine.dir/src/graphics/util/VertexArray.cpp.o"
-},
-{
-  "directory": "/home/ollie/workspace/game-engine/build",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -std=gnu++20 -o CMakeFiles/build.dir/examples/main.cpp.o -c /home/ollie/workspace/game-engine/examples/main.cpp",
-  "file": "/home/ollie/workspace/game-engine/examples/main.cpp",
-  "output": "CMakeFiles/build.dir/examples/main.cpp.o"
-},
-{
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/context.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/context.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/context.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/context.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/init.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/init.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/init.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/init.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/input.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/input.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/input.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/input.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/input.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/input.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/monitor.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/monitor.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/monitor.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/monitor.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/platform.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/platform.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/platform.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/platform.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/platform.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/platform.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/vulkan.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/vulkan.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/vulkan.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/vulkan.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/vulkan.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/window.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/window.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/window.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/window.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/egl_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/egl_context.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/egl_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/egl_context.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/egl_context.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/osmesa_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/osmesa_context.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/osmesa_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/osmesa_context.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/osmesa_context.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_init.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_init.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/null_init.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/null_init.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_monitor.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_monitor.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/null_monitor.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_window.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_window.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/null_window.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/null_window.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_joystick.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_joystick.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_joystick.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/null_joystick.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/null_joystick.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_module.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_module.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_module.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_module.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/posix_module.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/posix_module.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_time.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_time.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_time.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_time.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/posix_time.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_thread.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_thread.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_thread.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_thread.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/posix_thread.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/posix_thread.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_init.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_init.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/x11_init.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_monitor.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_monitor.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/x11_monitor.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_window.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/x11_window.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/x11_window.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/xkb_unicode.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/xkb_unicode.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/xkb_unicode.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/xkb_unicode.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/xkb_unicode.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/glx_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/glx_context.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/glx_context.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/glx_context.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/glx_context.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_init.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_init.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_init.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/wl_init.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/wl_init.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_monitor.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_monitor.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_monitor.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/wl_monitor.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/wl_monitor.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_window.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_window.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/wl_window.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/wl_window.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/wl_window.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/linux_joystick.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/linux_joystick.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/linux_joystick.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/linux_joystick.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/linux_joystick.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glfw/src",
-  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_poll.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_poll.c",
+  "command": "/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/vendor/glfw/src -I/home/ollie/workspace/game-engine/build/vendor/glfw/src -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_poll.c.o -c /home/ollie/workspace/game-engine/vendor/glfw/src/posix_poll.c",
   "file": "/home/ollie/workspace/game-engine/vendor/glfw/src/posix_poll.c",
   "output": "vendor/glfw/src/CMakeFiles/glfw.dir/posix_poll.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/glm/glm",
-  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/glm -std=c++20 -o CMakeFiles/glm.dir/detail/glm.cpp.o -c /home/ollie/workspace/game-engine/vendor/glm/glm/detail/glm.cpp",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/glm -g -std=c++20 -o CMakeFiles/glm.dir/detail/glm.cpp.o -c /home/ollie/workspace/game-engine/vendor/glm/glm/detail/glm.cpp",
   "file": "/home/ollie/workspace/game-engine/vendor/glm/glm/detail/glm.cpp",
   "output": "vendor/glm/glm/CMakeFiles/glm.dir/detail/glm.cpp.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/autofit/autofit.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/autofit/autofit.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/autofit/autofit.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/autofit/autofit.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/autofit/autofit.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/autofit/autofit.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbase.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbase.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbase.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbase.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbase.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftbase.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbbox.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbbox.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbbox.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbbox.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbbox.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftbbox.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbdf.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbdf.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbdf.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftbdf.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbitmap.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbitmap.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftbitmap.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbitmap.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftbitmap.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftbitmap.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftcid.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftcid.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftcid.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftcid.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftcid.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftcid.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftfstype.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftfstype.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftfstype.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftfstype.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftfstype.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftfstype.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftgasp.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgasp.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftgasp.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgasp.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgasp.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftgasp.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftglyph.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftglyph.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftglyph.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftglyph.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftglyph.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftglyph.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftgxval.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgxval.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftgxval.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgxval.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftgxval.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftgxval.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftinit.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftinit.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftinit.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftinit.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftinit.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftinit.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftmm.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftmm.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftmm.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftmm.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftmm.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftmm.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftotval.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftotval.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftotval.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftotval.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftotval.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftotval.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftpatent.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpatent.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftpatent.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpatent.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpatent.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftpatent.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftpfr.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpfr.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftpfr.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpfr.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftpfr.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftpfr.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftstroke.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftstroke.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftstroke.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftstroke.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftstroke.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftstroke.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftsynth.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftsynth.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftsynth.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftsynth.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftsynth.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftsynth.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/fttype1.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/fttype1.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/fttype1.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/fttype1.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/fttype1.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/fttype1.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftwinfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftwinfnt.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftwinfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftwinfnt.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftwinfnt.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftwinfnt.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/bdf/bdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/bdf/bdf.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/bdf/bdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/bdf/bdf.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/bdf/bdf.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/bdf/bdf.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/bzip2/ftbzip2.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/bzip2/ftbzip2.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/bzip2/ftbzip2.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/bzip2/ftbzip2.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/bzip2/ftbzip2.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/bzip2/ftbzip2.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cache/ftcache.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cache/ftcache.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cache/ftcache.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cache/ftcache.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/cache/ftcache.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/cache/ftcache.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cff/cff.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cff/cff.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cff/cff.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cff/cff.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/cff/cff.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/cff/cff.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cid/type1cid.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cid/type1cid.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/cid/type1cid.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/cid/type1cid.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/cid/type1cid.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/cid/type1cid.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/gzip/ftgzip.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/gzip/ftgzip.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/gzip/ftgzip.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/gzip/ftgzip.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/gzip/ftgzip.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/gzip/ftgzip.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/lzw/ftlzw.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/lzw/ftlzw.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/lzw/ftlzw.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/lzw/ftlzw.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/lzw/ftlzw.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/lzw/ftlzw.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pcf/pcf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pcf/pcf.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pcf/pcf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pcf/pcf.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/pcf/pcf.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/pcf/pcf.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pfr/pfr.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pfr/pfr.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pfr/pfr.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pfr/pfr.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/pfr/pfr.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/pfr/pfr.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/psaux/psaux.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/psaux/psaux.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/psaux/psaux.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/psaux/psaux.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/psaux/psaux.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/psaux/psaux.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pshinter/pshinter.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pshinter/pshinter.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/pshinter/pshinter.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/pshinter/pshinter.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/pshinter/pshinter.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/pshinter/pshinter.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/psnames/psnames.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/psnames/psnames.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/psnames/psnames.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/psnames/psnames.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/psnames/psnames.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/psnames/psnames.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/raster/raster.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/raster/raster.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/raster/raster.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/raster/raster.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/raster/raster.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/raster/raster.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/sdf/sdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/sdf/sdf.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/sdf/sdf.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/sdf/sdf.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/sdf/sdf.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/sdf/sdf.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/sfnt/sfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/sfnt/sfnt.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/sfnt/sfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/sfnt/sfnt.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/sfnt/sfnt.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/sfnt/sfnt.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/smooth/smooth.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/smooth/smooth.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/smooth/smooth.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/smooth/smooth.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/smooth/smooth.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/smooth/smooth.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/svg/svg.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/svg/svg.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/svg/svg.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/svg/svg.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/svg/svg.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/svg/svg.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/truetype/truetype.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/truetype/truetype.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/truetype/truetype.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/truetype/truetype.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/truetype/truetype.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/truetype/truetype.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/type1/type1.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/type1/type1.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/type1/type1.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/type1/type1.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/type1/type1.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/type1/type1.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/type42/type42.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/type42/type42.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/type42/type42.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/type42/type42.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/type42/type42.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/type42/type42.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/winfonts/winfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/winfonts/winfnt.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/winfonts/winfnt.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/winfonts/winfnt.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/winfonts/winfnt.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/winfonts/winfnt.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/builds/unix/ftsystem.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/builds/unix/ftsystem.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/builds/unix/ftsystem.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/builds/unix/ftsystem.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/builds/unix/ftsystem.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/builds/unix/ftsystem.c.o"
 },
 {
   "directory": "/home/ollie/workspace/game-engine/build/vendor/freetype",
-  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftdebug.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftdebug.c",
+  "command": "/bin/cc -DFT2_BUILD_LIBRARY -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o CMakeFiles/freetype.dir/src/base/ftdebug.c.o -c /home/ollie/workspace/game-engine/vendor/freetype/src/base/ftdebug.c",
   "file": "/home/ollie/workspace/game-engine/vendor/freetype/src/base/ftdebug.c",
   "output": "vendor/freetype/CMakeFiles/freetype.dir/src/base/ftdebug.c.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/benchmark/catch_chronometer.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/catch_chronometer.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/catch_chronometer.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/benchmark/catch_chronometer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_analyse.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_analyse.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_analyse.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_analyse.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_benchmark_function.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_benchmark_function.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_benchmark_function.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_benchmark_function.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_run_for_at_least.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_run_for_at_least.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_run_for_at_least.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_run_for_at_least.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_stats.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_stats.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/benchmark/detail/catch_stats.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/benchmark/detail/catch_stats.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/generators/catch_generator_exception.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generator_exception.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generator_exception.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generator_exception.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/generators/catch_generators.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generators.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generators.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/generators/catch_generators_random.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generators_random.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/generators/catch_generators_random.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/generators/catch_generators_random.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_automake.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_automake.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_automake.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_automake.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_common_base.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_common_base.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_common_base.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_common_base.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_compact.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_compact.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_compact.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_compact.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_console.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_console.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_console.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_console.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_cumulative_base.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_cumulative_base.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_cumulative_base.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_cumulative_base.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_event_listener.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_event_listener.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_event_listener.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_event_listener.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_helpers.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_helpers.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_helpers.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_helpers.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_json.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_json.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_json.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_json.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_junit.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_junit.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_junit.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_junit.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_multi.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_multi.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_multi.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_multi.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_registrars.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_registrars.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_registrars.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_registrars.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_sonarqube.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_sonarqube.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_sonarqube.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_sonarqube.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_streaming_base.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_streaming_base.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_streaming_base.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_streaming_base.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_tap.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_tap.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_tap.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_tap.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_teamcity.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_teamcity.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_teamcity.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_teamcity.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_xml.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_xml.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/reporters/catch_reporter_xml.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/reporters/catch_reporter_xml.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_capture.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_capture.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_capture.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_capture.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_config.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_config.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_config.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_config.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_exception.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_exception.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_exception.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_exception.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_generatortracker.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_generatortracker.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_generatortracker.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_generatortracker.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_registry_hub.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_registry_hub.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_registry_hub.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_registry_hub.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_reporter.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_reporter.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter_factory.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_reporter_factory.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_reporter_factory.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_reporter_factory.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_testcase.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_testcase.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/interfaces/catch_interfaces_testcase.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/interfaces/catch_interfaces_testcase.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_approx.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_approx.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_approx.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_approx.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_assertion_result.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_assertion_result.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_assertion_result.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_assertion_result.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_config.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_config.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_config.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_config.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_get_random_seed.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_get_random_seed.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_get_random_seed.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_get_random_seed.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_message.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_message.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_message.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_message.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_registry_hub.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_registry_hub.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_registry_hub.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_registry_hub.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_session.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_session.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_session.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_session.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_tag_alias_autoregistrar.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_tag_alias_autoregistrar.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_tag_alias_autoregistrar.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_tag_alias_autoregistrar.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_test_case_info.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_test_case_info.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_test_case_info.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_test_case_info.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_test_spec.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_test_spec.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_test_spec.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_test_spec.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_timer.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_timer.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_timer.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_timer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_tostring.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_tostring.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_tostring.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_tostring.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_totals.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_totals.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_totals.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_totals.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_translate_exception.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_translate_exception.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_translate_exception.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_translate_exception.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/catch_version.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_version.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/catch_version.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/catch_version.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_assertion_handler.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_assertion_handler.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_assertion_handler.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_assertion_handler.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_case_insensitive_comparisons.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_case_insensitive_comparisons.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_case_insensitive_comparisons.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_case_insensitive_comparisons.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_clara.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_clara.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_clara.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_clara.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_commandline.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_commandline.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_commandline.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_commandline.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_console_colour.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_console_colour.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_console_colour.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_console_colour.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_context.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_context.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_context.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_context.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_debug_console.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_debug_console.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_debug_console.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debug_console.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_debugger.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_debugger.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_debugger.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_debugger.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_decomposer.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_decomposer.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_decomposer.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_decomposer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_enforce.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_enforce.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_enforce.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enforce.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_enum_values_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_enum_values_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_enum_values_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_enum_values_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_errno_guard.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_errno_guard.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_errno_guard.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_errno_guard.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_exception_translator_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_exception_translator_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_exception_translator_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_exception_translator_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_fatal_condition_handler.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_fatal_condition_handler.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_fatal_condition_handler.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_fatal_condition_handler.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_floating_point_helpers.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_floating_point_helpers.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_floating_point_helpers.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_floating_point_helpers.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_getenv.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_getenv.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_getenv.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_getenv.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_istream.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_istream.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_istream.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_istream.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_jsonwriter.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_jsonwriter.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_jsonwriter.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_jsonwriter.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_lazy_expr.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_lazy_expr.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_lazy_expr.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_lazy_expr.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_leak_detector.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_leak_detector.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_leak_detector.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_leak_detector.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_list.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_list.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_list.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_list.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_message_info.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_message_info.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_message_info.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_message_info.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_output_redirect.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_output_redirect.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_output_redirect.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_output_redirect.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_parse_numbers.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_parse_numbers.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_parse_numbers.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_parse_numbers.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_polyfills.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_polyfills.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_polyfills.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_polyfills.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_random_number_generator.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_random_number_generator.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_random_number_generator.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_number_generator.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_random_seed_generation.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_random_seed_generation.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_random_seed_generation.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_random_seed_generation.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reporter_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reporter_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_spec_parser.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reporter_spec_parser.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reporter_spec_parser.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reporter_spec_parser.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_reusable_string_stream.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reusable_string_stream.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_reusable_string_stream.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_reusable_string_stream.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_run_context.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_run_context.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_run_context.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_run_context.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_section.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_section.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_section.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_section.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_singletons.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_singletons.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_singletons.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_singletons.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_source_line_info.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_source_line_info.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_source_line_info.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_source_line_info.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_startup_exception_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_startup_exception_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_startup_exception_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_startup_exception_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_stdstreams.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_stdstreams.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_stdstreams.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stdstreams.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_string_manip.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_string_manip.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_string_manip.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_string_manip.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_stringref.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_stringref.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_stringref.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_stringref.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_tag_alias_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_tag_alias_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_tag_alias_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_tag_alias_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_info_hasher.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_info_hasher.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_info_hasher.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_info_hasher.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_registry_impl.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_registry_impl.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_registry_impl.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_registry_impl.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_tracker.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_tracker.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_case_tracker.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_case_tracker.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_failure_exception.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_failure_exception.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_failure_exception.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_failure_exception.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_registry.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_registry.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_registry.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_registry.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_test_spec_parser.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_spec_parser.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_test_spec_parser.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_test_spec_parser.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_textflow.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_textflow.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_textflow.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_textflow.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_uncaught_exceptions.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_uncaught_exceptions.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_uncaught_exceptions.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_uncaught_exceptions.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_wildcard_pattern.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_wildcard_pattern.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_wildcard_pattern.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_wildcard_pattern.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/internal/catch_xmlwriter.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_xmlwriter.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_xmlwriter.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/internal/catch_xmlwriter.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_container_properties.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_container_properties.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_container_properties.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_container_properties.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_exception.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_exception.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_exception.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_exception.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_floating_point.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_floating_point.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_floating_point.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_floating_point.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_predicate.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_predicate.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_predicate.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_predicate.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_quantifiers.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_quantifiers.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_quantifiers.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_quantifiers.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_string.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_string.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_string.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_string.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_templated.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_templated.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/catch_matchers_templated.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/catch_matchers_templated.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2.dir/catch2/matchers/internal/catch_matchers_impl.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/internal/catch_matchers_impl.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/matchers/internal/catch_matchers_impl.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2.dir/catch2/matchers/internal/catch_matchers_impl.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/vendor/catch2/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -ffile-prefix-map=/home/ollie/workspace/game-engine/vendor/catch2/= -o CMakeFiles/Catch2WithMain.dir/catch2/internal/catch_main.cpp.o -c /home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_main.cpp",
+  "file": "/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/internal/catch_main.cpp",
+  "output": "vendor/catch2/src/CMakeFiles/Catch2WithMain.dir/catch2/internal/catch_main.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/assets/AssetManager.cpp.o -c /home/ollie/workspace/game-engine/src/assets/AssetManager.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/assets/AssetManager.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/assets/AssetManager.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/core/Input.cpp.o -c /home/ollie/workspace/game-engine/src/core/Input.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Input.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/core/Input.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/core/Scene.cpp.o -c /home/ollie/workspace/game-engine/src/core/Scene.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Scene.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/core/Scene.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/core/Simplex.cpp.o -c /home/ollie/workspace/game-engine/src/core/Simplex.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/Simplex.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/core/Simplex.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/core/View.cpp.o -c /home/ollie/workspace/game-engine/src/core/View.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/core/View.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/core/View.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/RendererManager.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/RendererManager.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/RendererManager.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/RendererManager.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/renderers/ColliderRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/ColliderRenderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/ColliderRenderer.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/renderers/ColliderRenderer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/renderers/SpriteRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/SpriteRenderer.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/renderers/SpriteRenderer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/renderers/TextRenderer.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/renderers/TextRenderer.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/renderers/TextRenderer.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/text/Font.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/text/Font.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/text/Font.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/text/Font.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/util/Shader.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/Shader.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/util/Shader.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/util/Shader.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/util/Texture.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/util/Texture.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/util/Texture.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/graphics/util/VertexArray.cpp.o -c /home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/graphics/util/VertexArray.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/graphics/util/VertexArray.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/src",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -O0 -g -o CMakeFiles/GameEngine.dir/util/Quad.cpp.o -c /home/ollie/workspace/game-engine/src/util/Quad.cpp",
+  "file": "/home/ollie/workspace/game-engine/src/util/Quad.cpp",
+  "output": "src/CMakeFiles/GameEngine.dir/util/Quad.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/examples",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles/input.dir/input.cpp.o -c /home/ollie/workspace/game-engine/examples/input.cpp",
+  "file": "/home/ollie/workspace/game-engine/examples/input.cpp",
+  "output": "examples/CMakeFiles/input.dir/input.cpp.o"
+},
+{
+  "directory": "/home/ollie/workspace/game-engine/build/tests",
+  "command": "/bin/c++  -I/home/ollie/workspace/game-engine/src -I/home/ollie/workspace/game-engine/vendor/stb_image -I/home/ollie/workspace/game-engine/vendor/glad/include -I/home/ollie/workspace/game-engine/vendor/glm -I/home/ollie/workspace/game-engine/vendor/glfw/include -I/home/ollie/workspace/game-engine/build/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/freetype/include -I/home/ollie/workspace/game-engine/vendor/catch2/src/catch2/.. -I/home/ollie/workspace/game-engine/build/vendor/catch2/generated-includes -g -std=gnu++20 -o CMakeFiles/GameEngineTests.dir/test_ui.cpp.o -c /home/ollie/workspace/game-engine/tests/test_ui.cpp",
+  "file": "/home/ollie/workspace/game-engine/tests/test_ui.cpp",
+  "output": "tests/CMakeFiles/GameEngineTests.dir/test_ui.cpp.o"
 }
 ]
