@@ -18,7 +18,7 @@ class CameraSystem : public System
         for (Entity e : m_Entities) {
             auto [cam, transform] = e.GetComponents<Camera, Transform>();
             if (cam.isActive) {
-                Simplex::GetView().SetCamera(transform, cam);
+                Simplex::GetView().SetCameraBounds(transform, cam);
             }
         }
     }

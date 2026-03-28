@@ -4,7 +4,6 @@
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
 #include <chrono>
-#include <ostream>
 #include <string_view>
 #include <sys/types.h>
 #include <utility>
@@ -13,23 +12,24 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Simplex::Simplex()
+Simplex::Simplex(SimplexModules modules)
 {
+    m_Modules = std::move(modules);
     s_Instance = this;
 }
 
 bool Simplex::Init()
 {
-    if(!m_View.Init("Simplex", 1280, 720))
+    if(!m_Modules.m_View->Init("Simplex", 1280, 720))
         return false;
 
-    if(!m_Input.Init())
+    if(!m_Modules.m_Input->Init(m_Modules.m_View->GetWindow()))
         return false;
 
-    if(!m_RendererManager.Init())
+    if(!m_Modules.m_RendererManager->Init())
         return false;
 
-    if(!m_AssetManager.Init())
+    if(!m_Modules.m_AssetManager->Init())
         return false;
 
     return true;
@@ -49,34 +49,34 @@ Simplex &Simplex::Get()
     return *s_Instance;
 }
 
-View &Simplex::GetView()
+IView &Simplex::GetView()
 {
-    return Get().m_View;
+    return *Get().m_Modules.m_View;
 }
 
-Input &Simplex::GetInput()
+IInput &Simplex::GetInput()
 {
-    return Get().m_Input;
+    return *Get().m_Modules.m_Input;
 }
 
 RendererManager &Simplex::GetRendererManager()
 {
-    return Get().m_RendererManager;
+    return *Get().m_Modules.m_RendererManager;
 }
 
 AssetManager &Simplex::GetAssetManager()
 {
-    return Get().m_AssetManager;
-}
-
-Scene &Simplex::GetScene()
-{
-    return Get().m_CurrentScene;
+    return *Get().m_Modules.m_AssetManager;
 }
 
 Registry &Simplex::GetRegistry()
 {
     return GetScene().m_Registry;
+}
+
+Scene &Simplex::GetScene()
+{
+    return Get().m_CurrentScene;
 }
 
 float Simplex::GetFPS()
@@ -103,7 +103,7 @@ void Simplex::Tick()
     auto lastTime = clock::now();
     double accumulator = 0.0;
 
-    while(!m_View.ShouldQuit())
+    while(!m_Modules.m_View->ShouldQuit())
     {
         auto now = clock::now();
         std::chrono::duration<double> frameTime = now - lastTime;
@@ -115,8 +115,8 @@ void Simplex::Tick()
         accumulator += m_DeltaTime;
         m_Fps = 1.0f / m_DeltaTime;
 
-        m_Input.PollEvents();
-        m_View.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
+        m_Modules.m_Input->PollEvents();
+        m_Modules.m_View->ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
         GetRegistry().Update(m_DeltaTime);
         // --- Fixed Update Loop ---
@@ -126,8 +126,8 @@ void Simplex::Tick()
             accumulator = 0.0;
         }
 
-        m_RendererManager.Render();
+        m_Modules.m_RendererManager->Render();
 
-        m_View.SwapBuffers();
+        m_Modules.m_View->SwapBuffers();
     }
 }

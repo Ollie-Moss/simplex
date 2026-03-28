@@ -107,12 +107,12 @@ TEST_CASE("Static accessors return same references", "[simplex][accessors]")
 {
     Simplex simplex;
 
-    View &view1 = Simplex::GetView();
-    View &view2 = Simplex::GetView();
+    IView &view1 = Simplex::GetView();
+    IView &view2 = Simplex::GetView();
     REQUIRE(&view1 == &view2);
 
-    Input &input1 = Simplex::GetInput();
-    Input &input2 = Simplex::GetInput();
+    IInput &input1 = Simplex::GetInput();
+    IInput &input2 = Simplex::GetInput();
     REQUIRE(&input1 == &input2);
 }
 

@@ -1,23 +1,12 @@
 #pragma once
 
-#include "components/Camera.h"
-#include "components/Transform.h"
 #include "core/IView.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "core/RectBounds.h"
-#include "glm/fwd.hpp"
-#include "glm/glm.hpp"
-#include "graphics/util/RenderSpace.h"
-#include "util/GLFWContext.h"
-#include <string_view>
-#include <string>
 
-class View : public IView
+class FakeView : public IView
 {
   public:
-    View();
-    ~View();
+    FakeView(int width = 1280, int height = 720);
+    ~FakeView();
 
     // Window
     GLFWwindow *GetWindow() override;
@@ -25,13 +14,11 @@ class View : public IView
     void SetWindowDimensions(int width, int height) override;
     int &GetWindowHeight() override;
     int &GetWindowWidth() override;
-
     bool HasWindowResized() override;
 
     // Camera
     void SetCameraBounds(Transform transform, Camera camera) override;
     RectBounds<float> GetCameraBounds() override;
-
     glm::mat4 CalculateProjection(RenderSpace renderSpace) override;
 
     // GLFW Wrappers
@@ -40,21 +27,14 @@ class View : public IView
     void ClearColor(glm::vec4 color) override;
     void SwapBuffers() override;
 
-  private:
-    glm::mat4 CalculateWorldSpaceProjection();
-    glm::mat4 CalculateScreenSpaceProjection();
-
-    static void FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight);
+    // Test helpers
+    void SimulateResize(int width, int height);
+    void SimulateQuit();
 
   private:
-    GLFWwindow *m_Window;
     int m_Width;
     int m_Height;
-    std::string m_Title;
-
-    bool m_HasWindowResized = true;
-
+    bool m_HasWindowResized = false;
+    bool m_ShouldQuit = false;
     RectBounds<float> m_CameraBounds;
-
-    GLFWContext m_Context;
 };

@@ -7,7 +7,7 @@ enum class KeyState : int {
     Released = GLFW_RELEASE,
     FirstPress = GLFW_PRESS,
     Repeat = GLFW_REPEAT,
-    Pressed
+    Held
 };
 
 struct Key
@@ -28,7 +28,7 @@ struct Key
 
     bool IsDown()
     {
-        return state == KeyState::FirstPress || state == KeyState::Pressed || state == KeyState::Repeat;
+        return state == KeyState::FirstPress || state == KeyState::Held || state == KeyState::Repeat;
     }
 
     bool HasMods(KeyMod flag)
@@ -41,13 +41,13 @@ struct Key
         if(consumed && state == KeyState::FirstPress)
         {
             consumed = false;
-            state = KeyState::Pressed;
+            state = KeyState::Held;
         }
 
         if(consumed && state == KeyState::Repeat)
         {
             consumed = false;
-            state = KeyState::Pressed;
+            state = KeyState::Held;
         }
     }
 

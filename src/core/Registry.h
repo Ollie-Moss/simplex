@@ -59,7 +59,7 @@ class Registry
     {
         auto &pending = m_EntitiesToCreate[entity];
         auto oldBuild = pending.build;
-        auto build = [&, oldBuild, entity, component]() {oldBuild(); AddComponent(entity, component); };
+        auto build = [&, oldBuild, entity, component] {oldBuild(); AddComponent(entity, component); };
         pending.build = build;
     }
 

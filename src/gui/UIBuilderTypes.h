@@ -10,6 +10,7 @@
 
 struct DefaultUIProps
 {
+    std::string id = "N/a";
     UILayout layout;
     UIStyle style;
     Text text;
@@ -24,7 +25,7 @@ struct UISpecification
     Bindable<std::vector<UISpecification>> children;
     bool operator==(const UISpecification &rhs) const
     {
-        return false;
+        return rhs.children == children && rhs.properties == properties;
     };
 };
 
@@ -83,20 +84,16 @@ class ElementHandle
 
     ElementHandle &Children(std::function<void()> childrenFn) &
     {
-        std::cout << "MAKING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
         context.push_back(&spec);
         childrenFn();
         context.pop_back();
-        std::cout << "POPPING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
         return *this;
     }
     ElementHandle &&Children(std::function<void()> childrenFn) &&
     {
-        std::cout << "MAKING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
         context.push_back(&spec);
         childrenFn();
         context.pop_back();
-        std::cout << "POPPING THIS PARENT: " << spec.properties.text.content.Get() << "\n";
         return std::move(*this);
     }
 

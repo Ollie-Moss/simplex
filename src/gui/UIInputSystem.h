@@ -95,6 +95,7 @@ class UIInputSystem : public System
     }
 };
 
+// Renders the cursor/selection box for a given input field
 class UIInputRenderSystem : public System
 {
   public:
