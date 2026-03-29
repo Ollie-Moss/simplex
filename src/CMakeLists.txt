@@ -48,9 +48,9 @@ set(SHADER_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
 set(SPRITES_DIR ${CMAKE_SOURCE_DIR}/sprites)
 set(FONTS_DIR   ${CMAKE_SOURCE_DIR}/fonts)
 
-file(GLOB SHADERS  "${SHADER_DIR}/*")
-file(GLOB SPRITES "${SPRITES_DIR}/*")
-file(GLOB FONTS   "${FONTS_DIR}/*")
+file(GLOB SHADERS  CONFIGURE_DEPENDS "${SHADER_DIR}/*")
+file(GLOB SPRITES CONFIGURE_DEPENDS "${SPRITES_DIR}/*")
+file(GLOB FONTS CONFIGURE_DEPENDS "${FONTS_DIR}/*")
 
 set(ALL_RESOURCES ${SHADERS} ${SPRITES} ${FONTS})
 
@@ -64,7 +64,7 @@ function(attach_resources target)
             add_custom_command(
                 TARGET ${target}
                 POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                COMMAND ${CMAKE_COMMAND} -E copy 
                         ${file}
                         $<TARGET_FILE_DIR:${target}>
             )

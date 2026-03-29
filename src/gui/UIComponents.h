@@ -14,6 +14,7 @@ struct UISpecification;
 
 struct UIElement
 {
+    std::string id = "N/A";
     EntityId parent = NULL_ENTITY;
     std::vector<EntityId> children;
     Bindable<std::vector<UISpecification>> childrenSpec;
@@ -115,7 +116,6 @@ struct UIEvents
     EventHandler<ChangeEvent> onChange;
     EventHandler<ChangeEvent> onFocus;
     EventHandler<ChangeEvent> onBlur;
-
 
     bool operator==(const UIEvents &rhs) const
     {

@@ -10,8 +10,11 @@
 Input::Input() {}
 Input::~Input() {}
 
-bool Input::Init()
+bool Input::Init(GLFWwindow *window)
 {
+    auto *ctx = static_cast<GLFWContext *>(glfwGetWindowUserPointer(window));
+    ctx->input = this;
+
     glfwSetMouseButtonCallback(Simplex::GetView().GetWindow(), MouseButtonCallback);
     glfwSetKeyCallback(Simplex::GetView().GetWindow(), KeyCallback);
     glfwSetScrollCallback(Simplex::GetView().GetWindow(), ScrollCallback);
@@ -22,32 +25,37 @@ bool Input::Init()
 
 void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    Simplex::GetInput().SetMouseButton(button, Key((KeyState)action, (KeyMod)mods));
+    Input &input = *static_cast<GLFWContext *>(glfwGetWindowUserPointer(window))->input;
+    input.SetMouseButton(button, Key((KeyState)action, (KeyMod)mods));
 
     if(Simplex::GetInput().GetMouseButton(button).IsDown())
-        Simplex::GetInput().m_MouseInputBuffer.push_back(button);
+        input.m_MouseInputBuffer.push_back(button);
 }
 
 void Input::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
+    Input &input = *static_cast<GLFWContext *>(glfwGetWindowUserPointer(window))->input;
+
     Simplex::GetInput().SetKey(key, Key((KeyState)action, (KeyMod)mods));
 
     if(key == GLFW_KEY_ENTER && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        Simplex::GetInput().m_TextInputBuffer += "\n";
+        input.m_TextInputBuffer += "\n";
     if(key == GLFW_KEY_TAB && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        Simplex::GetInput().m_TextInputBuffer += "\t";
+        input.m_TextInputBuffer += "\t";
     if(key == GLFW_KEY_BACKSPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
-        Simplex::GetInput().m_TextInputBuffer += "\b";
+        input.m_TextInputBuffer += "\b";
 }
 
 void Input::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
 {
-    Simplex::GetInput().m_Scroll = static_cast<float>(yoffset);
+    Input &input = *static_cast<GLFWContext *>(glfwGetWindowUserPointer(window))->input;
+    input.m_Scroll = static_cast<float>(yoffset);
 }
 
 void Input::CharacterCallback(GLFWwindow *window, unsigned int codepoint)
 {
-    Simplex::GetInput().m_TextInputBuffer += (unsigned char)codepoint;
+    Input &input = *static_cast<GLFWContext *>(glfwGetWindowUserPointer(window))->input;
+    input.m_TextInputBuffer += (unsigned char)codepoint;
 }
 
 //---------------------------=
@@ -104,7 +112,7 @@ glm::vec2 Input::GetMouseDelta()
 glm::vec2 Input::GetMousePosition(RenderSpace space)
 {
     double mouseX, mouseY;
-    glfwGetCursorPos(Simplex::GetView(), &mouseX, &mouseY);
+    glfwGetCursorPos(Simplex::GetView().GetWindow(), &mouseX, &mouseY);
     // glm::vec2 mousePos = glm::vec2((float)mouseX, Simplex::GetView().GetWindowHeight() - (float)mouseY);
 
     if(space == RenderSpace::World)

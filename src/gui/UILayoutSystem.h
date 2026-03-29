@@ -241,7 +241,7 @@ class UILayoutSystem : public System
             glyph.descent = ch.Size.y - ch.Bearing.y;
             glyph.ascent = ch.Size.y - glyph.descent;
             glyph.advance = ch.Advance;
-            glyph.transform = {glm::vec3{penX, penY - ch.Bearing.y, 0}, ch.Size};
+            glyph.transform = {glm::vec3{penX + layout.padding.Get().left, penY + layout.padding.Get().top - ch.Bearing.y, 0}, ch.Size};
             glyph.texture = ch.TextureID;
             glyphs.push_back(glyph);
 
@@ -521,11 +521,13 @@ class UILayoutSystem : public System
             if(properties.direction == Direction::Horizontal)
             {
                 localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
+                localPos.x += textLayout.size.x;
                 justifyContentOffset += childTransform.size.x + *properties.gap;
             }
             else
             {
                 localPos += glm::vec2(alignItemsOffset, justifyContentOffset);
+                localPos.y += textLayout.size.y;
                 justifyContentOffset += childTransform.size.y + *properties.gap;
             }
 

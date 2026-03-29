@@ -57,8 +57,8 @@ class UIRenderSystem : public System
         {
             glm::vec2 pos = transform.position;
 
-            TextCommand cmd = {.glyphs = textLayout.glyphs, .position = pos, .color = text.color};
-            // Simplex::GetRendererManager().Submit<ColliderCommand>({.transform = {glm::vec3(pos, 0), textLayout.size}});
+            TextCommand cmd = {.glyphs = textLayout.glyphs, .position = pos, .color = text.color, .clipRect = glm::vec4(transform.position, transform.size)};
+            // Simplex::GetRendererManager().Submit<ColliderCommand>({.transform = {glm::vec2(pos, 0), textLayout.size}});
             Simplex::GetRendererManager().Submit<TextCommand>(cmd);
         }
 

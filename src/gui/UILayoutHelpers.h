@@ -1,9 +1,10 @@
 #pragma once
 
+#include "glm/glm.hpp"
 #include "gui/UILayoutTypes.h"
 
 inline SizeValue Percent(float value) { return SizeValue(value, Unit::Percent); }
-inline SizeValue Pixels(float value) { return SizeValue(value, Unit::Percent); }
+inline SizeValue Pixels(float value) { return SizeValue(value, Unit::Pixels); }
 
 const Axis GROW = Axis(SizingMode::Grow, Percent(100.0f));
 const Axis HUG = Axis(SizingMode::Hug, Pixels(0.0f));

@@ -34,6 +34,8 @@ void TextRenderer::Render()
 void TextRenderer::RenderText(const TextCommand &data, const Shader &shader)
 {
     shader.setVec3("textColor", data.color);
+    shader.setVec4("clipRect", data.clipRect);
+
     for(auto &glyph : data.glyphs)
     {
         glm::vec2 pos = glm::vec2(glyph.transform.position) + data.position;

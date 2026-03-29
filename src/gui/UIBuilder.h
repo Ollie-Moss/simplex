@@ -26,8 +26,9 @@ inline EntityId CreateEntities(Registry &registry, UISpecification spec, EntityI
 
         children.push_back(childEntity);
     }
+    std::cout << "CREATING UI ELEMENT Entity ID: " << (int)entity << " UI ID: " << spec.properties.id << " Child Count:" << children.size() << "\n";
 
-    registry.QueueComponent<UIElement>(entity, {.parent = parent, .children = children, .childrenSpec = spec.children});
+    registry.QueueComponent<UIElement>(entity, {.id = spec.properties.id, .parent = parent, .children = children, .childrenSpec = spec.children});
     return entity;
 }
 

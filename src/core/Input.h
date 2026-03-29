@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GLFW/glfw3.h"
+#include "core/IInput.h"
 #include "core/Key.h"
 #include "glm/glm.hpp"
 #include <functional>
@@ -9,32 +11,32 @@
 #include <string>
 #include <vector>
 
-class Input
+class Input : public IInput
 {
   public:
     Input();
     ~Input();
 
-    bool Init();
+    bool Init(GLFWwindow *window) override;
 
-    Key &GetKey(int glfwButton);
-    Key &GetMouseButton(int glfwButton);
+    Key &GetKey(int glfwButton) override;
+    Key &GetMouseButton(int glfwButton) override;
 
     // Returns a string of all text input received in the last frame
-    std::string GetTextInput();
+    std::string GetTextInput() override;
 
     // Returns a list of all mouse buttons pressed in the last frame in chronological order
-    const std::vector<int> &GetMouseInput();
+    const std::vector<int> &GetMouseInput() override;
 
-    glm::vec2 GetMousePosition(RenderSpace space = RenderSpace::Screen);
-    glm::vec2 GetMouseDelta();
+    glm::vec2 GetMousePosition(RenderSpace space = RenderSpace::Screen) override;
+    glm::vec2 GetMouseDelta() override;
 
-    float GetScrollDelta();
+    float GetScrollDelta() override;
 
-    void PollEvents();
+    void PollEvents() override;
 
-    void SetMouseButton(int glfwButton, const Key &state);
-    void SetKey(int glfwButton, const Key &state);
+    void SetMouseButton(int glfwButton, const Key &state) override;
+    void SetKey(int glfwButton, const Key &state) override;
 
   private:
     void ResetMouseButtons();

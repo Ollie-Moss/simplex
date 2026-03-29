@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/AssetManager.h"
+#include "core/IView.h"
 #include "core/Scene.h"
 #include "Registry.h"
 #include "core/View.h"
@@ -8,10 +9,18 @@
 #include "graphics/RendererManager.h"
 #include <cassert>
 
+struct SimplexModules
+{
+    std::unique_ptr<IInput> m_Input = std::make_unique<Input>();
+    std::unique_ptr<IView> m_View = std::make_unique<View>();
+    std::unique_ptr<AssetManager> m_AssetManager = std::make_unique<AssetManager>();
+    std::unique_ptr<RendererManager> m_RendererManager = std::make_unique<RendererManager>();
+};
+
 class Simplex
 {
   public:
-    Simplex();
+    Simplex(SimplexModules modules = {});
     ~Simplex();
 
     bool Init();
@@ -20,8 +29,8 @@ class Simplex
 
     static Simplex &Get();
 
-    static View &GetView();
-    static Input &GetInput();
+    static IView &GetView();
+    static IInput &GetInput();
     static Scene &GetScene();
     static Registry &GetRegistry();
     static RendererManager &GetRendererManager();
@@ -34,10 +43,7 @@ class Simplex
     void Tick();
 
   private:
-    View m_View;
-    Input m_Input;
-    AssetManager m_AssetManager;
-    RendererManager m_RendererManager;
+    SimplexModules m_Modules;
 
     Scene m_CurrentScene;
 

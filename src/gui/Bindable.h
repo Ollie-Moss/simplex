@@ -33,12 +33,12 @@ class Bindable
             return false;
 
         T val = m_Binding.value()();
-        if(m_Value != val)
-        {
+        bool hasChanged = m_Value != val;
+
+        if(hasChanged)
             m_Value = val;
-            return true;
-        }
-        return false;
+
+        return hasChanged;
     }
 
     T &Get() { return m_Value; }

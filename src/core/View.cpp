@@ -1,8 +1,6 @@
 #include "View.h"
 #include "Simplex.h"
 #include "components/Camera.h"
-#include "core/Entity.h"
-#include "core/Scene.h"
 #include <glad/glad.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include "components/Transform.h"
@@ -54,6 +52,10 @@ bool View::Init(std::string_view title, int width, int height)
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    m_Context.view = this;
+    glfwSetWindowUserPointer(m_Window, &m_Context);
+
     glfwSetFramebufferSizeCallback(m_Window, View::FramebufferSizeCallback);
 
     return true;
@@ -91,10 +93,12 @@ bool View::HasWindowResized()
 }
 void View::FramebufferSizeCallback(GLFWwindow *window, int newWidth, int newHeight)
 {
+    View &view = *static_cast<GLFWContext *>(glfwGetWindowUserPointer(window))->view;
+
     Simplex::GetView().SetWindowDimensions(newWidth, newHeight);
     auto [width, height] = Simplex::GetView().GetWindowDimensions();
     glViewport(0, 0, width, height);
-    Simplex::GetView().m_HasWindowResized = true;
+    view.m_HasWindowResized = true;
 }
 
 void View::ClearColor(glm::vec4 color)
@@ -114,7 +118,7 @@ bool View::ShouldQuit()
     return glfwWindowShouldClose(m_Window);
 }
 
-void View::SetCamera(Transform transform, Camera camera)
+void View::SetCameraBounds(Transform transform, Camera camera)
 {
     float orthoWidth = m_Width / camera.zoom;
     float orthoHeight = m_Height / camera.zoom;

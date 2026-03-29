@@ -19,6 +19,7 @@
 UISpecification UI()
 {
     return Element({
+                       .id = "Input Root",
                        .layout = {
                            .sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = GROW},
                            .padding = 20.0f,
@@ -33,7 +34,7 @@ UISpecification UI()
                        // },
                    })
         .Children([] {
-            InputElement({});
+            InputElement({}, {.id = "input"});
         })
         .Take();
 }
@@ -63,7 +64,7 @@ int main()
         m_Registry.RegisterSystem<RenderSystem>();
 
         auto root = BuildUI(m_Registry, UI());
-        BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root).Take());
+        auto newRoot = BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root).Take());
     });
 
     simplex.SetScene(MainScene);
