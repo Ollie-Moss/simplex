@@ -39,7 +39,7 @@ class ElementHandle
     {
         std::vector<std::function<void(EntityId)>> components;
         (components.push_back([extra](EntityId entity) {
-            Simplex::GetRegistry().QueueComponent(entity, extra);
+            // Simplex::GetRegistry().QueueComponent(entity, extra);
         }),
          ...);
 

@@ -2,30 +2,32 @@
 
 #include "core/Simplex.h"
 #include "gui/Text.h"
-#include "gui/UIBuilder.h"
-#include "core/SystemManager.h"
-#include "core/Entity.h"
 #include "core/Types.h"
+#include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
 #include <cctype>
 #include <cmath>
 #include <sys/types.h>
 #include <tuple>
-#include <vector>
 #include "gui/UIComponents.h"
 
 class UIStateSystem : public System
 {
   public:
-    UIStateSystem()
+    UIStateSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text>();
     }
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId entity : m_Entities)
         {
-            auto [elem, trans, layout, style, text] = e.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
+            // auto [elem, trans, layout, style, text] = e.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
+            auto &elem = m_Registry.GetComponent<UIElement &>(entity);
+            auto &trans = m_Registry.GetComponent<UITransform &>(entity);
+            auto &layout = m_Registry.GetComponent<UILayout &>(entity);
+            auto &style = m_Registry.GetComponent<UIStyle &>(entity);
+            auto &text = m_Registry.GetComponent<Text &>(entity);
 
             bool changed = elem.childrenSpec.UpdateBinding();
             if(changed)
@@ -39,8 +41,8 @@ class UIStateSystem : public System
                 // Create new children
                 for(auto childSpec : elem.childrenSpec.Get())
                 {
-                    auto child = BuildUI(Simplex::GetRegistry(), childSpec);
-                    elem.children.push_back(child);
+                    // auto child = BuildUI(Simplex::GetRegistry(), childSpec);
+                    // elem.children.push_back(child);
                 }
             }
 
@@ -67,14 +69,14 @@ class UIStateSystem : public System
         }
     }
 
-    void DeleteTree(Entity e)
+    void DeleteTree(EntityId entity)
     {
-        auto &elem = e.GetComponent<UIElement>();
-        for(auto child : elem.children)
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        for(auto child : element.children)
         {
             DeleteTree(child);
         }
-        elem.children.clear();
-        Simplex::GetRegistry().Destroy(e);
+        element.children.clear();
+        m_Registry.Destroy(entity);
     }
 };

@@ -1,74 +1,44 @@
-#include "core/Scene.h"
-#include "core/Simplex.h"
-#include "graphics/text/Font.h"
-#include "gui/Text.h"
-#include "gui/UIBuilderTypes.h"
-#include "gui/UIComponents.h"
-#include "gui/UIElements.h"
-#include "gui/UIBuilder.h"
-#include "gui/UIEventSystem.h"
-#include "gui/UIInputSystem.h"
-#include "gui/UILayoutHelpers.h"
-#include "gui/UILayoutSystem.h"
-#include "gui/UILayoutTypes.h"
-#include "gui/UIRenderSystem.h"
-#include "gui/UIStateSystem.h"
-#include "systems/RenderSystem.h"
-#include <format>
-
-UISpecification UI()
-{
-    return Element({
-                       .id = "Input Root",
-                       .layout = {
-                           .sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = GROW},
-                           .padding = 20.0f,
-                       },
-                       .style = {
-                           .color = BLUE,
-                       },
-                       // .events = {
-                       //     .onClick = [](const ClickEvent &e, Entity self) {
-                       //         auto &text = self.GetComponent<Text>().content = std::format("button: {}\nx: {:.0f}, y: {:.0f}", e.button, e.mousePos.x, e.mousePos.y);
-                       //     },
-                       // },
-                   })
-        .Children([] {
-            InputElement({}, {.id = "input"});
-        })
-        .Take();
-}
-
+// #include "core/Scene.h"
+// #include "core/Simplex.h"
+// #include "graphics/text/Font.h"
+// #include "gui/UIElements.h"
+// #include "gui/UIEventSystem.h"
+// #include "gui/UIInputSystem.h"
+// #include "gui/UILayoutSystem.h"
+// #include "gui/UIRenderSystem.h"
+// #include "gui/UIStateSystem.h"
+// #include "systems/RenderSystem.h"
+//
+// int main()
+// {
+//     Simplex simplex;
+//
+//     if(!simplex.Init())
+//     {
+//         return 0;
+//     }
+//     Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
+//
+//     Scene MainScene = Scene(Simplex::GetModules(), "MainScene", [](Registry &m_Registry) {
+//         // Systems
+//
+//         // UI
+//         m_Registry.RegisterSystem<UIInputSystem>();
+//         m_Registry.RegisterSystem<UIStateSystem>();
+//         m_Registry.RegisterSystem<UILayoutSystem>();
+//
+//         // Rendering
+//         m_Registry.RegisterSystem<UIRenderSystem>();
+//         m_Registry.RegisterSystem<UIEventSystem>();
+//         m_Registry.RegisterSystem<UIInputRenderSystem>();
+//         m_Registry.RegisterSystem<RenderSystem>();
+//     });
+//
+//     simplex.SetScene(MainScene);
+//
+//     simplex.Start();
+//     return 0;
+// }
 int main()
 {
-    Simplex simplex;
-
-    if(!simplex.Init())
-    {
-        return 0;
-    }
-    Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
-
-    Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
-        // Systems
-
-        // UI
-        m_Registry.RegisterSystem<UIInputSystem>();
-        m_Registry.RegisterSystem<UIStateSystem>();
-        m_Registry.RegisterSystem<UILayoutSystem>();
-
-        // Rendering
-        m_Registry.RegisterSystem<UIRenderSystem>();
-        m_Registry.RegisterSystem<UIEventSystem>();
-        m_Registry.RegisterSystem<UIInputRenderSystem>();
-        m_Registry.RegisterSystem<RenderSystem>();
-
-        auto root = BuildUI(m_Registry, UI());
-        auto newRoot = BuildUI(m_Registry, SIMPLEX__DEBUG_UI_TREE(root).Take());
-    });
-
-    simplex.SetScene(MainScene);
-
-    simplex.Start();
-    return 0;
 }

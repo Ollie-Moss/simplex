@@ -9,6 +9,13 @@ class ComponentManager
 {
   public:
     ComponentManager() {}
+    ~ComponentManager() = default;
+
+    ComponentManager(const ComponentManager &) = default;
+    ComponentManager(ComponentManager &&) = default;
+
+    ComponentManager &operator=(const ComponentManager &) = default;
+    ComponentManager &operator=(ComponentManager &&) = default;
 
     template <typename T>
     void AddComponent(EntityId entity, T component)

@@ -3,12 +3,9 @@
 #include "core/Simplex.h"
 #include "graphics/text/Character.h"
 #include "gui/Text.h"
-#include "core/SystemManager.h"
-#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/text/Font.h"
-#include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
 #include "gui/UILayoutTypes.h"
 #include <algorithm>
@@ -21,15 +18,15 @@
 class UILayoutSystem : public System
 {
   public:
-    UILayoutSystem()
+    UILayoutSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, Text>();
     }
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId e : m_Entities)
         {
-            UIElement element = e.GetComponent<UIElement>();
+            UIElement &element = m_Registry.GetComponent<UIElement &>(e);
             if(element.parent != NULL_ENTITY)
                 continue;
 
@@ -40,15 +37,15 @@ class UILayoutSystem : public System
         }
     }
 
-    bool IsDirty(Entity entity)
+    bool IsDirty(EntityId entity)
     {
-        UIElement &element = entity.GetComponent<UIElement>();
+        UIElement &element = m_Registry.GetComponent<UIElement &>(entity);
         if(element.dirty || Simplex::GetView().HasWindowResized())
         {
             return true;
         }
 
-        for(Entity e : element.children)
+        for(EntityId e : element.children)
         {
             if(IsDirty(e))
             {
@@ -58,9 +55,10 @@ class UILayoutSystem : public System
         return false;
     }
 
-    void CalculateLayout(Entity entity)
+    void CalculateLayout(EntityId entity)
     {
-        auto [elem, transform] = entity.GetComponents<UIElement, UITransform>();
+        auto &elem = m_Registry.GetComponent<UIElement &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
 
         bool shouldWrap = false;
         TextSize(entity, shouldWrap);
@@ -90,20 +88,20 @@ class UILayoutSystem : public System
         CleanTree(entity);
     }
 
-    void CleanTree(Entity entity)
+    void CleanTree(EntityId entity)
     {
-        UIElement &elem = entity.GetComponent<UIElement>();
+        UIElement &elem = m_Registry.GetComponent<UIElement>(entity);
         elem.dirty = false;
 
-        for(Entity e : elem.children)
+        for(EntityId e : elem.children)
         {
             CleanTree(e);
         }
     }
 
-    const Axis &GetAxis(Entity entity, Direction direction)
+    const Axis &GetAxis(EntityId entity, Direction direction)
     {
-        UILayout &props = entity.GetComponent<UILayout>();
+        UILayout &props = m_Registry.GetComponent<UILayout>(entity);
         if(direction == Direction::Horizontal)
         {
             return props.sizing.Get().width.Get();
@@ -118,39 +116,43 @@ class UILayoutSystem : public System
         }
         return padding.top + padding.bottom;
     }
-    float GetParentPadding(Entity entity, Direction direction)
+    float GetParentPadding(EntityId entity, Direction direction)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
-        Entity parent = element.parent;
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+
+        EntityId parent = element.parent;
         if(parent == NULL_ENTITY)
         {
             return 0.0f;
         }
-        auto [parentElement, parentProperties] = parent.GetComponents<UIElement, UILayout>();
+        auto &parentElement = m_Registry.GetComponent<UIElement &>(parent);
+        auto &parentProperties = m_Registry.GetComponent<UILayout &>(parent);
         return GetPadding(*parentProperties.padding, direction);
     }
 
-    float &GetLengthWithAxis(Entity entity, Direction direction)
+    float &GetLengthWithAxis(EntityId entity, Direction direction)
     {
         if(direction == Direction::Horizontal)
         {
-            return entity.GetComponent<UITransform>().size.x;
+            return m_Registry.GetComponent<UITransform>(entity).size.x;
         }
-        return entity.GetComponent<UITransform>().size.y;
+        return m_Registry.GetComponent<UITransform>(entity).size.y;
     }
-    float &GetLengthAgainstAxis(Entity entity, Direction direction)
+    float &GetLengthAgainstAxis(EntityId entity, Direction direction)
     {
         if(direction != Direction::Horizontal)
         {
-            return entity.GetComponent<UITransform>().size.x;
+            return m_Registry.GetComponent<UITransform>(entity).size.x;
         }
-        return entity.GetComponent<UITransform>().size.y;
+        return m_Registry.GetComponent<UITransform>(entity).size.y;
     }
 
-    float GetLargestChildLength(Entity entity, Direction direction)
+    float GetLargestChildLength(EntityId entity, Direction direction)
     {
         float largest = 0.0f;
-        for(Entity child : entity.GetComponent<UIElement>().children)
+        for(EntityId child : m_Registry.GetComponent<UIElement>(entity).children)
         {
             float length = GetLengthWithAxis(child, direction);
             if(length > largest)
@@ -161,20 +163,20 @@ class UILayoutSystem : public System
         return largest;
     }
 
-    float SumChildrenLengths(Entity entity, Direction direction)
+    float SumChildrenLengths(EntityId entity, Direction direction)
     {
         float total = 0.0f;
-        for(Entity child : entity.GetComponent<UIElement>().children)
+        for(EntityId child : m_Registry.GetComponent<UIElement>(entity).children)
         {
             total += GetLengthWithAxis(child, direction);
         }
         return total;
     }
 
-    std::vector<EntityId> GetGrowableChildren(Entity entity, Direction direction)
+    std::vector<EntityId> GetGrowableChildren(EntityId entity, Direction direction)
     {
         std::vector<EntityId> growables;
-        for(Entity child : entity.GetComponent<UIElement>().children)
+        for(EntityId child : m_Registry.GetComponent<UIElement>(entity).children)
         {
             if(GetAxis(child, direction).mode == SizingMode::Grow)
             {
@@ -184,11 +186,15 @@ class UILayoutSystem : public System
         return growables;
     }
 
-    void TextSize(Entity entity, bool shouldWrap)
+    void TextSize(EntityId entity, bool shouldWrap)
     {
-        auto [text, textLayout, transform, elem, layout] = entity.GetComponents<Text, TextLayout, UITransform, UIElement, UILayout>();
+        auto &text = m_Registry.GetComponent<Text &>(entity);
+        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        auto &elem = m_Registry.GetComponent<UIElement &>(entity);
+        auto &layout = m_Registry.GetComponent<UILayout &>(entity);
 
-        for(Entity e : elem.children)
+        for(EntityId e : elem.children)
         {
             TextSize(e, shouldWrap);
         }
@@ -287,9 +293,13 @@ class UILayoutSystem : public System
         textLayout.glyphs = glyphs;
         textLayout.lineWidths = lineWidths;
     }
-    void InitialSizing(Entity entity, Direction sizingAxis)
+    void InitialSizing(EntityId entity, Direction sizingAxis)
     {
-        auto [element, properties, transform, text, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, Text, TextLayout>();
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        auto &text = m_Registry.GetComponent<Text &>(entity);
+        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
@@ -329,9 +339,13 @@ class UILayoutSystem : public System
     }
 
     // direction - size width or height axis
-    void HugSize(Entity entity, Direction sizingAxis)
+    void HugSize(EntityId entity, Direction sizingAxis)
     {
-        auto [element, properties, transform, text, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, Text, TextLayout>();
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        auto &text = m_Registry.GetComponent<Text &>(entity);
+        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
 
         for(auto child : element.children)
         {
@@ -360,9 +374,11 @@ class UILayoutSystem : public System
         }
     }
 
-    void GrowSize(Entity entity, Direction sizingAxis)
+    void GrowSize(EntityId entity, Direction sizingAxis)
     {
-        auto [element, properties, transform] = entity.GetComponents<UIElement, UILayout, UITransform>();
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
 
         if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
@@ -372,7 +388,7 @@ class UILayoutSystem : public System
         std::vector<EntityId> growables = GetGrowableChildren(entity, sizingAxis);
         if(growables.empty())
         {
-            for(Entity child : element.children)
+            for(EntityId child : element.children)
             {
                 GrowSize(child, sizingAxis);
             }
@@ -385,13 +401,13 @@ class UILayoutSystem : public System
         if(sizingAxis != properties.direction)
         {
             // Size across layout direction
-            for(Entity child : growables)
+            for(EntityId child : growables)
             {
                 float &length = GetLengthWithAxis(child, sizingAxis);
 
                 length = remainingLength;
             }
-            for(Entity child : element.children)
+            for(EntityId child : element.children)
             {
                 GrowSize(child, sizingAxis);
             }
@@ -401,19 +417,19 @@ class UILayoutSystem : public System
         // Size with layout direction
         remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
 
-        for(Entity child : element.children)
+        for(EntityId child : element.children)
         {
             remainingLength -= GetLengthWithAxis(child, sizingAxis);
         }
         ResizeChildren(entity, growables, remainingLength, sizingAxis);
 
-        for(Entity child : element.children)
+        for(EntityId child : element.children)
         {
             GrowSize(child, sizingAxis);
         }
     }
 
-    void ResizeChildren(Entity parent, std::vector<EntityId> growables, float remainingLength, Direction sizingAxis)
+    void ResizeChildren(EntityId parent, std::vector<EntityId> growables, float remainingLength, Direction sizingAxis)
     {
         const float EPSILON = 0.01f;
         int maxIterations = 100;
@@ -422,7 +438,7 @@ class UILayoutSystem : public System
         {
             //  Calculate total length of growables
             float totalLength = 0.0f;
-            for(Entity child : growables)
+            for(EntityId child : growables)
             {
                 totalLength += GetLengthWithAxis(child, sizingAxis);
             }
@@ -435,7 +451,7 @@ class UILayoutSystem : public System
 
             // Distribute remainingLength proportionally (or evenly if totalLength == 0)
             float distributed = 0.0f;
-            for(Entity child : growables)
+            for(EntityId child : growables)
             {
                 float &length = GetLengthWithAxis(child, sizingAxis);
                 float maxLength = GetAxis(child, sizingAxis).length.GetValue() * GetLengthWithAxis(parent, sizingAxis);
@@ -459,11 +475,14 @@ class UILayoutSystem : public System
         }
     }
 
-    void CalculatePositions(Entity entity, glm::vec2 parentPosition)
+    void CalculatePositions(EntityId entity, glm::vec2 parentPosition)
     {
-        auto [element, properties, transform, textLayout] = entity.GetComponents<UIElement, UILayout, UITransform, TextLayout>();
+        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
+        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
 
-        Entity parent = element.parent;
+        EntityId parent = element.parent;
 
         float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.Get().left : properties.padding.Get().top;
         float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.Get().left : properties.padding.Get().top;
@@ -474,7 +493,7 @@ class UILayoutSystem : public System
         // remainingLength -= GetParentPadding(properties.padding, direction);
         remainingLength -= GetPadding(*properties.padding, *properties.direction);
         remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
-        for(Entity child : element.children)
+        for(EntityId child : element.children)
         {
             remainingLength -= GetLengthWithAxis(child, *properties.direction);
         }
@@ -494,7 +513,7 @@ class UILayoutSystem : public System
         length -= GetPadding(*properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
 
         float largestLength = 0;
-        for(Entity child : element.children)
+        for(EntityId child : element.children)
         {
             float length = GetLengthAgainstAxis(child, *properties.direction);
             if(length > largestLength)
@@ -513,9 +532,9 @@ class UILayoutSystem : public System
         }
 
         // Calculate offset based on children
-        for(Entity child : element.children)
+        for(EntityId child : element.children)
         {
-            auto &childTransform = child.GetComponent<UITransform>();
+            auto &childTransform = m_Registry.GetComponent<UITransform>(child);
 
             glm::vec2 localPos = parentPosition;
             if(properties.direction == Direction::Horizontal)

@@ -2,34 +2,30 @@
 
 #include "core/Simplex.h"
 #include "graphics/render-commands/ColliderCommand.h"
-#include "gui/Text.h"
-#include "core/SystemManager.h"
-#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/render-commands/TextCommand.h"
 #include "graphics/util/RenderSpace.h"
-#include "gui/UIBuilderTypes.h"
 #include "gui/UIComponents.h"
 #include <cctype>
 #include <cmath>
 #include <iostream>
-#include <string>
 #include <sys/types.h>
 
 class UIRenderSystem : public System
 {
   public:
-    UIRenderSystem()
+    UIRenderSystem(std::shared_ptr<SimplexModules> modules) : System(modules)
     {
         m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform>();
     }
+
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId e : m_Entities)
         {
-            UIElement element = e.GetComponent<UIElement>();
+            UIElement element = Simplex::GetRegistry().GetComponent<UIElement>(e);
             if(element.parent != NULL_ENTITY)
                 continue;
 

@@ -6,9 +6,7 @@
 #include <cassert>
 #include <functional>
 
-Scene::Scene() {}
-
-Scene::Scene(std::string_view name, std::function<void(Registry &)> setup) : m_Name(name), m_Setup(setup) {}
+Scene::Scene(const SimplexModules &modules, std::string_view name, std::function<void(Registry &)> setup) : m_Name(name), m_Setup(setup), m_Registry(Registry(modules)) {}
 
 EntityId Scene::GetCamera()
 {

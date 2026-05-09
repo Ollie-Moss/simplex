@@ -13,7 +13,7 @@ int main()
 
     Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
 
-    Scene MainScene = Scene("MainScene", [](Registry &m_Registry) {
+    Scene MainScene = Scene(Simplex::GetModules(), "MainScene", [](Registry &m_Registry) {
     });
 
     simplex.SetScene(MainScene);

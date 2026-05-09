@@ -1,20 +1,20 @@
 #include "Simplex.h"
 #include "assets/AssetManager.h"
 #include "core/Scene.h"
+#include "core/SimplexModules.h"
 #include "glm/fwd.hpp"
 #include "graphics/RendererManager.h"
 #include <chrono>
 #include <string_view>
 #include <sys/types.h>
-#include <utility>
 
 // Define at simplex so all other files can just include "stb_image.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Simplex::Simplex(SimplexModules modules)
+Simplex::Simplex(const SimplexModules &modules)
 {
-    m_Modules = std::move(modules);
+    m_Modules = modules;
     s_Instance = this;
 }
 
@@ -39,8 +39,8 @@ Simplex::~Simplex() {}
 
 void Simplex::SetScene(const Scene &scene)
 {
-    m_CurrentScene = std::move(scene);
-    m_CurrentScene.m_Setup(m_CurrentScene.m_Registry);
+    m_CurrentScene = scene;
+    m_CurrentScene->m_Setup(m_CurrentScene->m_Registry);
 }
 
 Simplex &Simplex::Get()
@@ -71,12 +71,17 @@ AssetManager &Simplex::GetAssetManager()
 
 Registry &Simplex::GetRegistry()
 {
-    return GetScene().m_Registry;
+    return GetScene()->m_Registry;
 }
 
-Scene &Simplex::GetScene()
+std::optional<Scene> &Simplex::GetScene()
 {
     return Get().m_CurrentScene;
+}
+
+SimplexModules &Simplex::GetModules()
+{
+    return Get().m_Modules;
 }
 
 float Simplex::GetFPS()

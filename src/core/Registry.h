@@ -2,42 +2,33 @@
 
 #include "core/ComponentManager.h"
 #include "core/EntityManager.h"
+#include "core/SimplexModules.h"
 #include "core/SystemManager.h"
 #include "core/Types.h"
 #include <array>
 #include <cstddef>
-#include <functional>
 #include <memory>
 #include <set>
-
-struct PendingEntity
-{
-    EntityId id;
-    std::function<void()> build;
-};
 
 class Registry
 {
   public:
-    Registry() {};
+    Registry(const SimplexModules &modules) : m_SystemModules(modules) {};
+
+    Registry() = default;
     ~Registry() = default;
+
+    Registry(const Registry &) = default;
+    Registry(Registry &&) = default;
+
+    Registry &operator=(const Registry &) = default;
+    Registry &operator=(Registry &&) = default;
 
     EntityId Create()
     {
         EntityId entity = m_EntityManager.CreateEntity();
         m_Entities[entityIndex] = entity;
         entityIndex++;
-        return entity;
-    }
-
-    template <typename... T>
-    EntityId QueueCreate(T... args)
-    {
-        EntityId entity = Create();
-        std::function<void()> build = [&, entity, args...]() { BuildEntity<T...>(entity, args...); };
-        PendingEntity pending = {entity, build};
-
-        m_EntitiesToCreate.insert({entity, pending});
         return entity;
     }
 
@@ -52,15 +43,6 @@ class Registry
     void Destroy(EntityId entity)
     {
         m_EntitiesToDelete.insert(entity);
-    }
-
-    template <typename T>
-    void QueueComponent(EntityId entity, T component)
-    {
-        auto &pending = m_EntitiesToCreate[entity];
-        auto oldBuild = pending.build;
-        auto build = [&, oldBuild, entity, component] {oldBuild(); AddComponent(entity, component); };
-        pending.build = build;
     }
 
     template <typename T>
@@ -110,7 +92,7 @@ class Registry
     template <typename T>
     std::shared_ptr<T> RegisterSystem()
     {
-        return m_SystemManager.RegisterSystem<T>();
+        return m_SystemManager.RegisterSystem<T>(*this, m_SystemModules);
     }
 
     int GetEntityCount()
@@ -170,11 +152,11 @@ class Registry
   private:
     void CreateEntites()
     {
-        for(auto [id, entity] : m_EntitiesToCreate)
-        {
-            entity.build();
-        }
-        m_EntitiesToCreate.clear();
+        // for(auto [id, entity] : m_EntitiesToCreate)
+        // {
+        //     entity.build();
+        // }
+        // m_EntitiesToCreate.clear();
     }
 
     void DestroyEntities()
@@ -198,9 +180,10 @@ class Registry
     }
 
   private:
+    SimplexModules m_SystemModules;
+
     std::array<EntityId, MAX_ENTITIES> m_Entities;
     std::set<EntityId> m_EntitiesToDelete;
-    std::unordered_map<EntityId, PendingEntity> m_EntitiesToCreate;
 
     EntityManager m_EntityManager;
     ComponentManager m_ComponentManager;

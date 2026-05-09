@@ -3,7 +3,6 @@
 #include "core/Simplex.h"
 #include "gui/Text.h"
 #include "core/SystemManager.h"
-#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "gui/UIComponents.h"
@@ -20,7 +19,7 @@ class UIEventSystem : public System
     }
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId e : m_Entities)
         {
             auto [elem, transform, events] = e.GetComponents<UIElement, UITransform, UIEvents>();
 

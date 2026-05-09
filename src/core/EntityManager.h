@@ -6,17 +6,20 @@
 #include <cstdint>
 #include <queue>
 
-
-class EntityManager {
+class EntityManager
+{
   public:
-    EntityManager() {
+    EntityManager()
+    {
         // Initialize the queue with all possible entity IDs
-        for (EntityId entity = 0; entity < MAX_ENTITIES; ++entity) {
+        for(EntityId entity = 0; entity < MAX_ENTITIES; ++entity)
+        {
             m_AvailableEntities.push(entity);
         }
     }
 
-    EntityId CreateEntity() {
+    EntityId CreateEntity()
+    {
         assert(m_LivingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
 
         // Take an ID from the front of the queue
@@ -27,7 +30,8 @@ class EntityManager {
         return id;
     }
 
-    void DestroyEntity(EntityId entity) {
+    void DestroyEntity(EntityId entity)
+    {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
         // Invalidate the destroyed entity's signature
@@ -38,14 +42,16 @@ class EntityManager {
         --m_LivingEntityCount;
     }
 
-    void SetSignature(EntityId entity, Signature signature) {
+    void SetSignature(EntityId entity, Signature signature)
+    {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
         // Put this entity's signature into the array
         m_Signatures[entity] = signature;
     }
 
-    Signature GetSignature(EntityId entity) {
+    Signature GetSignature(EntityId entity)
+    {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
 
         // Get this entity's signature from the array

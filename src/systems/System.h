@@ -1,13 +1,15 @@
+#pragma once
+
+#include "core/SimplexModules.h"
 #include "core/Types.h"
 #include <set>
+
+class Registry;
 
 class System
 {
   public:
-    System() {}
-    System(const Signature &signature) : m_Signature(signature) {}
-
-    virtual ~System() = default;
+    System(Registry &registry, const SimplexModules &modules) : m_Registry(registry), m_Modules(modules) {}
 
     virtual void OnCreate() {}
     virtual void Start() {}
@@ -19,6 +21,8 @@ class System
     Signature m_Signature;
 
   protected:
-    // Context
+    const SimplexModules m_Modules;
+    Registry &m_Registry;
+
   private:
 };

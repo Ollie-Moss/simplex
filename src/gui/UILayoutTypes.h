@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Bindable.h"
+#include "gui/Unit.h"
 
 enum class AlignItems {
     Start,
@@ -26,11 +27,6 @@ enum class SizingMode {
     Fixed,
     Hug,
     Grow,
-};
-
-enum class Unit {
-    Pixels,
-    Percent,
 };
 
 struct SizeValue
