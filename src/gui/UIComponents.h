@@ -1,7 +1,6 @@
 #pragma once
 
 #include "components/Transform.h"
-#include "core/Entity.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "gui/UILayoutTypes.h"
@@ -80,7 +79,7 @@ struct UITransform
 
 // Describes a function with the parameters of Event, type TEvent, and the associated Entity corresponding to the UI element
 template <typename TEvent>
-using EventHandler = std::function<void(const TEvent &, Entity)>;
+using EventHandler = std::function<void(const TEvent &, EntityId)>;
 
 struct ClickEvent
 {

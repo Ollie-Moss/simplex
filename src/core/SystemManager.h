@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/SimplexModules.h"
 #include "systems/System.h"
 #include <cassert>
 #include <memory>
@@ -10,15 +11,23 @@ class SystemManager
 {
   public:
     SystemManager() {}
+    ~SystemManager() = default;
+
+    SystemManager(const SystemManager &) = default;
+    SystemManager(SystemManager &&) = default;
+
+    SystemManager &operator=(const SystemManager &) = default;
+    SystemManager &operator=(SystemManager &&) = default;
+
     template <typename T>
-    std::shared_ptr<T> RegisterSystem()
+    std::shared_ptr<T> RegisterSystem(Registry &registry, const SimplexModules &modules)
     {
         const char *typeName = typeid(T).name();
 
         assert(m_Systems.find(typeName) == m_Systems.end() && "Registering system more than once.");
 
         // Create a pointer to the system and return it so it can be used externally
-        auto system = std::make_shared<T>();
+        auto system = std::make_shared<T>(registry, modules);
         m_Systems.insert({typeName, system});
         return system;
     }

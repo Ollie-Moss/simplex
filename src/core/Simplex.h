@@ -4,23 +4,15 @@
 #include "core/IView.h"
 #include "core/Scene.h"
 #include "Registry.h"
-#include "core/View.h"
-#include "core/Input.h"
+#include "core/SimplexModules.h"
 #include "graphics/RendererManager.h"
 #include <cassert>
-
-struct SimplexModules
-{
-    std::unique_ptr<IInput> m_Input = std::make_unique<Input>();
-    std::unique_ptr<IView> m_View = std::make_unique<View>();
-    std::unique_ptr<AssetManager> m_AssetManager = std::make_unique<AssetManager>();
-    std::unique_ptr<RendererManager> m_RendererManager = std::make_unique<RendererManager>();
-};
+#include <optional>
 
 class Simplex
 {
   public:
-    Simplex(SimplexModules modules = {});
+    Simplex(const SimplexModules &modules = {});
     ~Simplex();
 
     bool Init();
@@ -31,10 +23,13 @@ class Simplex
 
     static IView &GetView();
     static IInput &GetInput();
-    static Scene &GetScene();
-    static Registry &GetRegistry();
     static RendererManager &GetRendererManager();
     static AssetManager &GetAssetManager();
+
+    static std::optional<Scene> &GetScene();
+    static Registry &GetRegistry();
+
+    static SimplexModules &GetModules();
 
     float GetFPS();
     float GetDeltaTime();
@@ -45,7 +40,7 @@ class Simplex
   private:
     SimplexModules m_Modules;
 
-    Scene m_CurrentScene;
+    std::optional<Scene> m_CurrentScene;
 
     float m_DeltaTime;
     float m_Fps;

@@ -1,3 +1,7 @@
+#pragma once
+
+#include "gui/Unit.h"
+
 struct SizeValue
 {
     SizeValue() {}

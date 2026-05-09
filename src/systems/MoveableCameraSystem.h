@@ -3,8 +3,7 @@
 #include "components/Transform.h"
 #include "components/Camera.h"
 #include "components/MoveableCamera.h"
-#include "core/SystemManager.h"
-#include "core/Entity.h"
+#include "core/Registry.h"
 #include <algorithm>
 #include <cmath>
 
@@ -25,18 +24,21 @@ class MoveableCameraSystem : public System
     float t = 0;
 
   public:
-    MoveableCameraSystem()
+    MoveableCameraSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<MoveableCamera, Camera, Transform>();
+        m_Signature = m_Registry.CreateSignature<MoveableCamera, Camera, Transform>();
     }
 
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId e : m_Entities)
         {
-            auto [moveableCam, cam, transform] = e.GetComponents<MoveableCamera, Camera, Transform>();
-            glm::vec2 mouseDelta = Simplex::GetInput().GetMouseDelta();
-            float scrollDelta = Simplex::GetInput().GetScrollDelta();
+            MoveableCamera& moveableCam = m_Registry.GetComponent<MoveableCamera>(e);
+            Camera& cam = m_Registry.GetComponent<Camera>(e);
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
+
+            glm::vec2 mouseDelta = m_Modules.m_Input->GetMouseDelta();
+            float scrollDelta = m_Modules.m_Input->GetScrollDelta();
 
             float zoomDelta = scrollDelta * (moveableCam.scrollSensitivity * cam.zoom / 10.0f);
             float targetZoom = cam.targetZoom + zoomDelta;
@@ -56,7 +58,7 @@ class MoveableCameraSystem : public System
             float eased = easeOut(t);
             cam.zoom = lerp(cam.startTargetZoom, cam.targetZoom, eased);
 
-            if(Simplex::GetInput().OnMouseButtonDown(GLFW_MOUSE_BUTTON_1))
+            if(m_Modules.m_Input->GetMouseButton(GLFW_MOUSE_BUTTON_1).IsDown())
             {
                 auto targetTransform = transform.position + glm::vec3(mouseDelta / cam.zoom, 0.0f);
                 transform.position = targetTransform;

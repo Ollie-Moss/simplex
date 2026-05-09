@@ -9,6 +9,13 @@ class ComponentManager
 {
   public:
     ComponentManager() {}
+    ~ComponentManager() = default;
+
+    ComponentManager(const ComponentManager &) = default;
+    ComponentManager(ComponentManager &&) = default;
+
+    ComponentManager &operator=(const ComponentManager &) = default;
+    ComponentManager &operator=(ComponentManager &&) = default;
 
     template <typename T>
     void AddComponent(EntityId entity, T component)
@@ -31,12 +38,6 @@ class ComponentManager
     {
         // Get a reference to a component from the array for an entity
         return GetComponentList<T>()->GetData(entity);
-    }
-    template <typename T>
-    T *TryGetComponent(EntityId entity)
-    {
-        // Get a ptr to a component from the array for an entity if it exists
-        return GetComponentList<T>()->TryGetData(entity);
     }
 
     template <typename T>

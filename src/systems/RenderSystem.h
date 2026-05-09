@@ -2,27 +2,27 @@
 
 #include "components/Sprite.h"
 #include "components/Transform.h"
-#include "core/Entity.h"
-#include "core/SystemManager.h"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/util/RenderSpace.h"
+#include "core/Registry.h"
 
 class RenderSystem : public System
 {
   public:
-    RenderSystem()
+    RenderSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<Sprite, Transform>();
+        m_Signature = m_Registry.CreateSignature<Sprite, Transform>();
     }
 
     void Update(float timeStep) override
     {
-        for(Entity e : m_Entities)
+        for(EntityId e : m_Entities)
         {
-            auto [transform, sprite] = e.GetComponents<Transform, Sprite>();
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
+            Sprite& sprite = m_Registry.GetComponent<Sprite>(e);
 
             SpriteCommand cmd = {sprite, transform, RenderSpace::World};
-            Simplex::GetRendererManager().Submit<SpriteCommand>(cmd);
+            m_Modules.m_RendererManager->Submit<SpriteCommand>(cmd);
         }
     }
 };

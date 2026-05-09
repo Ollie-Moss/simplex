@@ -2,23 +2,27 @@
 
 #include "components/Transform.h"
 #include "components/Camera.h"
-#include "core/SystemManager.h"
-#include "core/Entity.h"
+#include "core/Registry.h"
+#include "core/Types.h"
 
 class CameraSystem : public System
 {
-   public:
-    CameraSystem()
+  public:
+    CameraSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<Camera, Transform>();
+        m_Signature = m_Registry.CreateSignature<Camera, Transform>();
     }
 
     void Update(float timeStep) override
     {
-        for (Entity e : m_Entities) {
-            auto [cam, transform] = e.GetComponents<Camera, Transform>();
-            if (cam.isActive) {
-                Simplex::GetView().SetCameraBounds(transform, cam);
+        for(EntityId e : m_Entities)
+        {
+            Camera& cam = m_Registry.GetComponent<Camera>(e);
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
+
+            if(cam.isActive)
+            {
+                m_Modules.m_View->SetCameraBounds(transform, cam);
             }
         }
     }
