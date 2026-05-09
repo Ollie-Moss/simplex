@@ -76,12 +76,6 @@ class Registry
         assert(entity <= MAX_ENTITIES && "NULL ENTITY Provided to GetComponent()");
         return m_ComponentManager.GetComponent<T>(entity);
     }
-    template <typename T>
-    T *TryGetComponent(EntityId entity)
-    {
-        assert(entity <= MAX_ENTITIES && "NULL ENTITY Provided to TryGetComponent()");
-        return m_ComponentManager.TryGetComponent<T>(entity);
-    }
 
     template <typename TComponent>
     ComponentId GetComponentId()

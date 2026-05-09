@@ -22,12 +22,11 @@ class UIStateSystem : public System
     {
         for(EntityId entity : m_Entities)
         {
-            // auto [elem, trans, layout, style, text] = e.GetComponents<UIElement, UITransform, UILayout, UIStyle, Text>();
-            auto &elem = m_Registry.GetComponent<UIElement &>(entity);
-            auto &trans = m_Registry.GetComponent<UITransform &>(entity);
-            auto &layout = m_Registry.GetComponent<UILayout &>(entity);
-            auto &style = m_Registry.GetComponent<UIStyle &>(entity);
-            auto &text = m_Registry.GetComponent<Text &>(entity);
+            UIElement& elem = m_Registry.GetComponent<UIElement>(entity);
+            UITransform& trans = m_Registry.GetComponent<UITransform>(entity);
+            UILayout& layout = m_Registry.GetComponent<UILayout>(entity);
+            UIStyle& style = m_Registry.GetComponent<UIStyle>(entity);
+            Text& text = m_Registry.GetComponent<Text>(entity);
 
             bool changed = elem.childrenSpec.UpdateBinding();
             if(changed)
@@ -71,7 +70,7 @@ class UIStateSystem : public System
 
     void DeleteTree(EntityId entity)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
+        UIElement& element = m_Registry.GetComponent<UIElement>(entity);
         for(auto child : element.children)
         {
             DeleteTree(child);

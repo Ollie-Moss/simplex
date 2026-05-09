@@ -33,9 +33,9 @@ class MoveableCameraSystem : public System
     {
         for(EntityId e : m_Entities)
         {
-            auto &moveableCam = m_Registry.GetComponent<MoveableCamera &>(e);
-            auto &cam = m_Registry.GetComponent<Camera &>(e);
-            auto &transform = m_Registry.GetComponent<Transform &>(e);
+            MoveableCamera& moveableCam = m_Registry.GetComponent<MoveableCamera>(e);
+            Camera& cam = m_Registry.GetComponent<Camera>(e);
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
 
             glm::vec2 mouseDelta = m_Modules.m_Input->GetMouseDelta();
             float scrollDelta = m_Modules.m_Input->GetScrollDelta();

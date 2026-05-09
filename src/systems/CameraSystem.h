@@ -17,8 +17,8 @@ class CameraSystem : public System
     {
         for(EntityId e : m_Entities)
         {
-            auto &cam = m_Registry.GetComponent<Camera &>(e);
-            auto &transform = m_Registry.GetComponent<Transform &>(e);
+            Camera& cam = m_Registry.GetComponent<Camera>(e);
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
 
             if(cam.isActive)
             {

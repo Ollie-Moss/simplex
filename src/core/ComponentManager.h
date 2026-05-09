@@ -39,12 +39,6 @@ class ComponentManager
         // Get a reference to a component from the array for an entity
         return GetComponentList<T>()->GetData(entity);
     }
-    template <typename T>
-    T *TryGetComponent(EntityId entity)
-    {
-        // Get a ptr to a component from the array for an entity if it exists
-        return GetComponentList<T>()->TryGetData(entity);
-    }
 
     template <typename T>
     bool HasComponent()

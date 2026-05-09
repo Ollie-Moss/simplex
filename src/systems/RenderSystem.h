@@ -18,8 +18,8 @@ class RenderSystem : public System
     {
         for(EntityId e : m_Entities)
         {
-            auto &transform = m_Registry.GetComponent<Transform &>(e);
-            auto &sprite = m_Registry.GetComponent<Sprite &>(e);
+            Transform& transform = m_Registry.GetComponent<Transform>(e);
+            Sprite& sprite = m_Registry.GetComponent<Sprite>(e);
 
             SpriteCommand cmd = {sprite, transform, RenderSpace::World};
             m_Modules.m_RendererManager->Submit<SpriteCommand>(cmd);

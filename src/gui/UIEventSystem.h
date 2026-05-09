@@ -1,30 +1,32 @@
 #pragma once
 
-#include "core/Simplex.h"
 #include "gui/Text.h"
-#include "core/SystemManager.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "gui/UIComponents.h"
 #include <cctype>
 #include <cmath>
 #include <sys/types.h>
+#include "core/Registry.h"
+#include "gui/UIBuilderTypes.h"
 
 class UIEventSystem : public System
 {
   public:
-    UIEventSystem()
+    UIEventSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text, UIEvents>();
+        m_Signature = m_Registry.CreateSignature<UIElement, UITransform, UILayout, UIStyle, Text, UIEvents>();
     }
     void Update(float timeStep) override
     {
         for(EntityId e : m_Entities)
         {
-            auto [elem, transform, events] = e.GetComponents<UIElement, UITransform, UIEvents>();
+            UIElement &elem = m_Registry.GetComponent<UIElement>(e);
+            UITransform &transform = m_Registry.GetComponent<UITransform>(e);
+            UIEvents &events = m_Registry.GetComponent<UIEvents>(e);
 
-            glm::vec2 mousePos = Simplex::GetInput().GetMousePosition();
-            const std::vector<int> &buttons = Simplex::GetInput().GetMouseInput();
+            glm::vec2 mousePos = m_Modules.m_Input->GetMousePosition();
+            const std::vector<int> &buttons = m_Modules.m_Input->GetMouseInput();
 
             for(auto &button : buttons)
             {

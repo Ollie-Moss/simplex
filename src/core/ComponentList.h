@@ -48,16 +48,6 @@ class ComponentList : public IComponentList
         return m_ComponentData[dataIndex];
     }
 
-    T *TryGetData(EntityId entity)
-    {
-        bool hasComponent = m_EntityToIndexMap.contains(entity);
-        if(hasComponent)
-        {
-            return &GetData(entity);
-        }
-        return nullptr;
-    }
-
     void EntityDestroyed(EntityId entity) override
     {
         if(m_EntityToIndexMap.find(entity) != m_EntityToIndexMap.end())

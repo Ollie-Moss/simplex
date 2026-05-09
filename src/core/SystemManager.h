@@ -20,7 +20,7 @@ class SystemManager
     SystemManager &operator=(SystemManager &&) = default;
 
     template <typename T>
-    std::shared_ptr<T> RegisterSystem(const Registry &registry, const SimplexModules &modules)
+    std::shared_ptr<T> RegisterSystem(Registry &registry, const SimplexModules &modules)
     {
         const char *typeName = typeid(T).name();
 

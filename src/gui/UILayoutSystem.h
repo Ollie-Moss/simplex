@@ -20,13 +20,13 @@ class UILayoutSystem : public System
   public:
     UILayoutSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = Simplex::GetRegistry().CreateSignature<UIElement, UITransform, UILayout, Text>();
+        m_Signature = m_Registry.CreateSignature<UIElement, UITransform, UILayout, Text>();
     }
     void Update(float timeStep) override
     {
         for(EntityId e : m_Entities)
         {
-            UIElement &element = m_Registry.GetComponent<UIElement &>(e);
+            UIElement &element = m_Registry.GetComponent<UIElement>(e);
             if(element.parent != NULL_ENTITY)
                 continue;
 
@@ -39,7 +39,7 @@ class UILayoutSystem : public System
 
     bool IsDirty(EntityId entity)
     {
-        UIElement &element = m_Registry.GetComponent<UIElement &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
         if(element.dirty || Simplex::GetView().HasWindowResized())
         {
             return true;
@@ -57,8 +57,8 @@ class UILayoutSystem : public System
 
     void CalculateLayout(EntityId entity)
     {
-        auto &elem = m_Registry.GetComponent<UIElement &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        UIElement &elem = m_Registry.GetComponent<UIElement>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
 
         bool shouldWrap = false;
         TextSize(entity, shouldWrap);
@@ -118,17 +118,17 @@ class UILayoutSystem : public System
     }
     float GetParentPadding(EntityId entity, Direction direction)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
-        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &properties = m_Registry.GetComponent<UILayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
 
         EntityId parent = element.parent;
         if(parent == NULL_ENTITY)
         {
             return 0.0f;
         }
-        auto &parentElement = m_Registry.GetComponent<UIElement &>(parent);
-        auto &parentProperties = m_Registry.GetComponent<UILayout &>(parent);
+        UIElement &parentElement = m_Registry.GetComponent<UIElement>(parent);
+        UILayout &parentProperties = m_Registry.GetComponent<UILayout>(parent);
         return GetPadding(*parentProperties.padding, direction);
     }
 
@@ -188,11 +188,11 @@ class UILayoutSystem : public System
 
     void TextSize(EntityId entity, bool shouldWrap)
     {
-        auto &text = m_Registry.GetComponent<Text &>(entity);
-        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
-        auto &elem = m_Registry.GetComponent<UIElement &>(entity);
-        auto &layout = m_Registry.GetComponent<UILayout &>(entity);
+        Text &text = m_Registry.GetComponent<Text>(entity);
+        TextLayout &textLayout = m_Registry.GetComponent<TextLayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
+        UIElement &elem = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &layout = m_Registry.GetComponent<UILayout>(entity);
 
         for(EntityId e : elem.children)
         {
@@ -295,11 +295,11 @@ class UILayoutSystem : public System
     }
     void InitialSizing(EntityId entity, Direction sizingAxis)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
-        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
-        auto &text = m_Registry.GetComponent<Text &>(entity);
-        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &properties = m_Registry.GetComponent<UILayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
+        Text &text = m_Registry.GetComponent<Text>(entity);
+        TextLayout &textLayout = m_Registry.GetComponent<TextLayout>(entity);
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
@@ -341,11 +341,11 @@ class UILayoutSystem : public System
     // direction - size width or height axis
     void HugSize(EntityId entity, Direction sizingAxis)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
-        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
-        auto &text = m_Registry.GetComponent<Text &>(entity);
-        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &properties = m_Registry.GetComponent<UILayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
+        Text &text = m_Registry.GetComponent<Text>(entity);
+        TextLayout &textLayout = m_Registry.GetComponent<TextLayout>(entity);
 
         for(auto child : element.children)
         {
@@ -376,9 +376,9 @@ class UILayoutSystem : public System
 
     void GrowSize(EntityId entity, Direction sizingAxis)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
-        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &properties = m_Registry.GetComponent<UILayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
 
         if(element.parent == NULL_ENTITY && GetAxis(entity, sizingAxis).mode == SizingMode::Grow)
         {
@@ -477,10 +477,10 @@ class UILayoutSystem : public System
 
     void CalculatePositions(EntityId entity, glm::vec2 parentPosition)
     {
-        auto &element = m_Registry.GetComponent<UIElement &>(entity);
-        auto &properties = m_Registry.GetComponent<UILayout &>(entity);
-        auto &transform = m_Registry.GetComponent<UITransform &>(entity);
-        auto &textLayout = m_Registry.GetComponent<TextLayout &>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
+        UILayout &properties = m_Registry.GetComponent<UILayout>(entity);
+        UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
+        TextLayout &textLayout = m_Registry.GetComponent<TextLayout>(entity);
 
         EntityId parent = element.parent;
 
@@ -534,7 +534,7 @@ class UILayoutSystem : public System
         // Calculate offset based on children
         for(EntityId child : element.children)
         {
-            auto &childTransform = m_Registry.GetComponent<UITransform>(child);
+            UITransform &childTransform = m_Registry.GetComponent<UITransform>(child);
 
             glm::vec2 localPos = parentPosition;
             if(properties.direction == Direction::Horizontal)
