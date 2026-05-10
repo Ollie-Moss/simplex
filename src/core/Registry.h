@@ -7,6 +7,7 @@
 #include "core/Types.h"
 #include <array>
 #include <cstddef>
+#include <iostream>
 #include <memory>
 #include <set>
 

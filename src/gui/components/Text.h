@@ -1,7 +1,7 @@
 #pragma once
 
+#include <gui/utility/Bindable.h>
 #include <string>
-#include "Bindable.h"
 #include "components/Transform.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
@@ -11,7 +11,7 @@ struct GlyphQuad
     Transform transform;
 
     unsigned int texture; // Character::TextureID
-    
+
     float ascent;
     float descent;
     float advance;
@@ -31,11 +31,6 @@ struct Text
     float fontSize = 12;
     Color color = BLACK;
     float lineHeight = 1.0f;
-
-    auto bindables()
-    {
-        return std::tie(content);
-    }
 
     bool operator==(const Text &rhs) const = default;
 };

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "gui/UILayoutTypes.h"
+#include "gui/utility/Axis.h"
+#include "gui/utility/SizeValue.h"
 
 inline SizeValue Percent(float value) { return SizeValue(value, Unit::Percent); }
 inline SizeValue Pixels(float value) { return SizeValue(value, Unit::Pixels); }

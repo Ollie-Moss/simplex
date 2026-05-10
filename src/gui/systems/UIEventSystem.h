@@ -1,14 +1,14 @@
 #pragma once
 
-#include "gui/Text.h"
 #include "core/Types.h"
+#include <gui/components/Text.h>
 #include "glm/fwd.hpp"
-#include "gui/UIComponents.h"
 #include <cctype>
 #include <cmath>
 #include <sys/types.h>
 #include "core/Registry.h"
-#include "gui/UIBuilderTypes.h"
+#include "gui/components/UIElement.h"
+#include "gui/components/UITransform.h"
 
 class UIEventSystem : public System
 {
@@ -30,16 +30,16 @@ class UIEventSystem : public System
 
             for(auto &button : buttons)
             {
-                // OnClick
-                if(Intersecting(transform, mousePos))
-                {
-                    ClickEvent evt = {mousePos, button};
-                    if(events.onClick)
-                    {
-                        events.onClick(evt, e);
-                        elem.dirty = true;
-                    }
-                }
+                // // OnClick
+                // if(Intersecting(transform, mousePos))
+                // {
+                //     ClickEvent evt = {mousePos, button};
+                //     if(events.onClick)
+                //     {
+                //         events.onClick(evt, e);
+                //         elem.dirty = true;
+                //     }
+                // }
             }
 
             // Mouse Down

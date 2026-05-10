@@ -1,13 +1,16 @@
 #include "core/Scene.h"
 #include "core/Simplex.h"
 #include "graphics/text/Font.h"
-#include "gui/UIElements.h"
-#include "gui/UIEventSystem.h"
-// #include "gui/UIInputSystem.h"
-#include "gui/UILayoutSystem.h"
-#include "gui/UIRenderSystem.h"
-#include "gui/UIStateSystem.h"
+#include "gui/utility/ChildSpecificiation.h"
+#include "gui/elements/TextElement.h"
+#include "gui/systems/UIStateSystem.h"
+#include "gui/systems/UIEventSystem.h"
+#include "gui/systems/UILayoutSystem.h"
+#include "gui/systems/UIRenderSystem.h"
+#include "gui/utility/UILayoutHelpers.h"
+#include "gui/utility/UISpecification.h"
 #include "systems/RenderSystem.h"
+#include <format>
 
 int main()
 {
@@ -32,6 +35,15 @@ int main()
         m_Registry.RegisterSystem<UIEventSystem>();
         // m_Registry.RegisterSystem<UIInputRenderSystem>();
         m_Registry.RegisterSystem<RenderSystem>();
+
+        UISpecification builder;
+        builder.Configure(UIElementProperties()
+                              .WithLayout({.sizing = Sizing{.width = GROW, .height = GROW}})
+                              .WithStyle({.color = BLUE}))
+            .Children({
+                TextElement([] { return std::format("FPS: {:^10.0f}", Simplex::Get().GetFPS()); }),
+            })
+            .Build(m_Registry);
     });
 
     simplex.SetScene(MainScene);

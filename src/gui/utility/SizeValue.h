@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gui/Unit.h"
+#include "gui/utility/Unit.h"
 
 struct SizeValue
 {
@@ -14,10 +14,7 @@ struct SizeValue
         return (unit == Unit::Pixels) ? value : value / 100.0f;
     }
 
-    bool operator==(const SizeValue &rhs) const
-    {
-        return GetValue() == rhs.GetValue();
-    }
+    bool operator==(const SizeValue &rhs) const = default;
 
     float value = 100.0f;
     Unit unit = Unit::Pixels;

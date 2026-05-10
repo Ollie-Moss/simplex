@@ -1,5 +1,6 @@
 #include "Simplex.h"
 #include "assets/AssetManager.h"
+#include "core/ITime.h"
 #include "core/Scene.h"
 #include "core/SimplexModules.h"
 #include "glm/fwd.hpp"
@@ -74,6 +75,11 @@ Registry &Simplex::GetRegistry()
     return GetScene()->m_Registry;
 }
 
+ITime &Simplex::GetTime()
+{
+    return *Get().m_Modules.m_Time;
+}
+
 std::optional<Scene> &Simplex::GetScene()
 {
     return Get().m_CurrentScene;
@@ -134,5 +140,6 @@ void Simplex::Tick()
         m_Modules.m_RendererManager->Render();
 
         m_Modules.m_View->SwapBuffers();
+        m_Modules.m_Time->Tick();
     }
 }

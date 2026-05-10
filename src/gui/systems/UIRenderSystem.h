@@ -1,14 +1,20 @@
 #pragma once
 
-#include "UIBuilderTypes.h"
-#include "gui/Text.h"
-#include "gui/UIComponents.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
 #include "systems/System.h"
 #include "core/Registry.h"
 #include <iostream>
 #include "graphics/render-commands/ColliderCommand.h"
 #include "graphics/render-commands/SpriteCommand.h"
 #include "graphics/render-commands/TextCommand.h"
+#include "core/Types.h"
+#include "glm/fwd.hpp"
+#include "gui/components/UIElement.h"
+#include "gui/components/UITransform.h"
+#include <cctype>
+#include <cmath>
+#include <sys/types.h>
 
 class UIRenderSystem : public System
 {
@@ -22,7 +28,7 @@ class UIRenderSystem : public System
     {
         for(EntityId e : m_Entities)
         {
-            UIElement element = m_Registry.GetComponent<UIElement>(e);
+            UIElement &element = m_Registry.GetComponent<UIElement>(e);
             if(element.parent != NULL_ENTITY)
                 continue;
 

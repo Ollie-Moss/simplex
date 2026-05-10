@@ -2,12 +2,11 @@
 
 #include "core/Simplex.h"
 #include "graphics/text/Character.h"
-#include "gui/Text.h"
 #include "core/Types.h"
 #include "glm/fwd.hpp"
 #include "graphics/text/Font.h"
-#include "gui/UIComponents.h"
-#include "gui/UILayoutTypes.h"
+#include "gui/components/UIElement.h"
+#include "gui/components/UITransform.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -30,10 +29,10 @@ class UILayoutSystem : public System
             if(element.parent != NULL_ENTITY)
                 continue;
 
-            if(IsDirty(e))
-            {
-                CalculateLayout(e);
-            }
+            CalculateLayout(e);
+            // if(IsDirty(e))
+            // {
+            // }
         }
     }
 
@@ -129,7 +128,7 @@ class UILayoutSystem : public System
         }
         UIElement &parentElement = m_Registry.GetComponent<UIElement>(parent);
         UILayout &parentProperties = m_Registry.GetComponent<UILayout>(parent);
-        return GetPadding(*parentProperties.padding, direction);
+        return GetPadding(parentProperties.padding.Get(), direction);
     }
 
     float &GetLengthWithAxis(EntityId entity, Direction direction)
@@ -304,7 +303,7 @@ class UILayoutSystem : public System
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
 
-        auto padding = GetPadding(*properties.padding, sizingAxis);
+        auto padding = GetPadding(properties.padding.Get(), sizingAxis);
 
         if(axis.length.unit == Unit::Percent)
         {
@@ -355,7 +354,7 @@ class UILayoutSystem : public System
         if(GetAxis(entity, sizingAxis).mode != SizingMode::Hug)
             return;
 
-        float gap = glm::max(0, (int)element.children.size() - 1) * *properties.gap;
+        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
         float padding = GetPadding(properties.padding.Get(), sizingAxis);
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
@@ -396,7 +395,7 @@ class UILayoutSystem : public System
         }
 
         float remainingLength = GetLengthWithAxis(entity, sizingAxis);
-        remainingLength -= GetPadding(*properties.padding, sizingAxis);
+        remainingLength -= GetPadding(properties.padding.Get(), sizingAxis);
 
         if(sizingAxis != properties.direction)
         {
@@ -415,7 +414,7 @@ class UILayoutSystem : public System
         }
 
         // Size with layout direction
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
 
         for(EntityId child : element.children)
         {
@@ -488,14 +487,14 @@ class UILayoutSystem : public System
         float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.Get().left : properties.padding.Get().top;
 
         // Apply justify content positions
-        float remainingLength = GetLengthWithAxis(entity, *properties.direction);
+        float remainingLength = GetLengthWithAxis(entity, properties.direction.Get());
 
         // remainingLength -= GetParentPadding(properties.padding, direction);
-        remainingLength -= GetPadding(*properties.padding, *properties.direction);
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * *properties.gap;
+        remainingLength -= GetPadding(properties.padding.Get(), properties.direction.Get());
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
         for(EntityId child : element.children)
         {
-            remainingLength -= GetLengthWithAxis(child, *properties.direction);
+            remainingLength -= GetLengthWithAxis(child, properties.direction.Get());
         }
         if(properties.justifyContent == JustifyContent::Center)
         {
@@ -507,15 +506,15 @@ class UILayoutSystem : public System
         }
 
         // Apply align items positions
-        float length = GetLengthAgainstAxis(entity, *properties.direction);
+        float length = GetLengthAgainstAxis(entity, properties.direction.Get());
 
         // Against axis padding (invert the direction to get the correct padding)
-        length -= GetPadding(*properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
+        length -= GetPadding(properties.padding.Get(), (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
 
         float largestLength = 0;
         for(EntityId child : element.children)
         {
-            float length = GetLengthAgainstAxis(child, *properties.direction);
+            float length = GetLengthAgainstAxis(child, properties.direction.Get());
             if(length > largestLength)
             {
                 largestLength = length;
@@ -541,13 +540,13 @@ class UILayoutSystem : public System
             {
                 localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
                 localPos.x += textLayout.size.x;
-                justifyContentOffset += childTransform.size.x + *properties.gap;
+                justifyContentOffset += childTransform.size.x + properties.gap.Get();
             }
             else
             {
                 localPos += glm::vec2(alignItemsOffset, justifyContentOffset);
                 localPos.y += textLayout.size.y;
-                justifyContentOffset += childTransform.size.y + *properties.gap;
+                justifyContentOffset += childTransform.size.y + properties.gap.Get();
             }
 
             // Assign the child's position relative to parent

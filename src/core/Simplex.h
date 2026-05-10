@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/AssetManager.h"
+#include "core/ITime.h"
 #include "core/IView.h"
 #include "core/Scene.h"
 #include "Registry.h"
@@ -25,6 +26,7 @@ class Simplex
     static IInput &GetInput();
     static RendererManager &GetRendererManager();
     static AssetManager &GetAssetManager();
+    static ITime &GetTime();
 
     static std::optional<Scene> &GetScene();
     static Registry &GetRegistry();
