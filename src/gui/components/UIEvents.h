@@ -2,6 +2,7 @@
 
 // Describes a function with the parameters of Event, type TEvent, and the associated Entity corresponding to the UI element
 #include "core/Types.h"
+#include "gui/utility/Bindable.h"
 #include <functional>
 
 template <typename TEvent>
@@ -32,7 +33,8 @@ struct ChangeEvent
 {
 };
 
-struct UIEvents
+template <template <typename> typename Wrapper = std::type_identity_t>
+struct UIEventsBase
 {
     // EventHandler<ClickEvent> onClick;
     // EventHandler<HoverEnterEvent> onHoverEnter;
@@ -42,5 +44,7 @@ struct UIEvents
     // EventHandler<ChangeEvent> onFocus;
     // EventHandler<ChangeEvent> onBlur;
 
-    bool operator==(const UIEvents &rhs) const = default;
+    bool operator==(const UIEventsBase &rhs) const = default;
 };
+using UIEvents = UIEventsBase<>;
+using UIEventsDefinition = UIEventsBase<Bindable>;

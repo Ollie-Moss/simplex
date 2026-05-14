@@ -41,7 +41,7 @@ int main()
                               .WithLayout({.sizing = Sizing{.width = GROW, .height = GROW}})
                               .WithStyle({.color = BLUE}))
             .Children({
-                TextElement([] { return std::format("FPS: {:^10.0f}", Simplex::Get().GetFPS()); }),
+                TextElement("Hi"),
             })
             .Build(m_Registry);
     });

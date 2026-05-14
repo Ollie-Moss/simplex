@@ -7,10 +7,11 @@
 #include "graphics/text/Font.h"
 #include "gui/components/UIElement.h"
 #include "gui/components/UITransform.h"
+#include "gui/components/UILayout.h"
+#include "gui/components/Text.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
-#include <string>
 #include <sys/types.h>
 #include <vector>
 
@@ -103,9 +104,9 @@ class UILayoutSystem : public System
         UILayout &props = m_Registry.GetComponent<UILayout>(entity);
         if(direction == Direction::Horizontal)
         {
-            return props.sizing.Get().width.Get();
+            return props.sizing.width;
         }
-        return props.sizing.Get().height.Get();
+        return props.sizing.height;
     }
     float GetPadding(const Padding &padding, Direction direction)
     {
@@ -128,7 +129,7 @@ class UILayoutSystem : public System
         }
         UIElement &parentElement = m_Registry.GetComponent<UIElement>(parent);
         UILayout &parentProperties = m_Registry.GetComponent<UILayout>(parent);
-        return GetPadding(parentProperties.padding.Get(), direction);
+        return GetPadding(parentProperties.padding, direction);
     }
 
     float &GetLengthWithAxis(EntityId entity, Direction direction)
@@ -197,13 +198,13 @@ class UILayoutSystem : public System
         {
             TextSize(e, shouldWrap);
         }
-        if(text.content.Get().empty())
+        if(text.content.empty())
             return;
 
-        float maxWidth = transform.size.x - layout.padding.Get().right;
+        float maxWidth = transform.size.x - layout.padding.right;
 
         // Skip recalculation if text size is smaller max width (ONLY IF WRAPPING IS BEING CALCULATED)
-        if(textLayout.size.x + layout.padding.Get().left <= maxWidth && shouldWrap)
+        if(textLayout.size.x + layout.padding.left <= maxWidth && shouldWrap)
             return;
 
         // do some wrapping
@@ -246,7 +247,7 @@ class UILayoutSystem : public System
             glyph.descent = ch.Size.y - ch.Bearing.y;
             glyph.ascent = ch.Size.y - glyph.descent;
             glyph.advance = ch.Advance;
-            glyph.transform = {glm::vec3{penX + layout.padding.Get().left, penY + layout.padding.Get().top - ch.Bearing.y, 0}, ch.Size};
+            glyph.transform = {glm::vec3{penX + layout.padding.left, penY + layout.padding.top - ch.Bearing.y, 0}, ch.Size};
             glyph.texture = ch.TextureID;
             glyphs.push_back(glyph);
 
@@ -254,9 +255,9 @@ class UILayoutSystem : public System
             penX += ch.Advance;
         };
 
-        for(size_t i = 0; i < text.content.Get().size(); i++)
+        for(size_t i = 0; i < text.content.size(); i++)
         {
-            char c = text.content.Get()[i];
+            char c = text.content[i];
             Character ch = font.characters[c];
 
             // newline if '\n' found or we exceed the width of the container
@@ -275,7 +276,7 @@ class UILayoutSystem : public System
             }
 
             // Wrap text if text size is larger max width (ONLY IF WRAPPING IS BEING CALCULATED)
-            if(penX + ch.Size.x + layout.padding.Get().left > maxWidth && shouldWrap)
+            if(penX + ch.Size.x + layout.padding.left > maxWidth && shouldWrap)
             {
                 newLine();
                 numOfLines++;
@@ -303,7 +304,7 @@ class UILayoutSystem : public System
         float &length = GetLengthWithAxis(entity, sizingAxis);
         Axis axis = GetAxis(entity, sizingAxis);
 
-        auto padding = GetPadding(properties.padding.Get(), sizingAxis);
+        auto padding = GetPadding(properties.padding, sizingAxis);
 
         if(axis.length.unit == Unit::Percent)
         {
@@ -322,7 +323,7 @@ class UILayoutSystem : public System
             length = GetAxis(entity, sizingAxis).length.GetValue() + padding;
         }
 
-        if(!text.content.Get().empty() && sizingAxis == Direction::Horizontal && axis.mode != SizingMode::Fixed)
+        if(!text.content.empty() && sizingAxis == Direction::Horizontal && axis.mode != SizingMode::Fixed)
         {
             float textLength = sizingAxis == Direction::Horizontal ? textLayout.size.x : textLayout.size.y;
             if(length < textLength)
@@ -354,15 +355,15 @@ class UILayoutSystem : public System
         if(GetAxis(entity, sizingAxis).mode != SizingMode::Hug)
             return;
 
-        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
-        float padding = GetPadding(properties.padding.Get(), sizingAxis);
+        float gap = glm::max(0, (int)element.children.size() - 1) * properties.gap;
+        float padding = GetPadding(properties.padding, sizingAxis);
 
         float &length = GetLengthWithAxis(entity, sizingAxis);
         float textSize = sizingAxis == Direction::Horizontal ? textLayout.size.x : textLayout.size.y;
         length = padding + gap + textSize;
 
         // Size with layout direction
-        if(sizingAxis == properties.direction.Get())
+        if(sizingAxis == properties.direction)
         {
             length += SumChildrenLengths(entity, sizingAxis);
         }
@@ -395,7 +396,7 @@ class UILayoutSystem : public System
         }
 
         float remainingLength = GetLengthWithAxis(entity, sizingAxis);
-        remainingLength -= GetPadding(properties.padding.Get(), sizingAxis);
+        remainingLength -= GetPadding(properties.padding, sizingAxis);
 
         if(sizingAxis != properties.direction)
         {
@@ -414,7 +415,7 @@ class UILayoutSystem : public System
         }
 
         // Size with layout direction
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
 
         for(EntityId child : element.children)
         {
@@ -483,18 +484,18 @@ class UILayoutSystem : public System
 
         EntityId parent = element.parent;
 
-        float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.Get().left : properties.padding.Get().top;
-        float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.Get().left : properties.padding.Get().top;
+        float justifyContentOffset = (properties.direction == Direction::Horizontal) ? properties.padding.left : properties.padding.top;
+        float alignItemsOffset = (properties.direction == Direction::Vertical) ? properties.padding.left : properties.padding.top;
 
         // Apply justify content positions
-        float remainingLength = GetLengthWithAxis(entity, properties.direction.Get());
+        float remainingLength = GetLengthWithAxis(entity, properties.direction);
 
         // remainingLength -= GetParentPadding(properties.padding, direction);
-        remainingLength -= GetPadding(properties.padding.Get(), properties.direction.Get());
-        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap.Get();
+        remainingLength -= GetPadding(properties.padding, properties.direction);
+        remainingLength -= glm::max(0, (int)element.children.size() - 1) * properties.gap;
         for(EntityId child : element.children)
         {
-            remainingLength -= GetLengthWithAxis(child, properties.direction.Get());
+            remainingLength -= GetLengthWithAxis(child, properties.direction);
         }
         if(properties.justifyContent == JustifyContent::Center)
         {
@@ -506,15 +507,15 @@ class UILayoutSystem : public System
         }
 
         // Apply align items positions
-        float length = GetLengthAgainstAxis(entity, properties.direction.Get());
+        float length = GetLengthAgainstAxis(entity, properties.direction);
 
         // Against axis padding (invert the direction to get the correct padding)
-        length -= GetPadding(properties.padding.Get(), (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
+        length -= GetPadding(properties.padding, (properties.direction == Direction::Horizontal ? Direction::Vertical : Direction::Horizontal));
 
         float largestLength = 0;
         for(EntityId child : element.children)
         {
-            float length = GetLengthAgainstAxis(child, properties.direction.Get());
+            float length = GetLengthAgainstAxis(child, properties.direction);
             if(length > largestLength)
             {
                 largestLength = length;
@@ -540,13 +541,13 @@ class UILayoutSystem : public System
             {
                 localPos += glm::vec2(justifyContentOffset, alignItemsOffset);
                 localPos.x += textLayout.size.x;
-                justifyContentOffset += childTransform.size.x + properties.gap.Get();
+                justifyContentOffset += childTransform.size.x + properties.gap;
             }
             else
             {
                 localPos += glm::vec2(alignItemsOffset, justifyContentOffset);
                 localPos.y += textLayout.size.y;
-                justifyContentOffset += childTransform.size.y + properties.gap.Get();
+                justifyContentOffset += childTransform.size.y + properties.gap;
             }
 
             // Assign the child's position relative to parent

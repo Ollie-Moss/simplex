@@ -11,7 +11,7 @@ struct UIElementProperties
     std::string id = "N/a";
     UILayout layout;
     UIStyle style;
-    Text text;
+    TextDefinition text;
     UIEvents events;
 
     UIElementProperties() = default;
@@ -29,25 +29,25 @@ struct UIElementProperties
         return *this;
     }
 
-    UIElementProperties &WithLayout(const UILayout &newLayout)
+    UIElementProperties &WithLayout(const UILayoutDefinition &newLayout)
     {
         layout = newLayout;
         return *this;
     }
 
-    UIElementProperties &WithStyle(const UIStyle &newStyle)
+    UIElementProperties &WithStyle(const UIStyleDefinition &newStyle)
     {
         style = newStyle;
         return *this;
     }
 
-    UIElementProperties &WithText(const Text &newText)
+    UIElementProperties &WithText(const TextDefinition &newText)
     {
         text = newText;
         return *this;
     }
 
-    UIElementProperties &WithEvents(const UIEvents &newEvents)
+    UIElementProperties &WithEvents(const UIEventsDefinition &newEvents)
     {
         events = newEvents;
         return *this;

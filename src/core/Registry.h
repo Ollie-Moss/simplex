@@ -109,6 +109,9 @@ class Registry
         DestroyEntities();
         CreateEntites();
 
+        for(auto &fn : m_FrameUpdaters)
+            fn(m_SystemModules);
+
         m_SystemManager.UpdateSystems(timeStep);
     }
     void FixedUpdate(float timeStep)
@@ -142,6 +145,11 @@ class Registry
         }
 
         return entities;
+    }
+
+    void AddFrameUpdater(void (*fn)(SimplexModules))
+    {
+        m_FrameUpdaters.push_back(fn);
     }
 
   private:
@@ -183,6 +191,8 @@ class Registry
     EntityManager m_EntityManager;
     ComponentManager m_ComponentManager;
     SystemManager m_SystemManager;
+
+    std::vector<void (*)(SimplexModules)> m_FrameUpdaters;
 
     size_t entityIndex = 0;
 };

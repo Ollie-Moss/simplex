@@ -1,5 +1,8 @@
 #pragma once
 
+#include "components/Transform.h"
+#include "glm/fwd.hpp"
+
 // This component describes the actual rendered dimensions of a given elements
 // These values are calculated by the UI layout systems based on the UILayout properties
 struct UITransform
@@ -9,8 +12,7 @@ struct UITransform
 
     operator Transform()
     {
-        return Transform{.position = glm::vec3(position.x, position.y, 0),
-                         .size = size};
+        return Transform{.position = glm::vec3(position.x, position.y, 0), .size = size};
     }
     bool operator==(const UITransform &rhs) const = default;
 };

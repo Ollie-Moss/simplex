@@ -1,5 +1,7 @@
 #pragma once
 
+#include "gui/components/UILayout.h"
+#include "gui/components/UIStyle.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 #include "systems/System.h"
@@ -48,7 +50,7 @@ class UIRenderSystem : public System
         Text &text = m_Registry.GetComponent<Text>(entity);
         TextLayout &textLayout = m_Registry.GetComponent<TextLayout>(entity);
 
-        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color.Get()}, .transform = transform, .renderSpace = RenderSpace::Screen};
+        SpriteCommand cmd = {.sprite = {NO_TEXTURE, style.color}, .transform = transform, .renderSpace = RenderSpace::Screen};
         ColliderCommand debugCmd = {
             .transform = transform,
         };
@@ -57,7 +59,7 @@ class UIRenderSystem : public System
 
         m_Modules.m_RendererManager->Submit<SpriteCommand>(cmd);
 
-        if(!text.content.Get().empty())
+        if(!text.content.empty())
         {
             glm::vec2 pos = transform.position;
 

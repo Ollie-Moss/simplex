@@ -3,10 +3,14 @@
 #include "core/Types.h"
 #include "gui/utility/Bindable.h"
 
-// This describes the style of a given element that does not effect its final UITransform
-struct UIStyle
+template <template <typename> typename Wrapper = std::type_identity_t>
+struct UIStyleBase
 {
-    Bindable<Color> color = TRANSPARENT;
+    Wrapper<Color> color = TRANSPARENT;
 
-    bool operator==(const UIStyle &rhs) const = default;
+    bool operator==(const UIStyleBase &rhs) const = default;
 };
+
+// This describes the style of a given element that does not effect its final UITransform
+using UIStyle = UIStyleBase<>;
+using UIStyleDefinition = UIStyleBase<Bindable>;

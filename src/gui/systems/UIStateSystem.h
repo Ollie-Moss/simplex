@@ -7,6 +7,8 @@
 #include <cmath>
 #include <sys/types.h>
 #include "gui/components/UIElement.h"
+#include "gui/components/UILayout.h"
+#include "gui/components/UIStyle.h"
 #include "gui/components/UITransform.h"
 
 class UIStateSystem : public System
