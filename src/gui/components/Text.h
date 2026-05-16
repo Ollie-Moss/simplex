@@ -24,17 +24,13 @@ struct TextLayout
     std::vector<float> lineWidths;
 };
 
-template <template <typename> typename Wrapper = std::type_identity_t>
-struct TextBase
+struct Text
 {
     std::string fontName = "Arial";
-    Wrapper<std::string> content = std::string("");
+    std::string content = std::string("");
     float fontSize = 12;
     Color color = BLACK;
     float lineHeight = 1.0f;
 
-    bool operator==(const TextBase &rhs) const = default;
+    bool operator==(const Text &rhs) const = default;
 };
-
-using Text = TextBase<>;
-using TextDefinition = TextBase<Bindable>;

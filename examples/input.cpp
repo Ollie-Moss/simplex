@@ -1,5 +1,7 @@
+#include "core/Registry.h"
 #include "core/Scene.h"
 #include "core/Simplex.h"
+#include "core/SimplexModules.h"
 #include "graphics/text/Font.h"
 #include "gui/utility/ChildSpecificiation.h"
 #include "gui/elements/TextElement.h"
@@ -7,6 +9,7 @@
 #include "gui/systems/UIEventSystem.h"
 #include "gui/systems/UILayoutSystem.h"
 #include "gui/systems/UIRenderSystem.h"
+#include "gui/utility/UIElementProperties.h"
 #include "gui/utility/UILayoutHelpers.h"
 #include "gui/utility/UISpecification.h"
 #include "systems/RenderSystem.h"
@@ -38,10 +41,10 @@ int main()
 
         UISpecification builder;
         builder.Configure(UIElementProperties()
-                              .WithLayout({.sizing = Sizing{.width = GROW, .height = GROW}})
-                              .WithStyle({.color = BLUE}))
+                              .WithLayout(UILayoutDefintion().Configure({.sizing = Sizing{.width = GROW, .height = GROW}}))
+                              .WithStyle(UIStyleDefintion().Configure({.color = BLUE})))
             .Children({
-                TextElement("Hi"),
+                TextElement([](SimplexModules, Registry &) { return std::format("{:^10}", Simplex::Get().GetFPS()); }),
             })
             .Build(m_Registry);
     });

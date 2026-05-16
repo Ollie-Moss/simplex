@@ -5,14 +5,20 @@
 #include "gui/components/UIEvents.h"
 #include "gui/components/UILayout.h"
 #include "gui/components/UIStyle.h"
+#include "gui/utility/UIComponentDefinition.h"
+
+using UILayoutDefintion = UIComponentDefinition<UILayout>;
+using UIStyleDefintion = UIComponentDefinition<UIStyle>;
+using TextDefinition = UIComponentDefinition<Text>;
+using UIEventDefinition = UIComponentDefinition<UIEvents>;
 
 struct UIElementProperties
 {
     std::string id = "N/a";
-    UILayout layout;
-    UIStyle style;
+    UILayoutDefintion layout;
+    UIStyleDefintion style;
     TextDefinition text;
-    UIEvents events;
+    UIEventDefinition events;
 
     UIElementProperties() = default;
 
@@ -29,13 +35,13 @@ struct UIElementProperties
         return *this;
     }
 
-    UIElementProperties &WithLayout(const UILayoutDefinition &newLayout)
+    UIElementProperties &WithLayout(const UILayoutDefintion &newLayout)
     {
         layout = newLayout;
         return *this;
     }
 
-    UIElementProperties &WithStyle(const UIStyleDefinition &newStyle)
+    UIElementProperties &WithStyle(const UIStyleDefintion &newStyle)
     {
         style = newStyle;
         return *this;
@@ -47,7 +53,7 @@ struct UIElementProperties
         return *this;
     }
 
-    UIElementProperties &WithEvents(const UIEventsDefinition &newEvents)
+    UIElementProperties &WithEvents(const UIEventDefinition &newEvents)
     {
         events = newEvents;
         return *this;

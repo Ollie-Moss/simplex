@@ -1,11 +1,15 @@
 #pragma once
 
+#include "core/Registry.h"
+#include "core/SimplexModules.h"
 #include "core/Types.h"
+#include "glm/common.hpp"
 #include "gui/utility/Bindable.h"
 #include "gui/utility/Sizing.h"
 #include "gui/utility/Direction.h"
 #include "gui/utility/AlignItems.h"
 #include "gui/utility/JustifyContent.h"
+#include <memory>
 
 // template <template <typename> typename Wrapper = std::type_identity_t>
 // struct UILayoutBase
@@ -29,15 +33,6 @@ struct UILayout
     JustifyContent justifyContent = JustifyContent::Start;
 };
 
-struct UILayoutDefinition
-{
-    template <typename ComponentType, typename PropertyType>
-    void Bind(
-        PropertyType ComponentType::*memberPointer,
-        PropertyType (*updater)(SimplexModules))
-    {
-    }
-};
 
 // // This describes the flex layout properties of a given element
 // using UILayout = UILayoutBase<>;

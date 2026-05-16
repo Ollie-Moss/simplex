@@ -43,15 +43,11 @@ EntityId UISpecification::build_impl(Registry &registry, EntityId parent)
 EntityId UISpecification::build_self(Registry &registry, EntityId parent)
 {
     EntityId entity = registry.Create();
-    registry.AddComponent<UITransform>(entity, {});
-    registry.AddComponent<TextLayout>(entity, {});
-    
-    registry.AddComponent(entity, );
-    registry.AddComponent(entity, m_Properties.style);
-    registry.AddComponent(entity, m_Properties.text);
-    registry.AddComponent(entity, m_Properties.events);
-    // registry.AddComponent<UIElement>(entity, UIElement{.id = m_Properties.id, .parent = parent, .childrenSpec = std::make_shared<std::function<std::vector<UISpecification>()>>(m_Children)});
-    registry.AddComponent<UIElement>(entity, UIElement{.id = m_Properties.id, .parent = parent});
+    m_Properties.layout.Build(registry, entity);
+    m_Properties.style.Build(registry, entity);
+    m_Properties.text.Build(registry, entity);
+    m_Properties.events.Build(registry, entity);
 
+    registry.AddComponent<UIElement>(entity, UIElement{.id = m_Properties.id, .parent = parent});
     return entity;
 }

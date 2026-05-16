@@ -1,13 +1,13 @@
 #pragma once
 
 #include "core/ComponentManager.h"
+#include "core/ComponentUpdaterManager.h"
 #include "core/EntityManager.h"
 #include "core/SimplexModules.h"
 #include "core/SystemManager.h"
 #include "core/Types.h"
 #include <array>
 #include <cstddef>
-#include <iostream>
 #include <memory>
 #include <set>
 
@@ -90,6 +90,11 @@ class Registry
         return m_SystemManager.RegisterSystem<T>(*this, m_SystemModules);
     }
 
+    void AddUpdater(EntityId entity, std::shared_ptr<IComponentUpdater> updater)
+    {
+        m_ComponentUpdaters.AddUpdater(entity, updater);
+    }
+
     int GetEntityCount()
     {
         return entityIndex;
@@ -109,8 +114,7 @@ class Registry
         DestroyEntities();
         CreateEntites();
 
-        for(auto &fn : m_FrameUpdaters)
-            fn(m_SystemModules);
+        m_ComponentUpdaters.Update();
 
         m_SystemManager.UpdateSystems(timeStep);
     }
@@ -147,11 +151,6 @@ class Registry
         return entities;
     }
 
-    void AddFrameUpdater(void (*fn)(SimplexModules))
-    {
-        m_FrameUpdaters.push_back(fn);
-    }
-
   private:
     void CreateEntites()
     {
@@ -172,6 +171,7 @@ class Registry
 
             m_SystemManager.EntityDestroyed(entity);
             m_ComponentManager.EntityDestroyed(entity);
+            m_ComponentUpdaters.EntityDestroyed(entity);
         }
         m_EntitiesToDelete.clear();
     }
@@ -192,7 +192,7 @@ class Registry
     ComponentManager m_ComponentManager;
     SystemManager m_SystemManager;
 
-    std::vector<void (*)(SimplexModules)> m_FrameUpdaters;
+    ComponentUpdaterManager m_ComponentUpdaters;
 
     size_t entityIndex = 0;
 };
