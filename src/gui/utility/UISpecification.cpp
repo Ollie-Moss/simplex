@@ -1,6 +1,7 @@
 #include "UISpecification.h"
 #include "ChildSpecificiation.h"
 #include "core/Types.h"
+#include "gui/components/Text.h"
 #include "gui/components/UIElement.h"
 #include "gui/components/UITransform.h"
 #include <memory>
@@ -48,6 +49,8 @@ EntityId UISpecification::build_self(Registry &registry, EntityId parent)
     m_Properties.text.Build(registry, entity);
     m_Properties.events.Build(registry, entity);
 
+    registry.AddComponent<UITransform>(entity, {});
+    registry.AddComponent<TextLayout>(entity, {});
     registry.AddComponent<UIElement>(entity, UIElement{.id = m_Properties.id, .parent = parent});
     return entity;
 }
