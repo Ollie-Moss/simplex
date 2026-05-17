@@ -4,6 +4,7 @@
 #include "core/SimplexModules.h"
 #include "core/Registry.h"
 #include "core/Types.h"
+#include "gui/components/UIElement.h"
 #include "gui/utility/IComponentUpdater.h"
 #include <functional>
 
@@ -22,7 +23,7 @@ class ComponentUpdater : public IComponentUpdater
     ~ComponentUpdater() override {}
 
     template <typename TProperty>
-    static ComponentUpdater<TComponent> Create(TProperty TComponent::*memberPointer, PropertyUpdaterFunc<TProperty> getter)
+    static ComponentUpdater<TComponent> Create(TProperty TComponent::*memberPointer, const PropertyUpdaterFunc<TProperty> &getter)
     {
         ComponentUpdaterFunc<TComponent> updaterFunc = [memberPointer, getter](EntityId entityId, SimplexModules modules, Registry registry) {
             TComponent &component = registry.GetComponent<TComponent>(entityId);
@@ -31,8 +32,13 @@ class ComponentUpdater : public IComponentUpdater
             TProperty newValue = getter(modules, registry);
 
             component.*memberPointer = newValue;
+            bool hasChanged = prevValue != newValue;
 
-            return prevValue != newValue;
+            UIElement &uiElement = registry.GetComponent<UIElement>(entityId);
+            if(hasChanged)
+                uiElement.dirty = true;
+
+            return hasChanged;
         };
         return updaterFunc;
     }

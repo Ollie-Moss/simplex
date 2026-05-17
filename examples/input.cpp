@@ -2,6 +2,7 @@
 #include "core/Scene.h"
 #include "core/Simplex.h"
 #include "core/SimplexModules.h"
+#include "core/Types.h"
 #include "graphics/text/Font.h"
 #include "gui/utility/ChildSpecificiation.h"
 #include "gui/elements/TextElement.h"
@@ -9,6 +10,7 @@
 #include "gui/systems/UIEventSystem.h"
 #include "gui/systems/UILayoutSystem.h"
 #include "gui/systems/UIRenderSystem.h"
+#include "gui/utility/Direction.h"
 #include "gui/utility/UIElementProperties.h"
 #include "gui/utility/UILayoutHelpers.h"
 #include "gui/utility/UISpecification.h"
@@ -29,24 +31,22 @@ int main()
         // Systems
 
         // UI
-        // m_Registry.RegisterSystem<UIInputSystem>();
-        m_Registry.RegisterSystem<UIStateSystem>();
         m_Registry.RegisterSystem<UILayoutSystem>();
 
         // Rendering
         m_Registry.RegisterSystem<UIRenderSystem>();
-        m_Registry.RegisterSystem<UIEventSystem>();
-        // m_Registry.RegisterSystem<UIInputRenderSystem>();
         m_Registry.RegisterSystem<RenderSystem>();
 
         UISpecification builder;
-        builder.Configure(UIElementProperties()
-                              .WithLayout(UILayoutDefintion().Configure({.sizing = Sizing{.width = GROW, .height = GROW}}))
-                              .WithStyle(UIStyleDefintion().Configure({.color = BLUE})))
-            .Children({
-                TextElement([](SimplexModules, Registry &) { return std::format("{:^10}", Simplex::Get().GetFPS()); }),
-            })
-            .Build(m_Registry);
+        EntityId root = builder.Configure(UIElementProperties()
+                                              .WithLayout(UILayoutDefintion().Configure({.sizing = Sizing{.width = GROW, .height = GROW}, .direction = Direction::Vertical}))
+                                              .WithStyle(UIStyleDefintion().Configure({.color = BLUE})))
+                            .Children({
+                                TextElement([](SimplexModules, Registry &) { return std::format("FPS: {:^10}", Simplex::Get().GetFPS()); }),
+                                TextElement([](SimplexModules, Registry &) { return std::format("Entities: {}", Simplex::GetRegistry().GetEntityCount()); }),
+                                TextElement([](SimplexModules, Registry &) { return std::format("Componentes: {}", Simplex::GetRegistry().GetComponentCount()); }),
+                            })
+                            .Build(m_Registry);
     });
 
     simplex.SetScene(MainScene);

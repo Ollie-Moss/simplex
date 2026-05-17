@@ -111,10 +111,9 @@ class Registry
     }
     void Update(float timeStep)
     {
-        DestroyEntities();
-        CreateEntites();
-
         m_ComponentUpdaters.Update();
+
+        DestroyEntities();
 
         m_SystemManager.UpdateSystems(timeStep);
     }

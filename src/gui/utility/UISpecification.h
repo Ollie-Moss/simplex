@@ -1,19 +1,27 @@
 #pragma once
 
-#include "core/Registry.h"
 #include "core/Types.h"
+#include "core/Registry.h"
 #include "gui/utility/UIElementProperties.h"
-#include <functional>
 #include <initializer_list>
-#include <vector>
 #include <gui/utility/Bindable.h>
+#include <vector>
 
 class ChildSpecification;
+
+struct UIRoot
+{
+};
 
 class UISpecification
 {
   public:
-    UISpecification() {};
+    UISpecification() = default;
+    UISpecification(const UISpecification &) = default;
+    UISpecification(UISpecification &&) = default;
+
+    UISpecification &operator=(const UISpecification &) = default;
+    UISpecification &operator=(UISpecification &&) = default;
 
     UISpecification &Configure(const UIElementProperties &properties)
     {
@@ -21,7 +29,7 @@ class UISpecification
         return *this;
     }
 
-    UISpecification &Children(std::initializer_list<ChildSpecification> children);
+    UISpecification &Children(const std::initializer_list<ChildSpecification> &children);
 
     EntityId Build(Registry &registry)
     {
@@ -35,6 +43,6 @@ class UISpecification
     EntityId build_self(Registry &registry, EntityId parent);
 
   private:
-    std::function<std::vector<UISpecification>()> m_Children = [] { return std::vector<UISpecification>{}; };
+    std::vector<ChildSpecification> m_Children;
     UIElementProperties m_Properties;
 };

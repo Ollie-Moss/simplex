@@ -1,5 +1,6 @@
 #include "SpriteRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
+#include "graphics/util/RenderData.h"
 #include "graphics/util/RenderMode.h"
 #include "graphics/util/RenderSpace.h"
 #include "graphics/util/Shader.h"
@@ -15,13 +16,6 @@
 
 void SpriteRenderer::Submit(const SpriteCommand &data)
 {
-    if(data.renderMode == RenderMode::Immediate)
-    {
-        Buffer<SpriteCommand> buffer;
-        buffer.Insert(data);
-        RenderRange(buffer, 0, 1);
-        return;
-    }
     if(data.renderSpace == RenderSpace::Screen)
     {
         m_ScreenBuffer.Insert(data);
@@ -42,10 +36,9 @@ void SpriteRenderer::Render()
 
 void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> &buffer)
 {
-    std::array<std::pair<size_t, size_t>, MAX_BUFFER_SIZE> ranges;
-    size_t rangeIndex = 0;
-
+    std::vector<std::pair<size_t, size_t>> ranges;
     size_t rangeStart = 0;
+
     if(buffer.Size() == 0)
         return buffer.Clear();
 
@@ -55,15 +48,13 @@ void SpriteRenderer::RenderBuffer(Buffer<SpriteCommand> &buffer)
         if(nextIndex >= buffer.Size() || buffer[nextIndex].sprite.texture != buffer[i].sprite.texture)
         {
             // create range
-            std::pair<size_t, size_t> range = {rangeStart, i};
-            ranges[rangeIndex] = range;
-            rangeIndex++;
-
+            ranges.push_back({rangeStart, i});
             rangeStart = i + 1;
         }
     }
+
     // Render ranges
-    for(size_t i = 0; i < rangeIndex; i++)
+    for(size_t i = 0; i < ranges.size(); i++)
     {
         auto [rangeStart, rangeEnd] = ranges[i];
         RenderRange(buffer, rangeStart, rangeEnd);
@@ -75,13 +66,9 @@ void SpriteRenderer::RenderRange(const Buffer<SpriteCommand> &buffer, const size
     std::vector<RenderData> data;
     data.reserve(buffer.Size());
 
-    for(const auto &spriteCmd : buffer.GetRawData())
+    for(size_t i = rangeStart; i <= rangeEnd; i++)
     {
-        data.push_back({
-            .position = spriteCmd.transform.position,
-            .size = spriteCmd.transform.size,
-            .color = spriteCmd.sprite.color,
-        });
+        data.emplace_back(buffer[i]);
     }
 
     // Move to vbo

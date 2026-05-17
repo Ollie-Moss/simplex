@@ -4,9 +4,21 @@
 #include <initializer_list>
 #include <vector>
 
-class ChildSpecification
+struct ChildSpecification
 {
   public:
+    ChildSpecification() {}
+    ChildSpecification(const ChildSpecification &other) : m_Elements(std::move(other.m_Elements)) {}
+
+    ChildSpecification(ChildSpecification &&) = default;
+
+    ChildSpecification &operator=(const ChildSpecification &other)
+    {
+        m_Elements = std::move(other.m_Elements);
+        return *this;
+    }
+    ChildSpecification &operator=(ChildSpecification &&) = default;
+
     ChildSpecification(const UISpecification &element)
     {
         m_Elements.push_back(element);
@@ -22,7 +34,7 @@ class ChildSpecification
         elements = std::move(elements);
     }
 
-    std::vector<UISpecification> Consolidate() const
+    const std::vector<UISpecification> &Consolidate() const
     {
         return m_Elements;
     }

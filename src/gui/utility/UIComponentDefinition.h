@@ -18,7 +18,7 @@ struct UIComponentDefinition
     }
 
     template <typename TProperty>
-    UIComponentDefinition &Bind(TProperty TComponent::*memberPointer, PropertyUpdaterFunc<TProperty> getter)
+    UIComponentDefinition &Bind(TProperty TComponent::*memberPointer, const PropertyUpdaterFunc<TProperty> &getter)
     {
         ComponentUpdater<TComponent> updater = ComponentUpdater<TComponent>::Create(memberPointer, getter);
         m_Updaters.push_back(std::make_shared<ComponentUpdater<TComponent>>(updater));

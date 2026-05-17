@@ -1,15 +1,19 @@
 #pragma once
 
 #include "graphics/util/QuadBuffer.h"
+#include "graphics/util/RenderData.h"
 #include "graphics/util/VertexArray.h"
 #include "graphics/util/Buffer.h"
 #include "graphics/util/PositionSortedBuffer.h"
 #include "graphics/renderers/IRenderer.h"
 #include "graphics/render-commands/SpriteCommand.h"
+#include <vector>
 
 class SpriteRenderer : public IRenderer<SpriteCommand>
 {
   public:
+    SpriteRenderer();
+
     void Submit(const SpriteCommand &data) override;
     void Render() override;
 
@@ -22,6 +26,6 @@ class SpriteRenderer : public IRenderer<SpriteCommand>
     VertexBuffer m_InstanceBuffer;
     QuadVertexBuffer m_QuadBuffer;
 
-    Buffer<SpriteCommand> m_ScreenBuffer;
-    PositionSortedBuffer m_WorldBuffer;
+    std::vector<RenderData> m_ScreenBuffer;
+    std::vector<RenderData> m_WorldBuffer;
 };

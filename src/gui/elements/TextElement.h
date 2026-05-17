@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Types.h"
+#include "gui/utility/ChildSpecificiation.h"
 #include "gui/utility/ComponentUpdater.h"
 #include "gui/utility/UIElementProperties.h"
 #include "gui/utility/UISpecification.h"

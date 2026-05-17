@@ -1,42 +1,66 @@
 #include "UISpecification.h"
 #include "ChildSpecificiation.h"
+#include "core/Registry.h"
+#include "core/SimplexModules.h"
 #include "core/Types.h"
 #include "gui/components/Text.h"
 #include "gui/components/UIElement.h"
 #include "gui/components/UITransform.h"
+#include "gui/utility/ComponentUpdater.h"
 #include <memory>
 #include <vector>
 
-UISpecification &UISpecification::Children(std::initializer_list<ChildSpecification> children)
+UISpecification &UISpecification::Children(const std::initializer_list<ChildSpecification> &children)
 {
-    m_Children = [children] {
-        std::vector<UISpecification> uiSpecificiations;
-        for(auto &child : children)
-        {
-            auto consolidation = child.Consolidate();
-            for(auto &uiSpecificiation : consolidation)
-            {
-                uiSpecificiations.push_back(uiSpecificiation);
-            }
-        }
-        return uiSpecificiations;
-    };
-
+    m_Children = children;
     return *this;
 }
 
 EntityId UISpecification::build_impl(Registry &registry, EntityId parent)
 {
     EntityId selfEntity = build_self(registry, parent);
-    auto children = m_Children();
+    if(parent == NULL_ENTITY)
+        registry.AddComponent<UIRoot>(selfEntity, {});
 
-    for(auto &child : children)
-    {
-        EntityId childEntity = child.build_impl(registry, selfEntity);
+    if(m_Children.size() <= 0)
+        return selfEntity;
 
-        UIElement &element = registry.GetComponent<UIElement>(selfEntity);
-        element.children.push_back(childEntity);
-    }
+    const std::vector<ChildSpecification> &children = m_Children;
+
+    PropertyUpdaterFunc<std::vector<EntityId>> getter = [selfEntity, children](SimplexModules, Registry &registry) {
+        std::vector<UISpecification> uiSpecificiations;
+
+        for(const ChildSpecification &child : children)
+        {
+            const std::vector<UISpecification> &consolidation = child.Consolidate();
+            for(const UISpecification &uiSpecificiation : consolidation)
+            {
+                uiSpecificiations.push_back(uiSpecificiation);
+            }
+        }
+        UIElement &elem = registry.GetComponent<UIElement>(selfEntity);
+        std::vector<EntityId> &currentChildren = elem.children;
+        for(auto child : currentChildren)
+        {
+            registry.Destroy(child);
+        }
+
+        std::vector<EntityId> childrenEntities;
+
+        for(auto &child : uiSpecificiations)
+        {
+            EntityId childEntity = child.build_impl(registry, selfEntity);
+
+            childrenEntities.push_back(childEntity);
+        }
+        return childrenEntities;
+    };
+
+    ComponentUpdater<UIElement> updater = ComponentUpdater<UIElement>::Create(&UIElement::children, getter);
+    UIElement &elem = registry.GetComponent<UIElement>(selfEntity);
+    elem.children = getter(Simplex::GetModules(), registry);
+
+    // registry.AddUpdater(selfEntity, std::make_shared<ComponentUpdater<UIElement>>(updater));
 
     return selfEntity;
 }

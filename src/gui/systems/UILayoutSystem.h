@@ -9,9 +9,13 @@
 #include "gui/components/UITransform.h"
 #include "gui/components/UILayout.h"
 #include "gui/components/Text.h"
+#include "gui/utility/Sizing.h"
+#include "gui/utility/SizingMode.h"
+#include "gui/utility/UISpecification.h"
 #include <algorithm>
-#include <cctype>
 #include <cmath>
+#include <cstddef>
+#include <iostream>
 #include <sys/types.h>
 #include <vector>
 
@@ -20,7 +24,7 @@ class UILayoutSystem : public System
   public:
     UILayoutSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = m_Registry.CreateSignature<UIElement, UITransform, UILayout, Text>();
+        m_Signature = m_Registry.CreateSignature<UIElement, UITransform, UILayout, Text, UIRoot>();
     }
     void Update(float timeStep) override
     {
@@ -30,35 +34,42 @@ class UILayoutSystem : public System
             if(element.parent != NULL_ENTITY)
                 continue;
 
-            CalculateLayout(e);
-            // if(IsDirty(e))
-            // {
-            // }
+            // CalculateLayout(e);
+            UpdateTree(e);
         }
     }
 
-    bool IsDirty(EntityId entity)
+    void UpdateTree(EntityId entity)
     {
         UIElement &element = m_Registry.GetComponent<UIElement>(entity);
         if(element.dirty || Simplex::GetView().HasWindowResized())
         {
-            return true;
+            CalculateLayout(entity);
+            return;
         }
 
-        for(EntityId e : element.children)
-        {
-            if(IsDirty(e))
-            {
-                return true;
-            }
-        }
-        return false;
+        for(auto child : element.children)
+            UpdateTree(child);
     }
 
     void CalculateLayout(EntityId entity)
     {
-        UIElement &elem = m_Registry.GetComponent<UIElement>(entity);
+        UIElement &element = m_Registry.GetComponent<UIElement>(entity);
         UITransform &transform = m_Registry.GetComponent<UITransform>(entity);
+
+        // before re-calcuating from here we should check whether the parent depends on this node
+        // and update from there (recursively do this)
+        if(element.parent != NULL_ENTITY)
+        {
+            UILayout &parentLayout = m_Registry.GetComponent<UILayout>(element.parent);
+            bool canIgnore = parentLayout.sizing.width.mode == SizingMode::Grow &&
+                             parentLayout.sizing.height.mode == SizingMode::Grow;
+            if(!canIgnore)
+            {
+                CalculateLayout(element.parent);
+                return;
+            }
+        }
 
         bool shouldWrap = false;
         TextSize(entity, shouldWrap);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "components/Sprite.h"
-#include "graphics/util/RenderData.h"
 #include "graphics/util/RenderMode.h"
 #include "graphics/util/RenderSpace.h"
 

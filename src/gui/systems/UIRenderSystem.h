@@ -2,6 +2,7 @@
 
 #include "gui/components/UILayout.h"
 #include "gui/components/UIStyle.h"
+#include "gui/utility/UISpecification.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 #include "systems/System.h"
@@ -14,8 +15,6 @@
 #include "glm/fwd.hpp"
 #include "gui/components/UIElement.h"
 #include "gui/components/UITransform.h"
-#include <cctype>
-#include <cmath>
 #include <sys/types.h>
 
 class UIRenderSystem : public System
@@ -23,7 +22,7 @@ class UIRenderSystem : public System
   public:
     UIRenderSystem(Registry &registry, const SimplexModules &modules) : System(registry, modules)
     {
-        m_Signature = m_Registry.CreateSignature<UIElement, UITransform>();
+        m_Signature = m_Registry.CreateSignature<UIElement, UITransform, UIRoot>();
     }
 
     void Update(float timeStep) override

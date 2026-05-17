@@ -35,12 +35,7 @@ target_link_libraries(GameEngine
 # ---- Debug options -------------------------------------------------
 target_compile_options(GameEngine
     PRIVATE
-        $<$<CONFIG:Debug>:-O0 -g>
-)
-
-target_link_options(GameEngine
-    PRIVATE
-        $<$<CONFIG:Debug>:-pg>
+        $<$<CONFIG:Debug>:-O2 -g -fno-omit-frame-pointer>
 )
 
 # ---- Engine resources ----------------------------------------------
