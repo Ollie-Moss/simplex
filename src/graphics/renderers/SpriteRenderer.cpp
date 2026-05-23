@@ -11,9 +11,7 @@
 
 SpriteRenderer::SpriteRenderer()
 {
-    m_Buffer.reserve(1000);
-    m_Projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
-    m_Shader = Simplex::GetAssetManager().Get<Shader>("SpriteShader");
+    m_Buffer.reserve(500);
 
     // Render with vertex Array
     // Postition at location 0, offset 0
@@ -36,14 +34,13 @@ void SpriteRenderer::Submit(const SpriteCommand &data)
 
 void SpriteRenderer::Render()
 {
+    const Shader &shader = Simplex::GetAssetManager().Get<Shader>("SpriteShader");
+    shader.use();
+    glm::mat4 projection = Simplex::GetView().CalculateProjection(RenderSpace::Screen);
+    shader.setMat4("projection", projection);
+
     // Move to vbo
     m_InstanceBuffer.Fill<RenderData>(m_Buffer);
-
-    // set shader
-    m_Shader.use();
-
-    // set projection
-    m_Shader.setMat4("projection", m_Projection);
 
     // set texture
     // glActiveTexture(GL_TEXTURE0);
