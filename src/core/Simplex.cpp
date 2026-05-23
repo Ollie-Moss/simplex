@@ -127,7 +127,7 @@ void Simplex::Tick()
         m_Fps = 1.0f / m_DeltaTime;
 
         m_Modules.m_Input->PollEvents();
-        m_Modules.m_View->ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
+        m_Modules.m_View->ClearColor(glm::vec4(0.173, 0.169, 0.180, 1.00));
 
         GetRegistry().Update(m_DeltaTime);
         // --- Fixed Update Loop ---

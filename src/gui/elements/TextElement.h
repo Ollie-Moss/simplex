@@ -18,7 +18,7 @@ inline UISpecification TextElement(PropertyUpdaterFunc<std::string> textFn, Colo
     return UISpecification()
         .Configure(UIElementProperties()
                        .WithText(TextDefinition()
-                                     .Configure({.color = BLACK})
+                                     .Configure({.color = color})
                                      .Bind<std::string>(&Text::content, textFn) //
                                  )                                              //
         );

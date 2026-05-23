@@ -7,7 +7,6 @@
 #include "graphics/util/RenderSpace.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <iterator>
 #include <string_view>
 
 #define GLM_ENABLE_EXPERIMENTAL

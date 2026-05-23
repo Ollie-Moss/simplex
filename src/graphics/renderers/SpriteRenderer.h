@@ -18,14 +18,15 @@ class SpriteRenderer : public IRenderer<SpriteCommand>
 
   private:
     void RenderRange(const std::vector<SpriteCommand> &buffer, const size_t &rangeStart, const size_t &rangeEnd);
-    void RenderBuffer(std::vector<SpriteCommand> &buffer);
+    void RenderBuffer(const std::vector<RenderData> &buffer);
 
   private:
     VertexArray m_VertexArray;
     VertexBuffer m_InstanceBuffer;
     QuadVertexBuffer m_QuadBuffer;
 
-    std::vector<RenderData> m_Buffer;
+    std::vector<RenderData> m_ScreenBuffer;
+    std::vector<RenderData> m_WorldBuffer;
 
     Shader m_Shader;
     glm::mat4 m_Projection;
