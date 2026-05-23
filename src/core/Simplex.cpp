@@ -27,10 +27,10 @@ bool Simplex::Init()
     if(!m_Modules.m_Input->Init(m_Modules.m_View->GetWindow()))
         return false;
 
-    if(!m_Modules.m_RendererManager->Init())
+    if(!m_Modules.m_AssetManager->Init())
         return false;
 
-    if(!m_Modules.m_AssetManager->Init())
+    if(!m_Modules.m_RendererManager->Init())
         return false;
 
     return true;

@@ -11,6 +11,7 @@
 #include "gui/systems/UILayoutSystem.h"
 #include "gui/systems/UIRenderSystem.h"
 #include "gui/utility/Direction.h"
+#include "gui/utility/SizingMode.h"
 #include "gui/utility/UIElementProperties.h"
 #include "gui/utility/UILayoutHelpers.h"
 #include "gui/utility/UISpecification.h"
@@ -39,7 +40,7 @@ int main()
 
         UISpecification builder;
         EntityId root = builder.Configure(UIElementProperties()
-                                              .WithLayout(UILayoutDefintion().Configure({.sizing = Sizing{.width = GROW, .height = GROW}, .direction = Direction::Vertical}))
+                                              .WithLayout(UILayoutDefintion().Configure({.sizing = Sizing{.width = Axis(SizingMode::Fixed, Percent(50)), .height = GROW}, .direction = Direction::Vertical}))
                                               .WithStyle(UIStyleDefintion().Configure({.color = BLUE})))
                             .Children({
                                 TextElement([](SimplexModules, Registry &) { return std::format("FPS: {:^10}", Simplex::Get().GetFPS()); }),
