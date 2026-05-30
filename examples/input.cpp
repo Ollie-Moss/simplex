@@ -1,3 +1,4 @@
+#include "assets/TextureAtlas.h"
 #include "core/Registry.h"
 #include "core/Scene.h"
 #include "core/Simplex.h"
@@ -17,6 +18,8 @@ int main()
         return 0;
     }
     Simplex::GetAssetManager().Load<Font>("Arial", {.path = "arial.ttf"});
+
+    Simplex::GetAssetManager().Load<TextureAtlas>("atlas", {.path = "sprites"});
 
     Scene MainScene = Scene(Simplex::GetModules(), "MainScene", [](Registry &m_Registry) {
         // Systems
