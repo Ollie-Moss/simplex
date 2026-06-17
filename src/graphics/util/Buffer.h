@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Types.h"
-#include <array>
+#include <vector>
 
 template <typename T>
 class Buffer
@@ -11,22 +11,22 @@ class Buffer
 
     virtual void Insert(const T &data)
     {
-        assert(m_Index < MAX_BUFFER_SIZE && "Buffer is full");
-        m_BufferData[m_Index++] = data;
-    };
+        m_BufferData.push_back(data);
+    }
 
-    size_t Size() const { return m_Index; }
-    void Clear() { m_Index = 0; }
+    size_t Size() const { return m_BufferData.size(); }
 
-    const std::array<T, MAX_BUFFER_SIZE> &GetRawData() const
+    void Clear() { m_BufferData.clear(); }
+
+    const std::vector<T> &GetRawData() const
     {
         return m_BufferData;
     }
 
     virtual T &operator[](size_t index) { return m_BufferData[index]; }
+
     virtual const T &operator[](size_t index) const { return m_BufferData[index]; }
 
   protected:
-    std::array<T, MAX_BUFFER_SIZE> m_BufferData;
-    size_t m_Index = 0;
+    std::vector<T> m_BufferData;
 };

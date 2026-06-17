@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/ComponentManager.h"
+#include "core/ComponentUpdaterManager.h"
 #include "core/EntityManager.h"
 #include "core/SimplexModules.h"
 #include "core/SystemManager.h"
@@ -89,6 +90,11 @@ class Registry
         return m_SystemManager.RegisterSystem<T>(*this, m_SystemModules);
     }
 
+    void AddUpdater(EntityId entity, std::shared_ptr<IComponentUpdater> updater)
+    {
+        m_ComponentUpdaters.AddUpdater(entity, updater);
+    }
+
     int GetEntityCount()
     {
         return entityIndex;
@@ -105,8 +111,9 @@ class Registry
     }
     void Update(float timeStep)
     {
+        m_ComponentUpdaters.Update();
+
         DestroyEntities();
-        CreateEntites();
 
         m_SystemManager.UpdateSystems(timeStep);
     }
@@ -163,6 +170,7 @@ class Registry
 
             m_SystemManager.EntityDestroyed(entity);
             m_ComponentManager.EntityDestroyed(entity);
+            m_ComponentUpdaters.EntityDestroyed(entity);
         }
         m_EntitiesToDelete.clear();
     }
@@ -182,6 +190,8 @@ class Registry
     EntityManager m_EntityManager;
     ComponentManager m_ComponentManager;
     SystemManager m_SystemManager;
+
+    ComponentUpdaterManager m_ComponentUpdaters;
 
     size_t entityIndex = 0;
 };

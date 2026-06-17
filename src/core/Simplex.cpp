@@ -1,5 +1,6 @@
 #include "Simplex.h"
 #include "assets/AssetManager.h"
+#include "core/ITime.h"
 #include "core/Scene.h"
 #include "core/SimplexModules.h"
 #include "glm/fwd.hpp"
@@ -10,7 +11,9 @@
 
 // Define at simplex so all other files can just include "stb_image.h"
 #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image.h"
+#include "stb_image_write.h"
 
 Simplex::Simplex(const SimplexModules &modules)
 {
@@ -26,10 +29,10 @@ bool Simplex::Init()
     if(!m_Modules.m_Input->Init(m_Modules.m_View->GetWindow()))
         return false;
 
-    if(!m_Modules.m_RendererManager->Init())
+    if(!m_Modules.m_AssetManager->Init())
         return false;
 
-    if(!m_Modules.m_AssetManager->Init())
+    if(!m_Modules.m_RendererManager->Init())
         return false;
 
     return true;
@@ -72,6 +75,11 @@ AssetManager &Simplex::GetAssetManager()
 Registry &Simplex::GetRegistry()
 {
     return GetScene()->m_Registry;
+}
+
+ITime &Simplex::GetTime()
+{
+    return *Get().m_Modules.m_Time;
 }
 
 std::optional<Scene> &Simplex::GetScene()
@@ -121,7 +129,7 @@ void Simplex::Tick()
         m_Fps = 1.0f / m_DeltaTime;
 
         m_Modules.m_Input->PollEvents();
-        m_Modules.m_View->ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
+        m_Modules.m_View->ClearColor(glm::vec4(0.173, 0.169, 0.180, 1.00));
 
         GetRegistry().Update(m_DeltaTime);
         // --- Fixed Update Loop ---
@@ -134,5 +142,6 @@ void Simplex::Tick()
         m_Modules.m_RendererManager->Render();
 
         m_Modules.m_View->SwapBuffers();
+        m_Modules.m_Time->Tick();
     }
 }

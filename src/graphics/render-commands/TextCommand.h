@@ -2,7 +2,7 @@
 
 #include "core/Types.h"
 #include "glm/fwd.hpp"
-#include <gui/Text.h>
+#include <gui/components/Text.h>
 
 struct TextCommand
 {
